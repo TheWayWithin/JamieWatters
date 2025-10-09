@@ -48,20 +48,16 @@ const config: Config = {
         'caption': ['12px', { lineHeight: '1.4' }],
       },
       spacing: {
-        '1': '8px',
-        '2': '16px',
-        '3': '24px',
-        '4': '32px',
-        '5': '40px',
-        '6': '48px',
-        '8': '64px',
-        '12': '96px',
+        // Keep all default Tailwind spacing, just add custom values
+        '18': '72px',
+        '88': '352px',
+        '128': '512px',
       },
       borderRadius: {
-        'sm': '4px',
-        'md': '6px',
+        // Keep defaults, just override specific values
         'lg': '8px',
         'xl': '12px',
+        '2xl': '16px',
       },
       boxShadow: {
         'sm': '0 1px 2px rgba(0, 0, 0, 0.3)',
