@@ -1,0 +1,88 @@
+// JamieWatters.work - Database Schema
+// Version: 1.0
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Projects: Portfolio items with metrics
+model Project {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  name        String
+  description String   @db.Text
+  longDescription String?  @db.Text // For case study page
+  url         String
+  techStack   String[]  // Array of technologies
+  category    Category
+  featured    Boolean  @default(false)
+
+  // Metrics (current snapshot)
+  mrr         Decimal  @default(0) @db.Decimal(10, 2)
+  users       Int      @default(0)
+  status      ProjectStatus @default(ACTIVE)
+
+  // Content
+  problemStatement String? @db.Text
+  solutionApproach String? @db.Text
+  lessonsLearned   String? @db.Text
+  screenshots      String[] // Array of image URLs
+
+  // Metadata
+  launchedAt  DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  metricsHistory MetricsHistory[]
+
+  @@index([category])
+  @@index([featured])
+}
+
+enum Category {
+  AI_TOOLS
+  FRAMEWORKS
+  EDUCATION
+  MARKETPLACE
+  OTHER
+}
+
+enum ProjectStatus {
+  ACTIVE
+  BETA
+  PLANNING
+  ARCHIVED
+}
+
+// Blog posts metadata (content in markdown files)
+model Post {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  title       String
+  excerpt     String   @db.Text
+  tags        String[]
+  readTime    Int      // Minutes
+  publishedAt DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([publishedAt])
+}
+
+// Metrics history for future charts (v2 feature)
+model MetricsHistory {
+  id          String   @id @default(uuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  mrr         Decimal  @db.Decimal(10, 2)
+  users       Int
+  recordedAt  DateTime @default(now())
+
+  @@index([projectId, recordedAt])
+}
