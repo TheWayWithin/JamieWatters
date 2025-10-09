@@ -1,6 +1,7 @@
 [build]
-  command = "cd website && npm install && npm run build"
-  publish = "website/.next"
+  base = "website"
+  command = "npm install && npm run build"
+  publish = ".next"
 
 [build.environment]
   NODE_VERSION = "20"
