@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Twitter, Linkedin, Github, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
@@ -11,21 +12,16 @@ export default function AboutPage() {
           About Jamie
         </h1>
 
-        {/* Profile Photo Placeholder */}
+        {/* Profile Photo */}
         <div className="flex justify-center mb-12">
           <div className="relative w-64 h-64 sm:w-80 sm:h-80">
-            {/* Placeholder for profile photo */}
-            <div className="w-full h-full bg-bg-surface border-4 border-brand-primary rounded-lg flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-6xl mb-4">👤</div>
-                <p className="text-body text-text-secondary">
-                  Profile Photo
-                </p>
-                <p className="text-caption text-text-tertiary mt-2">
-                  Jamie South St Seaport.jpg
-                </p>
-              </div>
-            </div>
+            <Image
+              src="/images/jamie-profile.jpg"
+              alt="Jamie Watters at South Street Seaport"
+              fill
+              className="object-cover rounded-lg border-4 border-brand-primary"
+              priority
+            />
           </div>
         </div>
       </section>
