@@ -26,12 +26,22 @@ export default function MyStoryPage() {
           <div className="space-y-6 text-body-lg text-text-primary leading-relaxed">
             <p>
               It started with pure curiosity. Back in the 1980s, my high school had exactly one computer—a 
-              <strong className="text-brand-primary"> Research Machines 380Z</strong> tucked away in the science teacher's room. 
+              <a 
+              href="https://en.wikipedia.org/wiki/Research_Machines_380Z" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-brand-secondary hover:text-brand-secondary-hover underline font-semibold"
+              >Research Machines 380Z</a> tucked away in the science teacher's room. 
               During lunch breaks and spare moments, a few of us would crowd around that machine, writing games in BASIC 
               and discovering the magic of making things happen with code.
             </p>
             <p>
-              When the <strong className="text-brand-primary">VIC-20</strong> came out, I convinced my parents to get me one. 
+              When the <a 
+              href="https://en.wikipedia.org/wiki/VIC-20" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-brand-secondary hover:text-brand-secondary-hover underline font-semibold"
+              >VIC-20</a> came out, I convinced my parents to get me one. 
               I was hooked. There was something intoxicating about the immediate feedback loop—type some code, run it, 
               see what happens. Fix it, improve it, make it do something new.
             </p>
@@ -49,9 +59,13 @@ export default function MyStoryPage() {
           <div className="space-y-6 text-body-lg text-text-primary leading-relaxed">
             <p>
               That passion led me to do whatever it took to stay close to computers. I got a job at 
-              <strong className="text-brand-primary"> Sperry Univac emptying bins</strong> in the computer room, 
-              just to be around the machines. I hung around, asked questions, and eventually wrangled my way into 
-              a trainee position as a computer operator.
+              <a 
+              href="https://en.wikipedia.org/wiki/Sperry_Corporation" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-brand-secondary hover:text-brand-secondary-hover underline font-semibold"
+              >Sperry Univac</a> in the computer room, just to be around the machines. I hung around, asked questions, 
+              and eventually wrangled my way into a trainee position as a computer operator.
             </p>
             <p>
               From there, I climbed the ladder: systems programmer, writing operating systems, earning a computing degree. 
@@ -164,7 +178,12 @@ export default function MyStoryPage() {
           <div className="space-y-6 text-body-lg text-text-primary leading-relaxed">
             <p>
               In the last five months, while still working my day job, I've become a one-person studio. I've built 
-              <strong className="text-brand-primary"> 5 apps, 4 websites, 4 agent suites</strong>, and a market-leading 
+              <a 
+              href="https://jamiewatters.work/portfolio" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-brand-secondary hover:text-brand-secondary-hover underline font-semibold"
+              >5 apps, 4 websites, 4 agent suites</a>, and a market-leading 
               AI SEO framework. No employees, no investors, no offices—just vision, discipline, and an army of AI 
               assistants I've learned to orchestrate.
             </p>

@@ -35,10 +35,18 @@ export default function AboutPage() {
           </h2>
           <div className="space-y-6 text-body-lg text-text-primary leading-relaxed">
             <p>
-              I'm Jamie Watters, a solopreneur on a mission to build a billion-dollar portfolio by 
-              2030 using AI agents. My journey began in the 1980s writing BASIC on a Research 
-              Machines 380Z during lunch breaks. I worked my way up from emptying bins at Sperry 
-              Univac to becoming a systems programmer, living through the great technology 
+              I'm Jamie Watters, a solopreneur primarily focused on building SaaS and tools that solve real 
+              solopreneur problems. My journey began in the 1980s writing BASIC on a <a 
+              href="https://en.wikipedia.org/wiki/Research_Machines_380Z" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-brand-secondary hover:text-brand-secondary-hover underline"
+              >Research Machines 380Z</a> during lunch breaks. Starting from the ground up at <a 
+              href="https://en.wikipedia.org/wiki/Sperry_Corporation" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-brand-secondary hover:text-brand-secondary-hover underline"
+              >Sperry Univac</a>, I became a systems programmer, living through the great technology 
               transitions—assembler to C to C++, hierarchical to relational databases.
             </p>
             <p>
@@ -50,7 +58,12 @@ export default function AboutPage() {
               Then AI changed everything. It removed the cognitive barriers I feared while 
               amplifying my decades of strategic experience. Now, while bootstrapping alongside 
               my day job, I've rediscovered the joy of building. In just 5 months, I've created 
-              5 apps, 4 websites, and 4 agent suites—all while working full-time. I'm orchestrating 
+              <a 
+              href="https://jamiewatters.work/portfolio" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-brand-secondary hover:text-brand-secondary-hover underline"
+              >5 apps, 4 websites, and 4 agent suites</a>—all while working full-time. I'm orchestrating 
               AI agents to build multiple businesses simultaneously, proving that experience plus 
               AI equals unprecedented leverage.
             </p>
@@ -98,8 +111,8 @@ export default function AboutPage() {
             </p>
             <ul className="list-disc list-inside space-y-3 ml-4">
               <li>
-                <strong className="text-text-primary">AI Tools:</strong> Automated workflows for
-                businesses and content creators
+                <strong className="text-text-primary">SaaS & Solopreneur Tools:</strong> Automated workflows and 
+                productivity solutions for solo entrepreneurs and small businesses
               </li>
               <li>
                 <strong className="text-text-primary">Frameworks:</strong> Developer tools and
