@@ -23,7 +23,7 @@ export default function Footer() {
       icon: Linkedin,
     },
     {
-      href: 'https://github.com/jamiewatters',
+      href: 'https://github.com/TheWayWithin',
       label: 'GitHub',
       icon: Github,
     },

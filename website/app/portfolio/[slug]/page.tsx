@@ -1,17 +1,20 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ExternalLink, Github } from 'lucide-react';
-import { getAllProjects, getProjectBySlug } from '@/lib/placeholder-data';
+import { getAllProjects, getProjectBySlug, getProjectSlugs } from '@/lib/database';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { ProjectCard } from '@/components/portfolio/ProjectCard';
 
 // Generate static params for all projects (SSG)
 export async function generateStaticParams() {
-  const projects = getAllProjects();
-  return projects.map((project) => ({
-    slug: project.slug,
-  }));
+  try {
+    const slugs = await getProjectSlugs();
+    return slugs.map((slug) => ({ slug }));
+  } catch (error) {
+    console.error('Error generating static params:', error);
+    return [];
+  }
 }
 
 export default async function ProjectPage({
@@ -20,23 +23,30 @@ export default async function ProjectPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  
+  // Input validation
+  if (!slug || typeof slug !== 'string' || slug.length > 100) {
+    notFound();
+  }
+
+  const project = await getProjectBySlug(slug);
 
   if (!project) {
     notFound();
   }
 
   // Get related projects (same category, excluding current)
-  const relatedProjects = getAllProjects()
+  const allProjects = await getAllProjects();
+  const relatedProjects = allProjects
     .filter(p => p.category === project.category && p.id !== project.id)
     .slice(0, 3);
 
   // Status badge color mapping
   const statusColors: Record<typeof project.status, 'success' | 'warning' | 'info' | 'error'> = {
-    active: 'success',
-    beta: 'warning',
-    planning: 'info',
-    archived: 'error',
+    ACTIVE: 'success',
+    BETA: 'warning',
+    PLANNING: 'info',
+    ARCHIVED: 'error',
   };
 
   return (
@@ -53,30 +63,25 @@ export default async function ProjectPage({
 
         {/* CTAs */}
         <div className="flex flex-wrap gap-4 mb-6">
-          {project.liveUrl && (
+          {project.url && (
             <Button variant="primary" size="md" asChild>
               <a
-                href={project.liveUrl}
+                href={project.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2"
               >
-                Visit Live Site
-                <ExternalLink className="w-4 h-4" />
-              </a>
-            </Button>
-          )}
-
-          {project.githubUrl && (
-            <Button variant="secondary" size="md" asChild>
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2"
-              >
-                GitHub
-                <Github className="w-4 h-4" />
+                {project.url.includes('github.com') ? (
+                  <>
+                    View on GitHub
+                    <Github className="w-4 h-4" />
+                  </>
+                ) : (
+                  <>
+                    Visit Live Site
+                    <ExternalLink className="w-4 h-4" />
+                  </>
+                )}
               </a>
             </Button>
           )}
@@ -86,7 +91,7 @@ export default async function ProjectPage({
         <div className="flex flex-wrap items-center gap-4 text-caption text-text-tertiary">
           {project.launchedAt && (
             <span>
-              Launched: {project.launchedAt.toLocaleDateString('en-US', {
+              Launched: {new Date(project.launchedAt).toLocaleDateString('en-US', {
                 month: 'long',
                 year: 'numeric'
               })}
@@ -96,7 +101,7 @@ export default async function ProjectPage({
           <div className="flex items-center gap-2">
             <span>Status:</span>
             <Badge variant={statusColors[project.status]} size="sm">
-              {project.status}
+              {project.status.charAt(0) + project.status.slice(1).toLowerCase()}
             </Badge>
           </div>
         </div>
@@ -112,7 +117,7 @@ export default async function ProjectPage({
           {/* MRR */}
           <div className="bg-bg-surface border border-border-default rounded-lg p-6">
             <div className="text-4xl font-bold text-brand-accent font-mono mb-2">
-              ${project.metrics.mrr.toLocaleString()}
+              ${Number(project.mrr).toFixed(2)}
             </div>
             <div className="text-body-sm text-text-secondary">
               Monthly Recurring Revenue
@@ -122,7 +127,7 @@ export default async function ProjectPage({
           {/* Users */}
           <div className="bg-bg-surface border border-border-default rounded-lg p-6">
             <div className="text-4xl font-bold text-brand-accent font-mono mb-2">
-              {project.metrics.users.toLocaleString()}
+              {project.users.toLocaleString()}
             </div>
             <div className="text-body-sm text-text-secondary">
               Active Users
@@ -132,7 +137,7 @@ export default async function ProjectPage({
           {/* Status */}
           <div className="bg-bg-surface border border-border-default rounded-lg p-6">
             <div className="text-2xl font-semibold text-text-primary mb-2 capitalize">
-              {project.status}
+              {project.status.charAt(0) + project.status.slice(1).toLowerCase()}
             </div>
             <div className="text-body-sm text-text-secondary">
               Status
@@ -141,7 +146,7 @@ export default async function ProjectPage({
         </div>
 
         <p className="text-caption text-text-tertiary mt-4">
-          Last updated: {project.updatedAt.toLocaleDateString('en-US', {
+          Last updated: {new Date(project.updatedAt).toLocaleDateString('en-US', {
             month: 'long',
             day: 'numeric',
             year: 'numeric'
@@ -191,7 +196,7 @@ export default async function ProjectPage({
             Problem Statement
           </h3>
           <p className="text-body-lg text-text-primary leading-relaxed mb-4">
-            {project.tagline} addresses a critical need in the market. This section will contain
+            {project.description.split('.')[0] + '.'} This project addresses a critical need in the market. This section will contain
             detailed analysis of the problem this project solves.
           </p>
           <p className="text-body-lg text-text-primary leading-relaxed">

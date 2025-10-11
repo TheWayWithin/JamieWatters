@@ -2,18 +2,18 @@ import Link from 'next/link';
 import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
 import { ExternalLink, Github } from 'lucide-react';
-import type { PlaceholderProject } from '@/lib/placeholder-data';
+import type { ProjectWithMetrics } from '@/lib/database';
 
 interface ProjectCardProps {
-  project: PlaceholderProject;
+  project: ProjectWithMetrics;
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {
   const statusColors = {
-    active: 'bg-green-500/15 text-green-400',
-    beta: 'bg-blue-500/15 text-blue-400',
-    planning: 'bg-yellow-500/15 text-yellow-400',
-    archived: 'bg-gray-500/15 text-gray-400',
+    ACTIVE: 'bg-green-500/15 text-green-400',
+    BETA: 'bg-blue-500/15 text-blue-400',
+    PLANNING: 'bg-yellow-500/15 text-yellow-400',
+    ARCHIVED: 'bg-gray-500/15 text-gray-400',
   };
 
   return (
@@ -24,7 +24,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             {project.name}
           </h3>
           <p className="text-sm text-brand-accent font-medium">
-            {project.tagline}
+            {project.description.split('.')[0] + '.'} {/* Use first sentence as tagline */}
           </p>
         </div>
         <span
@@ -32,7 +32,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             statusColors[project.status]
           }`}
         >
-          {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
+          {project.status.charAt(0) + project.status.slice(1).toLowerCase()}
         </span>
       </div>
 
@@ -45,13 +45,13 @@ export function ProjectCard({ project }: ProjectCardProps) {
         <div>
           <div className="text-xs text-text-tertiary">MRR</div>
           <div className="text-lg font-semibold text-brand-accent">
-            ${project.metrics.mrr.toLocaleString()}
+            ${Number(project.mrr).toFixed(2)}
           </div>
         </div>
         <div>
           <div className="text-xs text-text-tertiary">Users</div>
           <div className="text-lg font-semibold text-brand-accent">
-            {project.metrics.users.toLocaleString()}
+            {project.users.toLocaleString()}
           </div>
         </div>
       </div>
@@ -78,26 +78,19 @@ export function ProjectCard({ project }: ProjectCardProps) {
         >
           View Details
         </Link>
-        {project.liveUrl && (
+        {project.url && (
           <a
-            href={project.liveUrl}
+            href={project.url}
             target="_blank"
             rel="noopener noreferrer"
             className="border border-brand-primary text-brand-primary hover:bg-brand-primary hover:bg-opacity-10 px-3 py-2 rounded-md transition-base flex items-center justify-center"
-            aria-label="Visit live site"
+            aria-label="Visit project"
           >
-            <ExternalLink className="w-4 h-4" />
-          </a>
-        )}
-        {project.githubUrl && (
-          <a
-            href={project.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="border border-brand-primary text-brand-primary hover:bg-brand-primary hover:bg-opacity-10 px-3 py-2 rounded-md transition-base flex items-center justify-center"
-            aria-label="View on GitHub"
-          >
-            <Github className="w-4 h-4" />
+            {project.url.includes('github.com') ? (
+              <Github className="w-4 h-4" />
+            ) : (
+              <ExternalLink className="w-4 h-4" />
+            )}
           </a>
         )}
       </div>

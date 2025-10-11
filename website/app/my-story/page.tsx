@@ -307,7 +307,7 @@ export default function MyStoryPage() {
               <Linkedin className="w-8 h-8" />
             </a>
             <a
-              href="https://github.com/jamiewatters"
+              href="https://github.com/TheWayWithin"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Follow on GitHub"

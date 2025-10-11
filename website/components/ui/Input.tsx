@@ -14,7 +14,7 @@ export function Input({
   id,
   ...props
 }: InputProps) {
-  const inputId = id || `input-${Math.random().toString(36).substring(7)}`;
+  const inputId = id || `input-${label?.toLowerCase().replace(/\s+/g, '-') || 'field'}`;
 
   // Base styles
   const baseStyles =

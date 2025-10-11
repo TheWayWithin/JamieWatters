@@ -1,11 +1,16 @@
-import { getAllProjects, getMetrics } from '@/lib/placeholder-data';
+import { getAllProjects, getMetrics } from '@/lib/database';
 import { ProjectCard } from '@/components/portfolio/ProjectCard';
 
 export const revalidate = 3600; // 1 hour ISR
 
-export default function PortfolioPage() {
-  const projects = getAllProjects();
-  const metrics = getMetrics();
+export default async function PortfolioPage() {
+  const projects = await getAllProjects();
+  const metrics = await getMetrics();
+  
+  // Get the most recent update date from all projects
+  const mostRecentUpdate = projects.reduce((latest, project) => {
+    return project.updatedAt > latest ? project.updatedAt : latest;
+  }, projects[0]?.updatedAt || new Date());
 
   return (
     <main className="min-h-screen bg-bg-primary">
@@ -25,7 +30,7 @@ export default function PortfolioPage() {
           {/* Total MRR */}
           <div className="bg-bg-surface border border-border-default rounded-lg p-4 sm:p-6">
             <div className="text-3xl sm:text-4xl font-bold text-brand-accent font-mono mb-1">
-              ${metrics.totalMRR.toLocaleString()}
+              ${metrics.totalMRR.toFixed(2)}
             </div>
             <div className="text-body-sm text-text-secondary">
               Total MRR
@@ -58,7 +63,11 @@ export default function PortfolioPage() {
               Last Updated
             </div>
             <div className="text-body-sm text-text-secondary">
-              Oct 8, 2025
+              {mostRecentUpdate.toLocaleDateString('en-US', { 
+                month: 'short', 
+                day: 'numeric', 
+                year: 'numeric' 
+              })}
             </div>
           </div>
         </div>

@@ -1,15 +1,13 @@
 import Link from 'next/link';
 import { Rss } from 'lucide-react';
-import { placeholderPosts } from '@/lib/placeholder-data';
+import { getAllPosts } from '@/lib/database';
 import { PostCard } from '@/components/blog/PostCard';
 import { Button } from '@/components/ui/Button';
 
 export const revalidate = 3600; // 1 hour ISR
 
-export default function JourneyPage() {
-  const posts = placeholderPosts.sort(
-    (a, b) => b.publishedAt.getTime() - a.publishedAt.getTime()
-  );
+export default async function JourneyPage() {
+  const posts = await getAllPosts();
 
   return (
     <main className="min-h-screen bg-bg-primary">

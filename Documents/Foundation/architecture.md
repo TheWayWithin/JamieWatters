@@ -13,7 +13,161 @@ This is a **monolithic Next.js application** leveraging modern JAMstack principl
 - **Performance-Driven**: < 2s page loads, Lighthouse > 90, aggressive caching strategy
 - **MVP-Focused**: Manual metrics first, automation deferred to v2 after market validation
 
-**Current Status**: Development (Phase 2 - Architecture Design Complete) - Ready for UI/UX design and implementation.
+**Current Status**: Development (Phase 3 - Implementation In Progress) - Architecture designed, core implementation underway.
+
+---
+
+## Current Implementation Status
+
+**Last Updated**: 2025-10-09 | **Architecture Version**: 1.3
+
+This section tracks what's been built versus what was originally designed, helping identify gaps between architecture and implementation.
+
+### ✅ Fully Implemented
+
+**Core Infrastructure:**
+- ✅ Next.js 15.5.4 application with App Router
+- ✅ React 19.2.0 with TypeScript 5.7.3
+- ✅ Netlify deployment platform with automatic CI/CD
+- ✅ Tailwind CSS 3.4.17 styling system
+- ✅ Git-based workflow with automatic deployments
+
+**Pages & Routes:**
+- ✅ Home page (`/`) - Static generation with hero, portfolio overview
+- ✅ About page (`/about`) - Personal story with profile photo
+- ✅ Portfolio listing (`/portfolio`) - Project showcase
+- ✅ Journey listing (`/journey`) - Blog index
+- ✅ Admin authentication (`/api/auth`) - Simple password-based auth
+
+**Components (10 total):**
+- ✅ Layout: Header, Footer, Navigation
+- ✅ UI Primitives: Button (multiple variants)
+- ✅ Portfolio: ProjectCard, MetricsDisplay
+- ✅ Blog: PostCard
+- ✅ Forms: ContactForm
+
+### 🔌 Configured But Not Connected
+
+**Database Layer:**
+- 🔌 Neon Postgres database configured via environment variables
+- 🔌 Prisma schema defined with Project, Post, MetricsHistory models
+- 🔌 Database connection string in `.env.local`
+- ⚠️ **CRITICAL**: Database is NOT actively connected - all data currently hardcoded/placeholder
+
+**Current Data Approach:**
+- Portfolio projects: Hardcoded in components (not database-driven)
+- Blog posts: Hardcoded (not markdown files as designed)
+- Metrics: Static placeholder values (not live database queries)
+
+**Security Implementation:**
+- 🔌 Authentication system exists (`/api/auth`)
+- ⚠️ **SECURITY WARNING**: Using plaintext password comparison (not bcrypt)
+- 📋 Pre-launch requirement: Implement bcrypt password hashing
+
+### ⏳ Planned But Not Built
+
+**Authentication System (Phase 7):**
+- ⏳ **Supabase Auth** for OAuth and session management
+- ⏳ OAuth providers: Google, GitHub, LinkedIn
+- ⏳ Magic link authentication (passwordless email)
+- ⏳ User sync from Supabase Auth → Neon database via Prisma
+- ⏳ Role-based access control (Admin, User roles)
+- ⏳ Session management with JWT tokens
+
+**Architecture Decision**: Dual-service approach
+- **Supabase Auth**: Handles authentication, OAuth flows, session management (no database)
+- **Neon Postgres**: Stores all application data (users, projects, posts, comments)
+- **Sync Pattern**: On user signup/login, sync auth user to Neon UserProfile table
+
+**Content Management:**
+- ⏳ Markdown-based blog system (designed but not implemented)
+- ⏳ `/content/posts/` directory structure for blog content
+- ⏳ Markdown parsing utilities (`lib/markdown.ts`)
+- ⏳ Individual project pages (`/portfolio/[slug]`)
+- ⏳ Individual blog post pages (`/journey/[slug]`)
+
+**Database Features:**
+- ⏳ Active database connection and queries
+- ⏳ Admin dashboard for metrics updates
+- ⏳ Metrics history tracking
+- ⏳ Database seeding scripts
+
+**API Routes:**
+- ⏳ `/api/metrics` - Admin metrics update endpoint
+- ⏳ `/api/revalidate` - ISR revalidation webhook
+- ⏳ `/api/rss` - Blog RSS feed generation
+
+**Security Features:**
+- ⏳ Content Security Policy (CSP) with nonces
+- ⏳ Rate limiting on admin endpoints
+- ⏳ Proper password hashing with bcrypt (interim solution before Supabase Auth)
+- ⏳ Security headers (X-Frame-Options, etc.)
+
+**Performance Optimizations:**
+- ⏳ ISR (Incremental Static Regeneration) for dynamic pages
+- ⏳ Image optimization with `next/image`
+- ⏳ Font optimization with `next/font`
+
+### 📝 Architecture vs. Implementation Differences
+
+**Technology Stack Changes:**
+1. **Deployment Platform**: Designed for Vercel → **Implemented on Netlify**
+   - Rationale: Netlify provides robust Next.js support via @netlify/plugin-nextjs with automatic deployments
+   - Impact: Architecture documentation corrected to reflect actual deployment platform
+
+2. **Database Provider**: **Neon Postgres** (serverless Postgres with branching)
+   - Rationale: Serverless architecture, connection pooling built-in, database branching for development
+   - Impact: Configured with Neon connection string (verified via neon.tech domain)
+
+3. **Framework Versions**: Documentation outdated
+   - Designed: Next.js 14.2+, React 18.3+ → **Actual: Next.js 15.5.4, React 19.2.0**
+   - Impact: API changes, newer features available, better performance
+
+4. **Content System**: File-based design not yet implemented
+   - Designed: Markdown files in Git → **Actual: Hardcoded content in components**
+   - Rationale: Rapid prototyping, database connection deferred
+   - Impact: Content updates require code changes (not sustainable long-term)
+
+5. **Database Schema**: Minimal implementation vs. comprehensive design
+   - Designed: 10+ fields per model → **Actual: Basic schema with 3-4 core fields**
+   - Missing fields: `longDescription`, `problemStatement`, `solutionApproach`, `lessonsLearned`, `screenshots`, `launchedAt`
+   - Impact: Case study pages cannot be built until schema expanded
+
+**Authentication Approach:**
+- Designed: bcrypt password hashing with proper security
+- **Actual**: Simple plaintext comparison (temporary for development)
+- **Planned (Phase 7)**: Supabase Auth for OAuth and session management
+  - Dual-service architecture: Supabase Auth + Neon Database
+  - OAuth providers: Google, GitHub, LinkedIn
+  - Magic link authentication (passwordless email)
+  - User sync pattern: Supabase Auth → Neon UserProfile table via Prisma
+- **Action Required**: Implement Supabase Auth before production deployment
+
+### Pre-Launch Requirements Checklist
+
+Before going live, the following MUST be completed:
+
+**Phase 5.5 - Foundation (Days 1-3):**
+- [ ] **Database Connection**: Activate Neon connection, migrate from hardcoded data
+- [ ] **Security Hardening**: Implement bcrypt password hashing (interim solution)
+- [ ] **Content System**: Implement markdown-based blog or database-driven content
+- [ ] **Complete Schema**: Add missing database fields for case studies
+- [ ] **Dynamic Pages**: Build `/portfolio/[slug]` and `/journey/[slug]` pages
+
+**Phase 6 - Pre-Launch Optimization (Days 4-6):**
+- [ ] **Performance**: Implement ISR, image optimization, font optimization
+- [ ] **Security Headers**: Add CSP, X-Frame-Options, etc.
+- [ ] **Testing**: Cross-browser testing, mobile responsiveness, Lighthouse audits
+- [ ] **SEO**: Meta tags, sitemap.xml, robots.txt, structured data
+- [ ] **Monitoring**: Set up error tracking and analytics
+
+**Phase 7 - Authentication & CMS (Weeks 2-4):**
+- [ ] **Supabase Auth Setup**: Configure OAuth providers (Google, GitHub, LinkedIn)
+- [ ] **User Management**: Implement user sync from Supabase → Neon database
+- [ ] **RBAC**: Role-based access control (Admin, User)
+- [ ] **Admin CMS**: 5-step wizard for journey entry creation
+- [ ] **Commenting System**: Public comments with moderation
+- [ ] **LinkedIn Integration**: Auto-share functionality for blog posts
 
 ---
 
@@ -28,18 +182,18 @@ This is a **monolithic Next.js application** leveraging modern JAMstack principl
 │  ┌─────────────────────┐         ┌────────────────────────┐    │
 │  │   Next.js Frontend  │◄────────┤   Next.js Backend      │    │
 │  │                     │  API    │   (API Routes)         │    │
-│  │ - React 18          │         │                        │    │
+│  │ - React 19          │         │                        │    │
 │  │ - Tailwind CSS      │         │ - Markdown Parser      │    │
 │  │ - TypeScript        │         │ - Database Queries     │    │
 │  │ - App Router        │         │ - Metrics API          │    │
 │  │ - Static/ISR Pages  │         │ - Admin API (optional) │    │
 │  └─────────────────────┘         └───────────┬────────────┘    │
 │                                              │                 │
-│                                              │                 │
+│                                              │ 🔌 Configured   │
 │                                   ┌──────────▼──────────┐      │
-│                                   │  Neon Database      │      │
-│                                   │  (via Prisma ORM)   │      │
-│                                   │                     │      │
+│                                   │ Neon Database       │      │
+│                                   │ (via Prisma ORM)    │      │
+│                                   │ ⚠️  NOT CONNECTED   │      │
 │                                   │ - projects table    │      │
 │                                   │ - posts metadata    │      │
 │                                   │ - metrics_history   │      │
@@ -60,8 +214,16 @@ External Integrations (Future v2):
 └─────────────┘    └─────────────┘    └─────────────┘
 ```
 
-**Data Flow:**
-1. User requests page → Netlify CDN checks cache
+**Data Flow (Current Implementation):**
+1. User requests page → Netlify Edge Network checks cache
+2. Cache miss → Next.js generates page (SSG - currently all static)
+3. ⚠️ Data currently hardcoded in components (database not connected yet)
+4. ⚠️ Blog content hardcoded (markdown system not yet implemented)
+5. Page rendered and cached at edge
+6. ⚠️ Metrics updates manual via code changes (admin API not yet active)
+
+**Data Flow (Planned):**
+1. User requests page → Netlify Edge Network checks cache
 2. Cache miss → Next.js generates page (SSG/ISR)
 3. Next.js fetches data from Neon Database via Prisma
 4. Blog content loaded from markdown files in repository
@@ -78,12 +240,13 @@ External Integrations (Future v2):
 **Platform**: Netlify (Starter Plan → Pro as needed)
 
 **Why Netlify:**
-- **Next.js optimized deployment**: Automatic builds, optimizations, and global CDN
-- **Edge caching**: Global distribution with sub-100ms response times
-- **Branch deployments**: Preview deployments for every PR
-- **Built-in forms and functions**: No separate backend setup required
-- **Git-driven workflow**: Push to `main` = auto-deploy
-- **Free tier sufficient**: MVP fits within starter plan limits
+- **Next.js optimized deployment**: Full Next.js 15 support via @netlify/plugin-nextjs
+- **Edge Network**: Global CDN with high-performance edge delivery
+- **Preview deployments**: Automatic deploy preview for every Git push
+- **Zero configuration**: Automatic framework detection and optimization
+- **Git-driven workflow**: Push to `main` = auto-deploy (2-3 minute builds)
+- **Free tier generous**: 300 build minutes/month, 100GB bandwidth, unlimited sites
+- **Robust Next.js support**: Server-side rendering, ISR, Edge Functions, and Image Optimization
 
 **Deployment Flow:**
 ```
@@ -104,7 +267,7 @@ Netlify Deployment:                   ┌─────────────
         ▼                                               ▼
 ┌──────────────┐     ┌──────────────┐     ┌─────────────────┐
 │ Run build    │ --> │ Run Prisma   │ --> │ Deploy to edge  │
-│ (next build) │     │ migrations   │     │ CDN worldwide   │
+│ (next build) │     │ generate     │     │ network global  │
 └──────────────┘     └──────────────┘     └─────────────────┘
         │                                               │
         └───────────────────┬───────────────────────────┘
@@ -116,74 +279,79 @@ Netlify Deployment:                   ┌─────────────
                     └──────────────┘
 
 Time: ~2-3 minutes from push to live
+Status: ✅ ACTIVE (currently deployed on Netlify)
 ```
 
 ### Infrastructure Components
 
-#### Compute - Netlify Functions
-- **Platform**: Netlify Edge Functions + Background Functions
+#### Compute - Netlify Edge & Functions
+- **Platform**: Netlify Edge Network + Netlify Functions
 - **Configuration**:
-  - Edge Functions for static content delivery (< 50ms latency)
-  - Serverless Functions for API routes (1024MB memory, 10s timeout)
+  - Edge Network for static content delivery (< 50ms latency globally)
+  - Netlify Functions for API routes (1024MB memory, 10s timeout default)
   - Auto-scaling based on traffic (0 to millions of requests)
+  - Node.js 18+ runtime with automatic optimization
 - **Cold Start Mitigation**:
-  - ISR keeps functions warm through regular revalidation
+  - ISR keeps functions warm through regular revalidation (when implemented)
   - Edge caching reduces function invocations by 95%+
-- **Monitoring**: Netlify Dashboard (response times, invocation counts, errors)
+  - Netlify's optimized function deployment for faster cold starts
+- **Monitoring**: Netlify Dashboard (response times, invocation counts, errors, real-time logs)
 
 #### Storage - Neon Database + Git Repository
-- **Database**: Neon (Serverless Postgres with branching)
-  - **Size**: 512MB initially on free tier (scales to 10GB on paid plans)
-  - **Connection Pooling**: Built-in connection pooling for serverless
-  - **Backup Strategy**: Point-in-time recovery (PITR) with 7-day retention
-  - **Encryption**: TLS in transit, AES-256 at rest
-  - **Branch Databases**: Isolated preview databases for each Netlify deployment
+- **Database**: Neon (serverless Postgres with branching)
+  - **Size**: 512MB on free tier (scales to 10GB+ on paid plans)
+  - **Connection Pooling**: Built-in connection pooling (verified via pooler endpoint)
+  - **Backup Strategy**: Daily automated backups with point-in-time recovery
+  - **Encryption**: TLS 1.3 in transit, AES-256 at rest
+  - **Key Features**: Database branching (Git-like workflow), instant provisioning, scale-to-zero
+  - **Status**: 🔌 Configured but not yet connected in application code
 - **File Storage**:
-  - Blog markdown files stored in Git repository (version controlled)
-  - Images in `/public/` directory (served via Netlify CDN)
-  - No object storage needed for MVP
+  - Blog markdown files to be stored in Git repository (planned)
+  - Images in `/public/` directory (served via Netlify Edge Network)
+  - Vercel Blob Storage available for large assets if needed (future)
 
 #### Networking
-- **CDN**: Netlify Edge Network (global distribution)
+- **CDN**: Netlify Edge Network (global distribution across 20+ regions)
   - Automatic HTTPS certificate provisioning and renewal
-  - Brotli compression for text assets
+  - Brotli and Gzip compression for text assets
   - HTTP/2 and HTTP/3 support
+  - Smart routing to nearest edge location
 - **Load Balancing**: Automatic via Netlify's infrastructure
-- **DNS**: Netlify DNS (or custom DNS pointing to Netlify)
+- **DNS**: Custom DNS or Netlify DNS
 - **SSL/TLS**: Automatic Let's Encrypt certificates, TLS 1.3
 - **Domain**: JamieWatters.work (custom domain configuration via Netlify dashboard)
 
 #### Caching Strategy
 ```
-Request Flow with Caching:
+Request Flow with Caching (Current - All Static):
 
 User Request
      │
      ▼
 ┌─────────────────┐
-│ Netlify Edge    │ <-- Cache hit (99% of traffic)
-│ CDN (global)    │     Return cached HTML (< 50ms)
+│ Netlify Edge    │ <-- Cache hit (100% of traffic currently)
+│ Network         │     Return static HTML (< 50ms)
 └────────┬────────┘
-         │ Cache miss or revalidation needed
+         │ No cache (first request or deploy)
          ▼
 ┌─────────────────┐
-│ Serverless Func │
-│ (ISR/SSG logic) │ <-- Generate page (200-500ms)
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ Database Query  │ <-- Fetch dynamic data
-│ (if needed)     │
+│ Static Page     │ <-- Serve pre-built HTML
+│ (SSG)           │     All pages built at deploy time
 └────────┬────────┘
          │
          ▼
   Cache & Return
 
-Revalidation:
-- Blog posts: Every 1 hour (ISR revalidate: 3600)
-- Portfolio pages: Every 1 hour (ISR revalidate: 3600)
+Current Implementation:
+- All pages: Static (SSG) - built at deploy time
+- No database queries (data hardcoded)
+- No ISR revalidation (not yet implemented)
+
+Planned Caching (After Database Connection):
+- Blog posts: ISR with 1-hour revalidation
+- Portfolio pages: ISR with 1-hour revalidation
 - Static pages: Build-time only (Home, About)
+- Database queries cached via ISR
 ```
 
 ---
@@ -260,33 +428,44 @@ app/
     └── revalidate/
         └── route.ts              # Webhook: On-demand revalidation
 
-Shared Components:
+Shared Components (Current Implementation - 10 total):
 components/
 ├── ui/                           # Reusable UI primitives
-│   ├── Button.tsx
-│   ├── Card.tsx
-│   ├── Badge.tsx
-│   └── Input.tsx
+│   └── Button.tsx               # ✅ Multiple variants (primary, secondary, outline)
 ├── portfolio/
-│   ├── ProjectCard.tsx           # Portfolio grid item
-│   ├── MetricsDisplay.tsx        # Metrics visualization
+│   ├── ProjectCard.tsx           # ✅ Portfolio grid item
+│   └── MetricsDisplay.tsx        # ✅ Metrics visualization
+├── blog/
+│   └── PostCard.tsx              # ✅ Blog post preview
+├── forms/
+│   └── ContactForm.tsx           # ✅ Contact form with validation
+└── layout/
+    ├── Header.tsx                # ✅ Site header with navigation
+    ├── Footer.tsx                # ✅ Site footer with social links
+    └── Navigation.tsx            # ✅ Main navigation menu
+
+⏳ Planned Components (Not Yet Built):
+├── ui/
+│   ├── Card.tsx                  # Generic card wrapper
+│   ├── Badge.tsx                 # Technology/category badges
+│   └── Input.tsx                 # Form input component
+├── portfolio/
 │   └── TechStackBadge.tsx        # Technology badges
 ├── blog/
-│   ├── PostCard.tsx              # Blog post preview
 │   ├── PostContent.tsx           # Markdown renderer
 │   └── ShareButtons.tsx          # Social sharing
 └── layout/
-    ├── Header.tsx
-    ├── Footer.tsx
-    ├── MobileMenu.tsx
-    └── Navigation.tsx
+    └── MobileMenu.tsx            # Mobile hamburger menu
 ```
 
 **Technology Stack:**
-- **Framework**: Next.js 14.2+ (App Router)
-- **Language**: TypeScript 5.3+
-- **UI Library**: React 18.3+
-- **Styling**: Tailwind CSS 3.4+ (utility-first)
+- **Framework**: Next.js 15.5.4 (App Router)
+- **Language**: TypeScript 5.7.3
+- **UI Library**: React 19.2.0
+- **Styling**: Tailwind CSS 3.4.17 (utility-first)
+- **Database**: Neon Postgres (serverless with connection pooling)
+- **ORM**: Prisma 6.17.0
+- **Authentication** (planned Phase 7): Supabase Auth (OAuth only)
 - **CSS Architecture**:
   - Tailwind utilities for 90% of styling
   - CSS modules for complex animations (if needed)
@@ -297,6 +476,7 @@ components/
 - **Icons**: Lucide React (tree-shakeable, 2KB per icon)
 - **Build Tools**:
   - Next.js compiler (Turbopack in development)
+- **Deployment**: Netlify with @netlify/plugin-nextjs
   - Automatic code splitting per route
   - Image optimization via `next/image`
 
@@ -369,15 +549,17 @@ Data Fetching Patterns:
 ```
 
 **Technology Stack:**
-- **Runtime**: Node.js 18+ (Vercel Serverless Functions)
+- **Runtime**: Node.js 18+ (Netlify Functions)
 - **API Design**: RESTful API via Next.js API Routes
   - No separate API server needed
   - Collocated with frontend for simplicity
-- **Database Access**: Prisma ORM 5.0+
+- **Database Access**: Prisma ORM 6.17.0
   - Type-safe queries
   - Automatic migrations
-  - Connection pooling via Prisma Data Proxy
-- **Authentication**: Simple password-based admin auth
+  - Connection pooling via Neon serverless driver
+- **Authentication**:
+  - Current: Simple password-based admin auth (temporary)
+  - Planned (Phase 7): Supabase Auth with OAuth (Google, GitHub, LinkedIn)
   - Admin password stored in environment variable
   - Hashed comparison using `bcrypt`
   - No JWT complexity needed for MVP (single admin user)
@@ -417,8 +599,10 @@ Data Fetching Patterns:
 
 ### Database Schema Design (Prisma)
 
+**Status**: 🔌 Schema defined, database configured, but NOT connected in application
+
 ```prisma
-// prisma/schema.prisma
+// prisma/schema.prisma (CURRENT MINIMAL IMPLEMENTATION)
 
 generator client {
   provider = "prisma-client-js"
@@ -427,9 +611,47 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  // Points to Neon Postgres instance
 }
 
-// Projects: Portfolio items with metrics
+// Projects: Portfolio items with metrics (MINIMAL SCHEMA)
+model Project {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  name        String
+  description String   @db.Text
+  url         String
+
+  // Metrics (current snapshot)
+  mrr         Decimal  @default(0) @db.Decimal(10, 2)
+  users       Int      @default(0)
+
+  // Metadata
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+}
+
+// ⚠️ MISSING FIELDS (to be added before launch):
+// - longDescription (for case study pages)
+// - techStack (technology array)
+// - category (AI_TOOLS, FRAMEWORKS, etc.)
+// - featured (homepage display flag)
+// - status (ACTIVE, BETA, PLANNING, ARCHIVED)
+// - problemStatement, solutionApproach, lessonsLearned (case study content)
+// - screenshots (image URLs array)
+// - launchedAt (project launch date)
+// - metricsHistory relation
+
+// Post and MetricsHistory models NOT YET CREATED
+```
+
+**Planned Full Schema** (for reference - to be implemented):
+
+```prisma
+// FULL SCHEMA (Planned for production)
+
 model Project {
   id          String   @id @default(uuid())
   slug        String   @unique
@@ -532,10 +754,60 @@ model MetricsHistory {
 
 ### Data Flow Architecture
 
+**⚠️ CURRENT STATE**: All workflows manual, database not connected
+
 ```
-Content Management Workflow:
+CURRENT: Content Update Workflow (Temporary - Code Changes Required)
 
 1. Blog Post Publishing:
+   ┌──────────────────┐
+   │ Jamie edits      │
+   │ hardcoded array  │
+   │ in component     │
+   └────────┬─────────┘
+            │
+            ▼
+   ┌──────────────────┐
+   │ Git commit +     │
+   │ push to main     │
+   └────────┬─────────┘
+            │
+            ▼
+   ┌──────────────────┐
+   │ Netlify builds   │
+   │ and deploys      │
+   └────────┬─────────┘
+            │
+            ▼
+   ┌──────────────────┐
+   │ New post live    │
+   │ (full rebuild)   │
+   └──────────────────┘
+
+   Time: ~2-3 minutes total
+   ⚠️ Not sustainable - requires code changes for content
+
+2. Metrics Update (Current - Manual):
+   ┌──────────────────┐
+   │ Jamie edits      │
+   │ hardcoded values │
+   │ in components    │
+   └────────┬─────────┘
+            │
+            ▼
+   ┌──────────────────┐
+   │ Git commit +     │
+   │ push to deploy   │
+   └────────┬─────────┘
+
+   Time: ~2-3 minutes
+   ⚠️ Inefficient - metrics changes trigger full rebuild
+```
+
+**PLANNED: Database-Driven Workflows** (After Database Connection)
+
+```
+1. Blog Post Publishing (Markdown-based):
    ┌──────────────────┐
    │ Jamie writes     │
    │ markdown file in │
@@ -550,7 +822,7 @@ Content Management Workflow:
             │
             ▼
    ┌──────────────────┐
-   │ Vercel builds    │
+   │ Netlify builds   │
    │ and deploys      │
    └────────┬─────────┘
             │
@@ -562,7 +834,7 @@ Content Management Workflow:
 
    Time: ~2-3 minutes total
 
-2. Metrics Update Workflow:
+2. Metrics Update Workflow (Admin Dashboard):
    ┌──────────────────┐
    │ Jamie logs into  │
    │ /admin page      │
@@ -593,9 +865,9 @@ Content Management Workflow:
    │ live immediately │
    └──────────────────┘
 
-   Time: < 30 seconds
+   Time: < 30 seconds (no code deployment needed)
 
-3. New Project Addition:
+3. New Project Addition (Database-driven):
    ┌──────────────────┐
    │ Jamie uses admin │
    │ form or Prisma   │
@@ -698,10 +970,34 @@ await prisma.$transaction([
 
 ### Authentication & Authorization
 
-**MVP Authentication Model**: Single Admin (No User Management)
+**⚠️ CURRENT STATE**: Simple password auth WITHOUT bcrypt (development only)
+
+**Current Implementation** (Temporary - NOT PRODUCTION READY):
 
 ```typescript
-// lib/auth.ts
+// app/api/auth/route.ts (CURRENT - INSECURE)
+export async function POST(request: Request) {
+  const { password } = await request.json();
+
+  // ⚠️ SECURITY WARNING: Plaintext comparison - DO NOT USE IN PRODUCTION
+  if (password === process.env.ADMIN_PASSWORD) {
+    return NextResponse.json({ success: true });
+  }
+
+  return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
+}
+```
+
+**⚠️ CRITICAL SECURITY ISSUE**:
+- Current auth uses plaintext password comparison
+- Environment variable `ADMIN_PASSWORD` (not `ADMIN_PASSWORD_HASH`)
+- No bcrypt hashing implemented
+- **MUST BE FIXED** before any production deployment
+
+**Planned Secure Implementation** (REQUIRED before launch):
+
+```typescript
+// lib/auth.ts (PLANNED - SECURE)
 import bcrypt from 'bcrypt';
 
 // Admin password stored as hashed env var
@@ -734,6 +1030,15 @@ export function requireAuth(handler: Function) {
 }
 ```
 
+**Pre-Launch Security Checklist**:
+- [ ] Install bcrypt: `npm install bcrypt @types/bcrypt`
+- [ ] Generate password hash: `bcrypt.hash(password, 12)`
+- [ ] Update `.env.local` with `ADMIN_PASSWORD_HASH`
+- [ ] Implement `lib/auth.ts` with bcrypt verification
+- [ ] Update `/api/auth` to use bcrypt
+- [ ] Test authentication flow
+- [ ] Remove plaintext `ADMIN_PASSWORD` from environment
+
 **Authorization Matrix:**
 
 ```
@@ -748,16 +1053,24 @@ Publish blog posts   │   ❌   │  ✅ (via Git)
 View analytics       │   ❌   │  ✅
 ```
 
-**Post-MVP Enhancement (v2):**
-- Implement session-based auth for admin panel
-- Add JWT for API authentication if needed
-- Consider NextAuth.js for OAuth if multiple contributors
+**Post-MVP Enhancement (Phase 7 - Supabase Auth):**
+- Replace simple password auth with Supabase Auth
+- Implement OAuth providers: Google, GitHub, LinkedIn
+- Magic link authentication (passwordless email)
+- User sync pattern: Supabase Auth → Neon UserProfile table via Prisma
+- Role-based access control (Admin, User roles)
+- Session management with JWT tokens via Supabase
+- Dual-service architecture: Supabase for auth, Neon for data
 
 ### Security Measures
 
 #### Content Security Policy (CSP)
 
-**CRITICAL**: CSP implemented with `strict-dynamic` and nonces (NEVER removed for convenience)
+**Status**: ⏳ Planned, not yet implemented
+
+**CRITICAL**: CSP must be implemented with `strict-dynamic` and nonces (NEVER remove for convenience)
+
+**Planned Implementation**:
 
 ```typescript
 // middleware.ts
@@ -822,7 +1135,7 @@ export default function RootLayout({ children }) {
 
 #### API Security
 
-**Rate Limiting** (via Vercel Edge Config or Upstash Redis in v2):
+**Rate Limiting** (via Netlify Edge Functions or Upstash Redis in v2):
 ```typescript
 // lib/rate-limit.ts (simplified for MVP)
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -887,12 +1200,12 @@ export const corsHeaders = {
 - Secrets: Stored in Netlify environment variables (encrypted)
 
 **Encryption in Transit**:
-- TLS 1.3 for all HTTPS connections (automatic via Vercel)
+- TLS 1.3 for all HTTPS connections (automatic via Netlify)
 - Database connections over TLS (Prisma enforces this)
 
 **PII Handling**:
 - No PII collected in MVP (no user accounts, no emails stored)
-- Analytics: Vercel Analytics is privacy-friendly (no cookies, no tracking)
+- Analytics: Privacy-friendly approach (no cookies, no tracking)
 - Future newsletter: Double opt-in, GDPR-compliant provider (ConvertKit)
 
 **Compliance**:
@@ -908,8 +1221,8 @@ export const corsHeaders = {
 - [ ] XSS prevented (React escapes by default + CSP)
 - [ ] CSRF: Not needed (no cookie-based auth for MVP)
 - [ ] Rate limiting on admin API routes
-- [ ] Database backups enabled (Vercel automatic)
-- [ ] HTTPS enforced (Vercel automatic)
+- [ ] Database backups enabled (Netlify automatic)
+- [ ] HTTPS enforced (Netlify automatic)
 - [ ] Security headers set (X-Frame-Options, etc.)
 
 ---
@@ -941,10 +1254,10 @@ Developer Workflow (Solo Operator: Jamie):
                      │ GitHub receives push
                      ▼
 ┌─────────────────────────────────────────────────┐
-│ Automatic Deployment (Vercel)                   │
+│ Automatic Deployment (Netlify)                  │
 │                                                 │
-│ 1. GitHub webhook triggers Vercel               │
-│ 2. Vercel runs build process                    │
+│ 1. GitHub webhook triggers Netlify              │
+│ 2. Netlify runs build process                   │
 │ 3. Runs type checking (tsc)                     │
 │ 4. Runs database migrations (prisma migrate)    │
 │ 5. Builds Next.js app (next build)              │
@@ -959,7 +1272,7 @@ Developer Workflow (Solo Operator: Jamie):
 └─────────────────────────────────────────────────┘
 
 Rollback (if needed):
-1. Go to Vercel dashboard
+1. Go to Netlify dashboard
 2. Click "Redeploy" on previous successful deployment
 3. Site reverted in < 1 minute
 ```
@@ -1056,7 +1369,7 @@ jamiewatters/
 #### Frontend Build Process
 
 ```bash
-# Build command (Vercel runs this automatically)
+# Build command (Netlify runs this automatically)
 npm run build
 
 # Build steps executed:
@@ -1084,34 +1397,44 @@ npm run build
 
 **Build Optimizations:**
 - **Incremental Builds**: Only rebuild changed pages (saves 50-70% build time)
+- **Turbopack**: Experimental Rust-based bundler for faster dev builds (enabled in dev mode)
 - **Tree Shaking**: Remove unused code from bundles
 - **Minification**: Terser for JS, cssnano for CSS
 - **Code Splitting**: Automatic per-route + dynamic imports
 - **Image Optimization**: WebP/AVIF conversion, responsive sizes
 - **Font Optimization**: Subset fonts, inline critical font CSS
 
+**Build Configuration Notes**:
+- Turbopack enabled for development (`next dev --turbo`)
+- Production builds use standard Next.js webpack-based bundler
+- Experimental features flagged in next.config.js
+
 **Build Time Target**: < 60 seconds (critical for fast iterations)
 
 #### Environment Configuration
 
-**Development Environment:**
+**Current Development Environment:**
 ```bash
-# .env.local (not committed to Git)
-DATABASE_URL="postgresql://user:password@localhost:5432/jamiewatters_dev"
-ADMIN_PASSWORD_HASH="$2b$12$..." # bcrypt hash of dev password
+# .env.local (not committed to Git) - CURRENT STATE
+DATABASE_URL="postgresql://..." # Neon connection string (configured, not connected)
+ADMIN_PASSWORD="simple_dev_password" # ⚠️ PLAINTEXT - temporary only
 NODE_ENV="development"
 NEXT_PUBLIC_SITE_URL="http://localhost:3000"
 ```
 
-**Production Environment (Netlify):**
+**Planned Production Environment (Netlify):**
 ```bash
-# Environment variables in Netlify dashboard
+# Environment variables in Netlify dashboard - PLANNED STATE
 DATABASE_URL="postgresql://..." # Neon connection string
-ADMIN_PASSWORD_HASH="$2b$12$..." # Production password hash
+ADMIN_PASSWORD_HASH="$2b$12$..." # Bcrypt hash of production password
 NODE_ENV="production"
 NEXT_PUBLIC_SITE_URL="https://jamiewatters.work"
-NETLIFY_URL="[auto-generated]" # Provided by Netlify
 ```
+
+**Migration Required**:
+- Replace `ADMIN_PASSWORD` with `ADMIN_PASSWORD_HASH`
+- Generate bcrypt hash for production password
+- Update all environment references in Netlify dashboard
 
 **Environment Variable Validation:**
 ```typescript
@@ -1135,7 +1458,7 @@ export const env = envSchema.parse(process.env);
 ### Deployment Pipeline
 
 ```
-CI/CD Pipeline (Vercel):
+CI/CD Pipeline (Netlify):
 
 ┌─────────────────────────────────────────────────┐
 │ Trigger: Push to main branch                    │
@@ -1203,21 +1526,36 @@ Rollback Process:
 5. Site reverted in < 60 seconds
 ```
 
-**Deployment Checklist (Before First Deploy):**
-- [ ] Domain purchased and DNS configured
-- [ ] Netlify site created and linked to GitHub repo
-- [ ] Environment variables set in Netlify dashboard
-- [ ] Database provisioned (Neon)
+**Current Deployment Status:**
+- [x] Domain purchased (JamieWatters.work)
+- [x] Netlify site created and linked to GitHub repo
+- [x] Basic environment variables set in Netlify
+- [x] Database provisioned (Neon)
+- [ ] Database connection activated in code
 - [ ] Prisma schema migrated to production database
-- [ ] Initial content seeded (10 projects, 3 blog posts)
-- [ ] Custom domain assigned and SSL provisioned
-- [ ] Build settings configured (Next.js detection automatic)
+- [ ] Initial content seeded (10 projects, blog posts)
+- [x] Custom domain assigned and SSL provisioned
+- [x] Build settings configured (Next.js auto-detected)
+
+**Pre-Launch Deployment Checklist:**
+- [ ] **CRITICAL**: Implement bcrypt password hashing
+- [ ] Connect database to application code
+- [ ] Migrate full Prisma schema to Neon
+- [ ] Implement CSP with nonces
+- [ ] Add security headers (X-Frame-Options, etc.)
+- [ ] Implement ISR for dynamic pages
+- [ ] Build `/portfolio/[slug]` and `/journey/[slug]` pages
+- [ ] Implement markdown-based blog system
+- [ ] Seed production database with project data
+- [ ] Performance testing (Lighthouse > 90)
+- [ ] Cross-browser testing
+- [ ] Mobile responsiveness verification
 
 ### Operational Monitoring
 
 #### Health Checks
 
-**Vercel Health Check Endpoint:**
+**Netlify Health Check Endpoint:**
 ```typescript
 // app/api/health/route.ts
 import { NextResponse } from 'next/server';
@@ -1248,16 +1586,16 @@ export async function GET() {
 
 **Monitoring:**
 - **Endpoint**: `https://jamiewatters.work/api/health`
-- **Frequency**: Vercel checks automatically every 5 minutes
+- **Frequency**: Netlify checks automatically every 5 minutes
 - **Alert on**: 3 consecutive failures or 5xx errors
 
 #### Logging Strategy
 
-**Vercel Built-in Logging:**
-- **Server Logs**: Automatic capture of serverless function logs
+**Netlify Built-in Logging:**
+- **Server Logs**: Automatic capture of function logs
 - **Edge Logs**: CDN request/response logs
-- **Real-time Streaming**: View logs live in Vercel dashboard
-- **Retention**: 1 week on hobby plan, 30 days on pro plan
+- **Real-time Streaming**: View logs live in Netlify dashboard
+- **Retention**: 1 week on starter plan, 30 days on pro plan
 
 **Application Logging:**
 ```typescript
@@ -1298,26 +1636,29 @@ export async function POST(req: Request) {
 
 #### Performance Monitoring
 
-**Vercel Analytics (Built-in):**
-- Real User Monitoring (RUM) automatically enabled
-- Metrics tracked:
+**Performance Analytics:**
+- Real User Monitoring (RUM) can be enabled via third-party tools
+- Metrics to track:
   - Page load times (LCP, FID, CLS)
   - Server response times
   - Cache hit rates
   - Bandwidth usage
-- Dashboard: `https://vercel.com/[team]/[project]/analytics`
+- Dashboard: Netlify Analytics available on paid plans
 
 **Web Vitals:**
 ```typescript
 // app/layout.tsx
-import { Analytics } from '@vercel/analytics/react';
+// Web Vitals monitoring can be added via:
+// - Google Analytics
+// - Plausible Analytics
+// - Custom implementation
 
 export default function RootLayout({ children }) {
   return (
     <html>
       <body>
         {children}
-        <Analytics />
+        {/* Analytics component can be added here */}
       </body>
     </html>
   );
@@ -1467,7 +1808,7 @@ Performance Benchmarks (Target):
    ```
    - ISR with 1-hour revalidation for dynamic pages
    - Long-term caching for static assets (1 year)
-   - Vercel CDN caching at edge (global)
+   - Netlify CDN caching at edge (global)
 
 3. **Markdown Parsing Optimization**
    - Parse markdown at build time when possible
@@ -1476,7 +1817,7 @@ Performance Benchmarks (Target):
 
 **Monitoring & Continuous Optimization:**
 - Weekly Lighthouse audits (automate via CI in v2)
-- Monitor Core Web Vitals via Vercel Analytics
+- Monitor Core Web Vitals via third-party analytics
 - Database query performance tracking (Prisma slow query log)
 - Bundle size tracking (alert if JS bundle > 200KB)
 
@@ -1494,13 +1835,13 @@ Performance Benchmarks (Target):
 
 **Bottlenecks**: None expected at this scale
 
-**Costs**: $0-20/month (Vercel hobby plan free, domain $12/year)
+**Costs**: $0-20/month (Netlify starter plan free, domain $12/year)
 
 ### Phase 2: Growing Audience (10K-100K visitors/month)
 
 **Changes Required**:
-- Upgrade to Vercel Pro plan ($20/month)
-- Scale Vercel Postgres storage (512MB → 1GB)
+- Upgrade to Netlify Pro plan ($20/month)
+- Scale Neon database storage (512MB → 1GB)
 - Add Redis caching for hot data (Upstash free tier)
 - Implement proper rate limiting (Upstash Ratelimit)
 
@@ -1512,7 +1853,7 @@ Performance Benchmarks (Target):
 └────────────────────┘
 
 ┌────────────────────┐
-│ Vercel Pro Plan    │ <-- Higher limits, better DDoS protection
+│ Netlify Pro Plan   │ <-- Higher limits, better DDoS protection
 │ (DDoS mitigation)  │     Team collaboration features
 └────────────────────┘
 ```
@@ -1522,9 +1863,9 @@ Performance Benchmarks (Target):
 ### Phase 3: Viral Growth / Productization (100K-1M visitors/month)
 
 **Architecture Evolution**:
-- Separate read replicas for database (Vercel Postgres Enterprise)
+- Separate read replicas for database (Neon Scale plan)
 - Implement full-text search (Algolia or Meilisearch)
-- CDN optimization for static assets (existing Vercel CDN sufficient)
+- CDN optimization for static assets (existing Netlify CDN sufficient)
 - Real-time metrics automation (integrate project APIs)
 
 **New Components**:
@@ -1541,7 +1882,7 @@ Performance Benchmarks (Target):
 
 ┌────────────────────┐
 │ Background Jobs    │ <-- Metrics automation
-│ (Vercel Cron)      │     Scheduled data fetching
+│ (Netlify Functions)│     Scheduled data fetching
 └────────────────────┘
 ```
 
@@ -1554,7 +1895,7 @@ Database Scaling Progression:
 
 Phase 1 (Current): Single Postgres Instance
 ┌─────────────────────────────────┐
-│ Vercel Postgres (256MB)         │
+│ Neon Postgres (256MB)            │
 │ - All reads and writes          │
 │ - Connection pooling (Prisma)   │
 │ - Backup: Daily (7-day retention)│
@@ -1563,7 +1904,7 @@ Capacity: 10K-100K visitors/month
 
 Phase 2: Larger Single Instance + Redis
 ┌─────────────────────────────────┐
-│ Vercel Postgres (1GB)           │
+│ Neon Postgres (1GB)              │
 │ - All reads and writes          │
 └─────────────────────────────────┘
          │
@@ -1616,37 +1957,52 @@ Capacity: 500K-5M visitors/month
 **Rationale**:
 - **Solo operator efficiency**: One codebase, one deployment, minimal overhead
 - **MVP speed**: No microservice orchestration, API contracts, or CORS complexity
-- **Cost**: Single hosting bill (Vercel), no separate CMS subscription
+- **Cost**: Single hosting bill (Netlify), no separate CMS subscription
 - **Simplicity**: Fewer moving parts = fewer failure points
 - **Colocation benefits**: API routes and frontend share types, utilities, database client
 
 **Trade-offs**:
 - ✅ Pros: Faster development, lower cost, simpler operations, better DX
-- ❌ Cons: Harder to scale teams (not a concern for solo operator), all-or-nothing deploys (mitigated by Vercel's instant rollback)
+- ❌ Cons: Harder to scale teams (not a concern for solo operator), all-or-nothing deploys (mitigated by Netlify's instant rollback)
 
 **When to Reconsider**: If hiring a dedicated backend team or if API needs to serve multiple clients (mobile apps, third-party integrations)
 
-#### Decision 2: Neon Database (vs. Supabase)
+#### Decision 2: Database Provider - Neon (Confirmed Implementation)
 
-**Choice**: Neon (Serverless Postgres with branching)
+**Choice**: Neon (Serverless Postgres with branching and connection pooling)
 
 **Alternatives Considered**:
-- **Supabase**: Postgres + Auth + Real-time + Storage
-- **PlanetScale**: MySQL serverless with branching
-- **MongoDB Atlas**: NoSQL document database
+- **Supabase**: Postgres + Auth + Real-time + Storage (feature-rich platform)
+- **PlanetScale**: MySQL-based serverless database
+- **MongoDB Atlas**: NoSQL option (overkill for relational data)
 
 **Rationale**:
-- **Branch databases**: Isolated preview databases for each Netlify deployment
-- **Serverless scaling**: Pay-per-use, auto-scaling, built-in connection pooling
-- **Developer experience**: Git-like branching for databases, instant provisioning
-- **Postgres familiarity**: Standard SQL, mature ecosystem, excellent Prisma support
-- **Cost-effective**: Generous free tier with 512MB storage, scales affordably
+- **Serverless architecture**: True scale-to-zero with per-second billing
+- **Connection pooling built-in**: Verified via pooler endpoint in connection string
+- **Database branching**: Git-like workflow for preview deployments and testing
+- **Instant provisioning**: No waiting for database setup
+- **Simple pricing**: Transparent, generous free tier (512MB storage)
+- **PostgreSQL standard**: Full compatibility with Prisma and standard Postgres tools
+
+**Benefits**:
+- ✅ Database branching enables safe schema migrations and testing
+- ✅ Built-in connection pooling eliminates need for external pooler
+- ✅ Serverless compute scales automatically with traffic
+- ✅ Excellent developer experience with instant provisioning
+- ✅ Standard PostgreSQL (no vendor lock-in)
 
 **Trade-offs**:
-- ✅ Pros: Simpler setup (5 minutes vs. 30 minutes), one vendor, excellent DX, free tier sufficient
-- ❌ Cons: No built-in auth (not needed for MVP), no real-time subscriptions (not needed for MVP), slightly more expensive at scale (but still cheap)
+- ✅ Pros: True serverless, database branching, simple pricing, excellent DX
+- ❌ Cons: Database-only (no built-in auth/storage like Supabase)
 
-**When to Reconsider**: If real-time features needed (v2 metrics dashboard with live updates) or if auth requirements become complex (multi-tenant SaaS pivot)
+**Phase 7 Addition - Supabase Auth**:
+- Dual-service architecture: Neon for data storage + Supabase for authentication
+- Supabase Auth provides OAuth (Google, GitHub, LinkedIn) and magic links
+- User sync pattern: Supabase Auth → Neon UserProfile table via Prisma
+- Best of both: Neon's database features + Supabase's auth infrastructure
+- No migration needed - services work together seamlessly
+
+**When to Reconsider**: If real-time subscriptions or file storage become critical requirements (can add as separate services)
 
 #### Decision 3: File-Based Blog Content (vs. Database CMS)
 
@@ -1718,15 +2074,16 @@ Capacity: 500K-5M visitors/month
 
 | Component | Technology | Why Chosen | Alternatives Considered |
 |-----------|------------|------------|------------------------|
-| **Frontend Framework** | Next.js 14 (App Router) | Industry standard for React SSR/SSG, excellent DX, Vercel integration, large community | Remix (less mature ecosystem), Astro (less dynamic), Create React App (outdated) |
-| **Language** | TypeScript | Type safety prevents bugs, better DX with autocomplete, industry standard | JavaScript (fewer safety guarantees), ReScript (too niche) |
-| **Styling** | Tailwind CSS | Utility-first = fast development, small bundle (tree-shaking), no naming conflicts | CSS Modules (more verbose), styled-components (larger bundle), Sass (less modern) |
-| **Database** | Vercel Postgres | Serverless, auto-scaling, excellent Prisma integration, single vendor | Supabase (unnecessary auth features), PlanetScale (MySQL less familiar), MongoDB (overkill for relational data) |
+| **Frontend Framework** | Next.js 15.5.4 (App Router) | Industry standard for React SSR/SSG, excellent DX, strong Netlify support, React 19 support | Remix (less mature ecosystem), Astro (less dynamic), Create React App (outdated) |
+| **Language** | TypeScript 5.7.3 | Type safety prevents bugs, better DX with autocomplete, industry standard | JavaScript (fewer safety guarantees), ReScript (too niche) |
+| **UI Library** | React 19.2.0 | Latest React with improved server components, better performance, industry standard | Vue (smaller ecosystem), Svelte (less mature), Solid (too new) |
+| **Styling** | Tailwind CSS 3.4.17 | Utility-first = fast development, small bundle (tree-shaking), no naming conflicts | CSS Modules (more verbose), styled-components (larger bundle), Sass (less modern) |
+| **Database** | Neon (Postgres) | Serverless with branching, built-in connection pooling, instant provisioning, scale-to-zero, excellent free tier | Supabase (feature-rich but more complex), PlanetScale (MySQL less familiar), MongoDB (overkill for relational data) |
 | **ORM** | Prisma | Type-safe queries, excellent DX, auto-generated types, migration management | Drizzle (less mature), raw SQL (no type safety), TypeORM (more complex) |
-| **Deployment** | Vercel | Zero-config Next.js deployment, global CDN, serverless functions, built-in analytics | Netlify (less Next.js optimization), Cloudflare Pages (more complex), AWS Amplify (overkill) |
-| **Markdown Parser** | gray-matter + remark | Simple, standard, no build complexity, syntax highlighting via rehype | next-mdx-remote (overkill), Contentlayer (extra build step), marked (less extensible) |
+| **Deployment** | Netlify | Zero-config Next.js deployment via @netlify/plugin-nextjs, global CDN, serverless functions, excellent Git workflow | Vercel (equally good but different ecosystem), Cloudflare Pages (more complex), AWS Amplify (overkill) |
+| **Markdown Parser** | gray-matter + remark (planned) | Simple, standard, no build complexity, syntax highlighting via rehype | next-mdx-remote (overkill), Contentlayer (extra build step), marked (less extensible) |
 | **Form Validation** | Zod | Runtime type checking, excellent TypeScript integration, composable schemas | Yup (less TS-first), Joi (backend-focused), class-validator (more boilerplate) |
-| **Analytics** | Vercel Analytics | Built-in, privacy-friendly, no cookies, Core Web Vitals tracking | Plausible (extra cost), Google Analytics (privacy concerns), PostHog (overkill for MVP) |
+| **Analytics** | TBD | Privacy-friendly approach, no cookies, Core Web Vitals tracking planned | Plausible (extra cost), Google Analytics (privacy concerns), PostHog (overkill for MVP), Netlify Analytics (paid tier) |
 
 ---
 
@@ -1785,35 +2142,73 @@ Capacity: 500K-5M visitors/month
 
 **Identified for Future Resolution**:
 
-1. **Lack of Automated Testing** (Priority: Medium)
+1. **Database Not Connected** (Priority: CRITICAL - Pre-Launch Blocker)
+   - Current: Database configured but all data hardcoded in components
+   - Debt: Content updates require code changes and full redeployments
+   - Impact: Unsustainable for production, inefficient workflow
+   - Mitigation: Keep content changes minimal until database connected
+   - Plan: Connect Prisma to Neon, migrate hardcoded data (2-3 days effort)
+
+2. **Plaintext Password Authentication** (Priority: CRITICAL - Security Risk)
+   - Current: Simple plaintext password comparison in `/api/auth`
+   - Debt: Major security vulnerability if deployed to production
+   - Impact: Easy to compromise admin access
+   - Mitigation: DO NOT deploy to production until fixed
+   - Plan (Phase 7): Replace with Supabase Auth (OAuth + magic links)
+   - Interim: Implement bcrypt hashing if early deployment needed (4-6 hours effort)
+
+3. **Minimal Database Schema** (Priority: HIGH - Feature Blocker)
+   - Current: Only 4 fields in Project model (missing 10+ designed fields)
+   - Debt: Cannot build case study pages or advanced portfolio features
+   - Impact: Limited content richness, missing key features
+   - Mitigation: Focus on portfolio listing page first
+   - Plan: Expand schema to full design (1-2 days including migration)
+
+4. **Hardcoded Content System** (Priority: HIGH - Pre-Launch Blocker)
+   - Current: Blog posts and projects hardcoded in components
+   - Debt: Every content update requires code deployment
+   - Impact: Slow content velocity, high friction for updates
+   - Mitigation: Batch content changes to reduce deployments
+   - Plan: Implement markdown-based blog system (3-4 days effort)
+
+5. **No CSP Implementation** (Priority: HIGH - Security Gap)
+   - Current: No Content Security Policy headers
+   - Debt: Vulnerable to XSS attacks
+   - Impact: Security risk for admin panel and future user features
+   - Mitigation: Avoid inline scripts, use external script files
+   - Plan: Implement CSP with nonces (1-2 days effort)
+
+6. **Missing Dynamic Pages** (Priority: HIGH - Feature Gap)
+   - Current: No `/portfolio/[slug]` or `/journey/[slug]` pages
+   - Debt: Users cannot view individual projects or blog posts
+   - Impact: Incomplete user experience, missing core features
+   - Mitigation: Link to external project sites as temporary solution
+   - Plan: Build dynamic pages with ISR (2-3 days effort)
+
+7. **Lack of Automated Testing** (Priority: Medium)
    - Current: No unit tests, no integration tests, no E2E tests
    - Debt: Risk of regressions as features added
-   - Mitigation: Start with critical path E2E tests (Playwright)
+   - Mitigation: Manual testing before each deployment
    - Plan: Add Vitest for unit tests, Playwright for E2E (1 week effort)
 
-2. **No Error Monitoring** (Priority: Medium)
-   - Current: Errors only visible in Vercel logs
+8. **No Error Monitoring** (Priority: Medium)
+   - Current: Errors only visible in Netlify logs
    - Debt: Delayed detection of production issues
-   - Mitigation: Monitor Vercel dashboard daily
+   - Mitigation: Monitor Netlify dashboard daily
    - Plan: Integrate Sentry (2-3 hours effort)
 
-3. **Manual Metrics Updates** (Priority: Low for MVP, High for v2)
-   - Current: Manual form updates weekly
+9. **Manual Metrics Updates** (Priority: Low for MVP, High for v2)
+   - Current: Metrics hardcoded (later will be manual form updates)
    - Debt: Time investment, potential staleness
    - Mitigation: Keep metrics update workflow under 5 minutes
    - Plan: Automate high-value metrics first (Stripe MRR), defer low-value
 
-4. **Single Admin User** (Priority: Low)
-   - Current: One admin password, no user management
-   - Debt: Can't delegate content creation to others
-   - Mitigation: Sufficient for solo operator; not blocking
-   - Plan: Add NextAuth.js if hiring content team (1-2 days effort)
-
-5. **No Database Backups** (Priority: Medium)
-   - Current: Relying on Vercel's automated backups
-   - Debt: No self-managed backup strategy
-   - Mitigation: Vercel has 7-day automated backups
-   - Plan: Add weekly backup script to S3 (1 day effort)
+10. **Single Admin User** (Priority: Low)
+    - Current: One admin password, no user management
+    - Debt: Can't delegate content creation to others
+    - Mitigation: Sufficient for solo operator; not blocking
+    - Plan (Phase 7): Supabase Auth with RBAC (Admin, User roles)
+    - Multi-user support built-in with OAuth and role-based permissions
 
 ### Migration Path
 
@@ -1821,7 +2216,7 @@ Capacity: 500K-5M visitors/month
 
 #### Scenario 1: Scaling to 1M+ Visitors/Month
 
-**Current**: Monolithic Next.js on Vercel
+**Current**: Monolithic Next.js on Netlify
 **Future**: Keep monolith, add caching and read replicas
 **Migration Steps**:
 1. Add Redis caching layer (Upstash) - 1 day
@@ -1833,28 +2228,30 @@ Capacity: 500K-5M visitors/month
 
 #### Scenario 2: Adding Mobile App
 
-**Current**: Web-only application
+**Current**: Web-only application with Supabase Auth (Phase 7)
 **Future**: Shared API for web + mobile
 **Migration Steps**:
 1. Extract API routes to dedicated `/api/*` structure - already done
 2. Add mobile-specific endpoints (pagination, smaller payloads) - 1 week
-3. Implement JWT authentication for mobile - 3 days
+3. JWT authentication already available via Supabase Auth - no additional work
 4. Add rate limiting per client - 2 days
 5. Build React Native app consuming API - 4-6 weeks
+6. Mobile app uses same Supabase Auth for OAuth/magic links - seamless
 
 **Estimated Downtime**: Zero (API is additive, web unaffected)
 
 #### Scenario 3: Pivoting to SaaS Product
 
-**Current**: Personal portfolio
+**Current**: Personal portfolio with Supabase Auth (Phase 7)
 **Future**: Multi-tenant SaaS platform
 **Migration Steps**:
-1. Add user authentication (NextAuth.js) - 3 days
-2. Add workspace/team concept to database schema - 1 week
-3. Implement row-level security (Prisma middleware) - 1 week
-4. Add billing integration (Stripe subscriptions) - 1 week
-5. Build tenant-specific admin dashboards - 2-3 weeks
-6. Data migration from single-tenant to multi-tenant - 1 week
+1. User authentication already available via Supabase Auth - no additional work
+2. Extend Supabase Auth with organization/team roles - 2 days
+3. Add workspace/team concept to Neon database schema - 1 week
+4. Implement row-level security (Prisma middleware + Supabase RLS) - 1 week
+5. Add billing integration (Stripe subscriptions) - 1 week
+6. Build tenant-specific admin dashboards - 2-3 weeks
+7. Data migration from single-tenant to multi-tenant - 1 week
 
 **Estimated Downtime**: 1-2 hours for database migration
 
@@ -1872,7 +2269,7 @@ Capacity: 500K-5M visitors/month
 - **Nonce**: Cryptographic number used once (for CSP script allowlisting)
 - **Prisma**: Type-safe Node.js ORM with auto-generated types and migrations
 - **JAMstack**: JavaScript, APIs, Markup - modern web architecture based on pre-rendering and decoupling
-- **Vercel Edge Network**: Global CDN with 20+ locations for fast content delivery
+- **Netlify Edge Network**: Global CDN with 20+ locations for fast content delivery
 - **Web Vitals**: Google's core metrics for user experience (LCP, FID, CLS)
 
 ### B. References
@@ -1880,7 +2277,7 @@ Capacity: 500K-5M visitors/month
 **Architecture Patterns Used**:
 - JAMstack Architecture: https://jamstack.org/
 - Incremental Static Regeneration: https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration
-- Serverless Functions: https://vercel.com/docs/concepts/functions/serverless-functions
+- Serverless Functions: https://docs.netlify.com/functions/overview/
 - Database Connection Pooling: https://www.prisma.io/docs/guides/performance-and-optimization/connection-management
 
 **Key Libraries and Frameworks**:
@@ -1891,8 +2288,10 @@ Capacity: 500K-5M visitors/month
 - Zod: https://zod.dev/
 
 **External Documentation Links**:
-- Vercel Documentation: https://vercel.com/docs
-- Vercel Postgres: https://vercel.com/docs/storage/vercel-postgres
+- Netlify Documentation: https://docs.netlify.com/
+- Netlify Functions: https://docs.netlify.com/functions/overview/
+- Next.js on Netlify: https://docs.netlify.com/frameworks/next-js/overview/
+- Neon Database: https://neon.tech/docs
 - Next.js App Router: https://nextjs.org/docs/app
 - Content Security Policy: https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
 
@@ -2051,10 +2450,10 @@ export const MetricsUpdateSchema = z.object({
    git add .
    git commit -m "Add portfolio pages"
 
-   # Push to GitHub (triggers Vercel deployment)
+   # Push to GitHub (triggers Netlify deployment)
    git push origin main
 
-   # Monitor deployment in Vercel dashboard
+   # Monitor deployment in Netlify dashboard
    # Verify live site at https://jamiewatters.work
    ```
 
@@ -2065,11 +2464,67 @@ export const MetricsUpdateSchema = z.object({
 | Date | Version | Changes | Author |
 |------|---------|---------|--------|
 | 2025-10-08 | 1.0 | Initial architecture design for MVP | The Architect (AGENT-11) |
+| 2025-10-09 | 1.1 | Updated to reflect actual implementation: Vercel deployment (design), Supabase database, React 19/Next.js 15.5, implementation status tracking, security warnings | The Documenter (AGENT-11) |
+| 2025-10-09 | 1.2 | **CORRECTED**: Fixed all deployment platform references from Vercel to Netlify (actual implementation platform). Architecture incorrectly stated Vercel, but project is deployed on Netlify. | The Documenter (AGENT-11) |
+| 2025-10-09 | 1.3 | **CORRECTED**: Fixed all database provider references from Supabase back to Neon (actual implementation verified via connection string with neon.tech domain and pooler endpoint) | The Documenter (AGENT-11) |
+| 2025-10-09 | 1.4 | **PLANNED FEATURE**: Added Supabase Auth (OAuth only) to architecture as Phase 7 planned feature. Dual-service architecture: Supabase for authentication, Neon for data storage. Updated all auth-related sections, migration paths, and technical debt notes. | Claude Code |
+
+**Version 1.4 Changes Summary** (PLANNED FEATURE ADDITION):
+- **Added Supabase Auth** to "Planned But Not Built" section with detailed implementation plan
+- **Updated Authentication Approach**: Added Phase 7 Supabase Auth with dual-service architecture (Supabase Auth + Neon Database)
+- **Updated Technology Stack**: Added Supabase Auth (planned Phase 7) to all technology stack sections
+- **Updated Security Architecture**: Replaced NextAuth.js references with Supabase Auth in "Post-MVP Enhancement" section
+- **Updated Technical Debt**: Changed plaintext auth resolution plan to include Supabase Auth (Phase 7) with bcrypt as interim
+- **Updated Migration Paths**:
+  - Scenario 2 (Mobile App): JWT authentication already available via Supabase Auth
+  - Scenario 3 (SaaS): User auth already available, just need to extend with org/team roles
+- **Updated Decision 2**: Added "Phase 7 Addition" explaining dual-service architecture benefits
+- **Architecture Decision**: Supabase handles auth/OAuth/sessions, Neon handles all data storage, user sync via Prisma
+- **Note**: All updates marked as "planned" not "implemented" per user request
+
+**Version 1.3 Changes Summary** (CORRECTION):
+- **CRITICAL FIX**: Changed database provider from Supabase → Neon throughout entire document
+- Corrected database provider decision rationale (Decision 2) with Neon benefits
+- Updated all infrastructure references (Supabase → Neon)
+- Fixed database storage and scaling sections to reflect Neon plans
+- Updated technology selection rationale table
+- Corrected environment variable comments (Supabase → Neon connection string)
+- Updated external documentation links (Supabase docs → Neon docs)
+- Fixed technical debt section database connection references
+- **Evidence**: Connection string shows neon.tech domain with pooler endpoint (ep-fancy-heart-adl1lk1k-pooler.c-2.us-east-1.aws.neon.tech)
+
+**Version 1.2 Changes Summary** (CORRECTION):
+- **CRITICAL FIX**: Changed deployment platform from Vercel → Netlify throughout entire document
+- Corrected "Why Vercel" → "Why Netlify" with Netlify-specific benefits
+- Updated all infrastructure diagrams (Vercel Edge → Netlify Edge)
+- Corrected serverless functions references (Vercel Functions → Netlify Functions)
+- Updated CI/CD pipeline documentation to reflect Netlify build process
+- Fixed environment variables section to reference Netlify dashboard
+- Updated monitoring and logging sections to Netlify equivalents
+- Corrected technology selection rationale table
+- Updated all external documentation links to Netlify resources
+- Fixed quickstart deployment workflow to use Netlify
+- **Evidence**: Project uses netlify.toml, NOT vercel.json; deployed to jamiewatters.netlify.app
+
+**Version 1.1 Changes Summary**:
+- Added "Current Implementation Status" section tracking built vs. planned features
+- Updated technology stack versions (Next.js 15.5.4, React 19.2.0, TypeScript 5.7.3)
+- Changed deployment platform references (incorrectly stated Vercel, corrected in v1.2)
+- Changed database provider from Neon to Supabase throughout (incorrectly, corrected back to Neon in v1.3)
+- Documented database NOT connected (hardcoded data currently)
+- Added security warnings for plaintext password auth (pre-launch fix required)
+- Updated data flow diagrams to show current vs. planned states
+- Corrected database schema to show minimal implementation vs. full design
+- Added pre-launch requirements checklist
+- Updated all deployment workflows and infrastructure references
+- Documented architecture vs. implementation differences
+- Added implementation status indicators (✅, 🔌, ⏳, ⚠️) throughout
 
 ---
 
-*Last Updated: 2025-10-08*
-*Architecture Version: 1.0*
-*Status: Approved (Phase 2 Complete)*
+*Last Updated: 2025-10-09*
+*Architecture Version: 1.3*
+*Status: In Development (Phase 3 - Implementation In Progress)*
 
-**Next Steps**: Proceed to Phase 3 - UI/UX Design with @designer
+**Current State**: Core pages built, deployment active on Netlify, Neon database configured but not connected
+**Next Steps**: Connect Neon database, implement security hardening (bcrypt), build dynamic pages, implement markdown system

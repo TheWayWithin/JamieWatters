@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { verifyToken, extractTokenFromRequest } from '@/lib/auth';
+import { updateProjectMetrics } from '@/lib/database';
+import { ProjectStatus } from '@prisma/client';
 import { z } from 'zod';
 
 // Force Node.js runtime for consistency with auth system
@@ -23,7 +25,7 @@ const metricsUpdateSchema = z.object({
   metrics: z.object({
     mrr: z.number().min(0, 'MRR must be non-negative').max(1000000, 'MRR value too large'),
     users: z.number().int().min(0, 'Users must be non-negative').max(10000000, 'Users value too large'),
-    status: z.enum(['active', 'beta', 'planning', 'archived']),
+    status: z.enum(['ACTIVE', 'BETA', 'PLANNING', 'ARCHIVED', 'active', 'beta', 'planning', 'archived']).transform(val => val.toUpperCase() as 'ACTIVE' | 'BETA' | 'PLANNING' | 'ARCHIVED'),
   }),
 });
 
@@ -78,7 +80,7 @@ export async function POST(req: NextRequest) {
     const { projectId, metrics } = validationResult.data;
 
     // Additional business logic validation
-    if (metrics.mrr > 100000 && metrics.status === 'planning') {
+    if (metrics.mrr > 100000 && metrics.status === 'PLANNING') {
       return NextResponse.json(
         { error: 'Planning projects cannot have MRR greater than $100k' },
         { status: 422 }
@@ -94,9 +96,14 @@ export async function POST(req: NextRequest) {
       ip: req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown',
     });
 
-    // TODO: Update database when Neon is connected
-    // For now, just log the update and revalidate paths
-    console.log('Metrics update processed:', { projectId, metrics });
+    // Update database with Prisma
+    const updatedProject = await updateProjectMetrics(projectId, {
+      mrr: metrics.mrr,
+      users: metrics.users,
+      status: metrics.status as ProjectStatus,
+    });
+
+    console.log('Metrics update processed successfully:', { projectId, metrics });
 
     // Revalidate affected pages (ISR)
     revalidatePath('/');
@@ -108,7 +115,13 @@ export async function POST(req: NextRequest) {
       message: 'Metrics updated successfully',
       data: {
         projectId,
-        updatedAt: new Date().toISOString(),
+        updatedAt: updatedProject.updatedAt.toISOString(),
+        project: {
+          name: updatedProject.name,
+          mrr: Number(updatedProject.mrr),
+          users: updatedProject.users,
+          status: updatedProject.status,
+        },
       },
     });
 

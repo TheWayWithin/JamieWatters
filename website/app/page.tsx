@@ -8,7 +8,7 @@ import {
   getFeaturedProjects,
   getRecentPosts,
   getMetrics,
-} from '@/lib/placeholder-data';
+} from '@/lib/database';
 import { getSEOMetadata } from '@/lib/seo';
 
 // ISR: Revalidate every 1 hour
@@ -21,10 +21,10 @@ export const metadata = getSEOMetadata({
   type: 'website'
 });
 
-export default function Home() {
-  const featuredProjects = getFeaturedProjects();
-  const recentPosts = getRecentPosts(3);
-  const metrics = getMetrics();
+export default async function Home() {
+  const featuredProjects = await getFeaturedProjects();
+  const recentPosts = await getRecentPosts(3);
+  const metrics = await getMetrics();
 
   return (
     <main id="main-content" className="min-h-screen">
@@ -75,7 +75,7 @@ export default function Home() {
                 Total MRR
               </div>
               <div className="text-display-md font-bold text-brand-accent mb-1">
-                ${metrics.totalMRR.toLocaleString()}
+                ${metrics.totalMRR.toFixed(2)}
               </div>
               <div className="text-xs text-green-400 flex items-center justify-center gap-1">
                 <TrendingUp className="w-3 h-3" />

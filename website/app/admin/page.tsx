@@ -104,7 +104,17 @@ export default function AdminPage() {
 
       if (res.ok) {
         setSuccessMessage('Metrics updated successfully!');
-        // Clear message after 3 seconds
+        
+        // Update the displayed metrics immediately
+        const project = projects.find(p => p.id === selectedProjectId);
+        if (project) {
+          project.metrics.mrr = parseFloat(mrr);
+          project.metrics.users = parseInt(users);
+          project.status = status;
+          project.updatedAt = new Date(); // Update the last updated timestamp
+        }
+        
+        // Clear success message after 3 seconds
         setTimeout(() => setSuccessMessage(''), 3000);
       } else {
         setUpdateError('Failed to update metrics');

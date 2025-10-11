@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { placeholderPosts, getPostBySlug } from '@/lib/placeholder-data';
+import { getAllPosts, getPostBySlug, getPostSlugs } from '@/lib/database';
 import { renderMarkdown } from '@/lib/markdown';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -8,9 +8,13 @@ import { ShareButtons } from '@/components/blog/ShareButtons';
 
 // Generate static params for all posts (SSG)
 export async function generateStaticParams() {
-  return placeholderPosts.map((post) => ({
-    slug: post.slug,
-  }));
+  try {
+    const slugs = await getPostSlugs();
+    return slugs.map((slug) => ({ slug }));
+  } catch (error) {
+    console.error('Error generating static params:', error);
+    return [];
+  }
 }
 
 export default async function BlogPostPage({
@@ -19,29 +23,49 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  
+  // Input validation
+  if (!slug || typeof slug !== 'string' || slug.length > 100) {
+    notFound();
+  }
+
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     notFound();
   }
 
   // Get post index for navigation
-  const sortedPosts = placeholderPosts.sort(
-    (a, b) => b.publishedAt.getTime() - a.publishedAt.getTime()
-  );
-  const currentIndex = sortedPosts.findIndex(p => p.slug === slug);
-  const previousPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null;
-  const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
+  const allPosts = await getAllPosts();
+  const currentIndex = allPosts.findIndex(p => p.slug === slug);
+  const previousPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+  const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
 
   // Format date
-  const formattedDate = post.publishedAt.toLocaleDateString('en-US', {
+  const formattedDate = new Date(post.publishedAt).toLocaleDateString('en-US', {
     month: 'long',
     day: 'numeric',
     year: 'numeric'
   });
 
+  // Since we're only storing metadata in the database, we'll need the content from placeholder data for now
+  // TODO: Implement markdown file storage or full content in database
+  const placeholderContent = `# ${post.title}
+
+${post.excerpt}
+
+This is a placeholder content until the full markdown content system is implemented. The blog post metadata is now stored in the database, but the full content needs to be implemented as markdown files or stored as longform content in the database.
+
+## Next Steps
+
+1. Implement markdown file storage
+2. Or extend the database schema to store full content
+3. Connect the content rendering system
+
+For now, this shows that the database integration is working correctly for post metadata.`;
+
   // Render markdown content to HTML
-  const contentHtml = await renderMarkdown(post.content);
+  const contentHtml = await renderMarkdown(placeholderContent);
 
   return (
     <main className="min-h-screen bg-bg-primary">

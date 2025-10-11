@@ -203,7 +203,7 @@ export default function AboutPage() {
                 <Linkedin className="w-12 h-12" />
               </a>
               <a
-                href="https://github.com/jamiewatters"
+                href="https://github.com/TheWayWithin"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Follow on GitHub"

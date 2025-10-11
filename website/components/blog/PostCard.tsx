@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import { Card } from '../ui/Card';
 import { Calendar, Clock } from 'lucide-react';
-import type { PlaceholderPost } from '@/lib/placeholder-data';
+import type { PostWithMetadata } from '@/lib/database';
 
 interface PostCardProps {
-  post: PlaceholderPost;
+  post: PostWithMetadata;
 }
 
 export function PostCard({ post }: PostCardProps) {
