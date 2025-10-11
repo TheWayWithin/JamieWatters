@@ -33,6 +33,7 @@ export default function AdminPage() {
       const res = await fetch('/api/auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // Include cookies for secure session
         body: JSON.stringify({ password })
       });
 
@@ -50,10 +51,20 @@ export default function AdminPage() {
   };
 
   // Handle logout
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    setPassword('');
-    setError('');
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include', // Include cookies for authentication
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      // Always clear client state regardless of API response
+      setIsAuthenticated(false);
+      setPassword('');
+      setError('');
+    }
   };
 
   // Handle project selection
@@ -80,6 +91,7 @@ export default function AdminPage() {
       const res = await fetch('/api/metrics', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // Include cookies for authentication
         body: JSON.stringify({
           projectId: selectedProjectId,
           metrics: {
