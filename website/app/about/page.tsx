@@ -35,17 +35,35 @@ export default function AboutPage() {
           </h2>
           <div className="space-y-6 text-body-lg text-text-primary leading-relaxed">
             <p>
-              I'm Jamie Watters, a solo entrepreneur on a mission to build a billion-dollar
-              portfolio by 2030 using AI agents. Before going solo, I spent 15 years in corporate
-              strategy consulting, helping Fortune 500 companies transform their operations and
-              scale their businesses.
+              I'm Jamie Watters, a solopreneur on a mission to build a billion-dollar portfolio by 
+              2030 using AI agents. My journey began in the 1980s writing BASIC on a Research 
+              Machines 380Z during lunch breaks. I worked my way up from emptying bins at Sperry 
+              Univac to becoming a systems programmer, living through the great technology 
+              transitions—assembler to C to C++, hierarchical to relational databases.
             </p>
             <p>
-              In 2023, I left my six-figure job to pursue the most ambitious bet of my life:
-              proving that one person armed with AI can build and operate multiple profitable
-              businesses simultaneously. No team. No employees. Just me and intelligent agents
-              working 24/7.
+              Fearing my aging brain wouldn't keep up with the accelerating pace of change, I 
+              retreated to management, spending the next 20 years climbing the corporate ladder. 
+              But corporate life slowly drained the joy from work. I was successful but empty.
             </p>
+            <p>
+              Then AI changed everything. It removed the cognitive barriers I feared while 
+              amplifying my decades of strategic experience. Now, while bootstrapping alongside 
+              my day job, I've rediscovered the joy of building. In just 5 months, I've created 
+              5 apps, 4 websites, and 4 agent suites—all while working full-time. I'm orchestrating 
+              AI agents to build multiple businesses simultaneously, proving that experience plus 
+              AI equals unprecedented leverage.
+            </p>
+          </div>
+          
+          {/* Link to detailed story */}
+          <div className="mt-8">
+            <Link 
+              href="/my-story" 
+              className="text-brand-secondary hover:text-brand-secondary-hover font-semibold inline-flex items-center gap-2 transition-colors"
+            >
+              Read the full story of my journey from the 1980s to AI orchestration →
+            </Link>
           </div>
         </div>
 
