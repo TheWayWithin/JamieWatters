@@ -122,6 +122,13 @@ export async function getAllPosts(): Promise<PostWithMetadata[]> {
     return posts;
   } catch (error) {
     console.error('Error fetching all posts:', error);
+    
+    // Fallback during build - return empty array to allow build to complete
+    if (process.env.NODE_ENV === 'production' || process.env.NEXT_PHASE === 'phase-production-build') {
+      console.warn('Database not available during build - returning empty posts array');
+      return [];
+    }
+    
     throw new Error('Failed to fetch posts');
   }
 }
