@@ -10,6 +10,11 @@ import {
   getMetrics,
 } from '@/lib/database';
 import { getSEOMetadata } from '@/lib/seo';
+import {
+  getPersonSchema,
+  getWebsiteSchema,
+  renderStructuredData,
+} from '@/lib/structured-data';
 
 // ISR: Revalidate every 1 hour
 export const revalidate = 3600;
@@ -26,8 +31,17 @@ export default async function Home() {
   const recentPosts = await getRecentPosts(3);
   const metrics = await getMetrics();
 
+  // Generate structured data for SEO
+  const personSchema = getPersonSchema();
+  const websiteSchema = getWebsiteSchema();
+
   return (
-    <main id="main-content" className="min-h-screen">
+    <>
+      {/* Structured Data for SEO */}
+      {renderStructuredData(personSchema)}
+      {renderStructuredData(websiteSchema)}
+
+      <main id="main-content" className="min-h-screen">
       {/* Hero Section */}
       <section className="min-h-[90vh] flex items-center justify-center bg-bg-primary px-6 py-12 lg:py-24">
         <div className="text-center max-w-4xl mx-auto">
@@ -238,6 +252,7 @@ export default async function Home() {
           </Button>
         </div>
       </section>
-    </main>
+      </main>
+    </>
   );
 }

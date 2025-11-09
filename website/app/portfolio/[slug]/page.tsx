@@ -5,6 +5,11 @@ import { getAllProjects, getProjectBySlug, getProjectSlugs } from '@/lib/databas
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { ProjectCard } from '@/components/portfolio/ProjectCard';
+import {
+  getProjectSchema,
+  getBreadcrumbSchema,
+  renderStructuredData,
+} from '@/lib/structured-data';
 
 // Generate static params for all projects (SSG)
 export async function generateStaticParams() {
@@ -49,8 +54,21 @@ export default async function ProjectPage({
     ARCHIVED: 'error',
   };
 
+  // Generate structured data for SEO
+  const projectSchema = getProjectSchema(project);
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: 'Home', url: 'https://jamiewatters.work' },
+    { name: 'Portfolio', url: 'https://jamiewatters.work/portfolio' },
+    { name: project.name, url: `https://jamiewatters.work/portfolio/${project.slug}` },
+  ]);
+
   return (
-    <main className="min-h-screen bg-bg-primary">
+    <>
+      {/* Structured Data for SEO */}
+      {renderStructuredData(projectSchema)}
+      {renderStructuredData(breadcrumbSchema)}
+
+      <main className="min-h-screen bg-bg-primary">
       {/* Project Header */}
       <section className="px-6 pt-12 pb-8 sm:pt-16 sm:pb-12 max-w-4xl mx-auto">
         <h1 className="text-display-xl sm:text-display-xl font-bold text-brand-primary mb-4">
@@ -278,6 +296,7 @@ const solution = {
           </div>
         </section>
       )}
-    </main>
+      </main>
+    </>
   );
 }

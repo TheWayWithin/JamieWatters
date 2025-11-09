@@ -1,19 +1,33 @@
 import { getAllProjects, getMetrics } from '@/lib/database';
 import { ProjectCard } from '@/components/portfolio/ProjectCard';
+import {
+  getBreadcrumbSchema,
+  renderStructuredData,
+} from '@/lib/structured-data';
 
 export const revalidate = 3600; // 1 hour ISR
 
 export default async function PortfolioPage() {
   const projects = await getAllProjects();
   const metrics = await getMetrics();
-  
+
   // Get the most recent update date from all projects
   const mostRecentUpdate = projects.reduce((latest, project) => {
     return project.updatedAt > latest ? project.updatedAt : latest;
   }, projects[0]?.updatedAt || new Date());
 
+  // Generate breadcrumb structured data
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: 'Home', url: 'https://jamiewatters.work' },
+    { name: 'Portfolio', url: 'https://jamiewatters.work/portfolio' },
+  ]);
+
   return (
-    <main className="min-h-screen bg-bg-primary">
+    <>
+      {/* Structured Data for SEO */}
+      {renderStructuredData(breadcrumbSchema)}
+
+      <main className="min-h-screen bg-bg-primary">
       {/* Page Header */}
       <section className="px-6 pt-12 pb-8 sm:pt-16 sm:pb-12 max-w-7xl mx-auto">
         <h1 className="text-display-xl sm:text-display-xl font-bold text-brand-primary mb-4">
@@ -81,6 +95,7 @@ export default async function PortfolioPage() {
           ))}
         </div>
       </section>
-    </main>
+      </main>
+    </>
   );
 }

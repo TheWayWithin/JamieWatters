@@ -3,14 +3,28 @@ import { Rss } from 'lucide-react';
 import { getAllPosts } from '@/lib/database';
 import { PostCard } from '@/components/blog/PostCard';
 import { Button } from '@/components/ui/Button';
+import {
+  getBreadcrumbSchema,
+  renderStructuredData,
+} from '@/lib/structured-data';
 
 export const revalidate = 3600; // 1 hour ISR
 
 export default async function JourneyPage() {
   const posts = await getAllPosts();
 
+  // Generate breadcrumb structured data
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: 'Home', url: 'https://jamiewatters.work' },
+    { name: 'The Journey', url: 'https://jamiewatters.work/journey' },
+  ]);
+
   return (
-    <main className="min-h-screen bg-bg-primary">
+    <>
+      {/* Structured Data for SEO */}
+      {renderStructuredData(breadcrumbSchema)}
+
+      <main className="min-h-screen bg-bg-primary">
       {/* Page Header */}
       <section className="px-6 pt-12 pb-8 sm:pt-16 sm:pb-12 max-w-7xl mx-auto">
         <h1 className="text-display-xl sm:text-display-xl font-bold text-brand-primary mb-4">
@@ -58,6 +72,7 @@ export default async function JourneyPage() {
           </div>
         )}
       </section>
-    </main>
+      </main>
+    </>
   );
 }

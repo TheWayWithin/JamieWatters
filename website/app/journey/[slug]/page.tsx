@@ -5,6 +5,11 @@ import { renderMarkdown } from '@/lib/markdown';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { ShareButtons } from '@/components/blog/ShareButtons';
+import {
+  getBlogPostSchema,
+  getBreadcrumbSchema,
+  renderStructuredData,
+} from '@/lib/structured-data';
 
 // Generate static params for all posts (SSG)
 export async function generateStaticParams() {
@@ -67,8 +72,21 @@ For now, this shows that the database integration is working correctly for post 
   // Render markdown content to HTML
   const contentHtml = await renderMarkdown(placeholderContent);
 
+  // Generate structured data for SEO
+  const blogPostSchema = getBlogPostSchema(post, placeholderContent);
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: 'Home', url: 'https://jamiewatters.work' },
+    { name: 'The Journey', url: 'https://jamiewatters.work/journey' },
+    { name: post.title, url: `https://jamiewatters.work/journey/${post.slug}` },
+  ]);
+
   return (
-    <main className="min-h-screen bg-bg-primary">
+    <>
+      {/* Structured Data for SEO */}
+      {renderStructuredData(blogPostSchema)}
+      {renderStructuredData(breadcrumbSchema)}
+
+      <main className="min-h-screen bg-bg-primary">
       {/* Post Header */}
       <article className="px-6 pt-12 pb-8 sm:pt-16 sm:pb-12 max-w-3xl mx-auto">
         <h1 className="text-display-xl sm:text-display-xl font-bold text-brand-primary mb-6">
@@ -161,6 +179,7 @@ For now, this shows that the database integration is working correctly for post 
           </Button>
         </div>
       </section>
-    </main>
+      </main>
+    </>
   );
 }

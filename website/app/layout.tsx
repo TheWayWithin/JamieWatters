@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { getNonce } from '@/lib/nonce';
 import './globals.css';
 
 const inter = Inter({
@@ -56,17 +58,22 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Get nonce from middleware for CSP-compliant inline scripts
+  const nonce = await getNonce();
+
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="font-sans">
         <Header />
         <main>{children}</main>
         <Footer />
+        {/* Analytics with CSP nonce support - currently disabled but ready for production */}
+        {/* <Analytics nonce={nonce} /> */}
       </body>
     </html>
   );
