@@ -44,7 +44,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // For all routes, add CSP headers with nonce
-  return addSecurityHeaders(NextResponse.next(), nonce);
+  return addSecurityHeaders(request, nonce);
 }
 
 /**
@@ -118,6 +118,13 @@ function redirectToLogin(request: NextRequest): NextResponse {
 /**
  * Add Content Security Policy and security headers
  *
+ * CRITICAL: CSP headers must be set in REQUEST headers for Next.js SSR nonce injection.
+ * Next.js reads the CSP header during server-side rendering to extract the nonce value,
+ * then automatically injects nonce attributes into framework script tags.
+ *
+ * Reference: https://nextjs.org/docs/app/guides/content-security-policy
+ * Pattern: NextResponse.next({ request: { headers: requestHeaders } })
+ *
  * CSP Policy Explanation:
  * - default-src 'self': Only load resources from same origin by default
  * - script-src 'self' 'nonce-{nonce}' 'strict-dynamic':
@@ -145,7 +152,7 @@ function redirectToLogin(request: NextRequest): NextResponse {
  * - 'strict-dynamic': Modern CSP for better compatibility with bundlers
  * - https: for images: Allows CDN usage while maintaining security
  */
-function addSecurityHeaders(response: NextResponse, nonce: string): NextResponse {
+function addSecurityHeaders(request: NextRequest, nonce: string): NextResponse {
   // Build Content Security Policy with nonce
   const csp = [
     "default-src 'self'",
@@ -161,12 +168,20 @@ function addSecurityHeaders(response: NextResponse, nonce: string): NextResponse
     "upgrade-insecure-requests",
   ].join('; ');
 
-  // Set CSP header
-  response.headers.set('Content-Security-Policy', csp);
+  // CRITICAL: Set CSP in REQUEST headers for Next.js SSR nonce injection
+  // Next.js extracts nonce from CSP header during server-side rendering
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-nonce', nonce);
+  requestHeaders.set('Content-Security-Policy', csp);
 
-  // Pass nonce to React Server Components via custom header
-  // This allows components to access the nonce for inline scripts
-  response.headers.set('x-nonce', nonce);
+  // Create response with modified request headers
+  // This allows Next.js SSR to access CSP and automatically inject nonces
+  const response = NextResponse.next({
+    request: { headers: requestHeaders }
+  });
+
+  // Also set CSP in RESPONSE headers for browser enforcement
+  response.headers.set('Content-Security-Policy', csp);
 
   // Additional security headers (defense in depth)
   response.headers.set('X-Content-Type-Options', 'nosniff');
