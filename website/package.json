@@ -40,6 +40,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs": "^5.14.5",
     "@next/bundle-analyzer": "^15.5.4",
     "@types/bcrypt": "^6.0.0",
     "autoprefixer": "^10.4.21",
