@@ -20,6 +20,12 @@ const jetbrainsMono = JetBrains_Mono({
   preload: false, // Load on demand (code blocks only)
 });
 
+// Force dynamic rendering for CSP nonce support
+// This is required for Next.js to automatically apply nonces to framework scripts
+// Reference: https://nextjs.org/docs/app/guides/content-security-policy
+// Trade-off: Disables static optimization, but required for strict CSP with nonces
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: {
     default: 'Jamie Watters | Building $1B Solo by 2030',
