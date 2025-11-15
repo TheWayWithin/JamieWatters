@@ -21,13 +21,11 @@ export async function GET(req: NextRequest) {
     const token = extractTokenFromRequest(req) || req.headers.get('x-auth-token');
 
     if (!token) {
-      console.error('[Projects API] No token found');
       return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
     }
 
     const payload = verifyToken(token);
     if (!payload || payload.role !== 'admin') {
-      console.error('[Projects API] Token verification failed', { hasPayload: !!payload, role: payload?.role });
       return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
     }
 

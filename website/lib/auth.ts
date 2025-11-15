@@ -28,7 +28,7 @@ let env: z.infer<typeof envSchema> | null = null;
 
 function getEnv(): z.infer<typeof envSchema> {
   if (env) return env;
-  
+
   try {
     env = envSchema.parse({
       ADMIN_PASSWORD_HASH: process.env.ADMIN_PASSWORD_HASH,
@@ -191,16 +191,19 @@ export function extractTokenFromRequest(request: Request): string | null {
   if (authHeader?.startsWith('Bearer ')) {
     return authHeader.slice(7);
   }
-  
+
   // Check cookies as fallback
+  // Use word boundary to avoid matching other cookies like "sb-xxx-auth-token"
   const cookies = request.headers.get('Cookie');
   if (cookies) {
-    const tokenMatch = cookies.match(/auth-token=([^;]+)/);
+    // Match auth-token at start of string OR after semicolon+space
+    // This prevents matching "sb-xxx-auth-token" which contains "auth-token" as substring
+    const tokenMatch = cookies.match(/(?:^|; )auth-token=([^;]+)/);
     if (tokenMatch) {
       return decodeURIComponent(tokenMatch[1]);
     }
   }
-  
+
   return null;
 }
 

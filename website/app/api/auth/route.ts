@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
 
     // Create response with secure cookie
     const response = NextResponse.json({ success: true });
-    
+
     // Set secure HTTP-only cookie
     response.cookies.set('auth-token', token, {
       httpOnly: true, // Prevents XSS access to token
