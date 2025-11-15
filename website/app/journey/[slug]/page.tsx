@@ -47,11 +47,17 @@ export default async function BlogPostPage({
   const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
 
   // Format date
-  const formattedDate = new Date(post.publishedAt).toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric'
-  });
+  const formattedDate = post.publishedAt
+    ? new Date(post.publishedAt).toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      })
+    : new Date(post.createdAt).toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      });
 
   // Since we're only storing metadata in the database, we'll need the content from placeholder data for now
   // TODO: Implement markdown file storage or full content in database

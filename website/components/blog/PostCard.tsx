@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { Card } from '../ui/Card';
 import { Calendar, Clock } from 'lucide-react';
 import type { PostWithMetadata } from '@/lib/database';
+import { renderMarkdown } from '@/lib/markdown';
+import { use } from 'react';
 
 interface PostCardProps {
   post: PostWithMetadata;
@@ -12,7 +14,10 @@ export function PostCard({ post }: PostCardProps) {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
-  }).format(post.publishedAt);
+  }).format(post.publishedAt || post.createdAt);
+
+  // Render excerpt as markdown HTML
+  const excerptHtml = use(renderMarkdown(post.excerpt));
 
   return (
     <Card hover className="flex flex-col h-full">
@@ -31,9 +36,10 @@ export function PostCard({ post }: PostCardProps) {
         </div>
       </div>
 
-      <p className="text-text-secondary text-sm mb-4 flex-1">
-        {post.excerpt}
-      </p>
+      <div
+        className="markdown-excerpt mb-4 flex-1"
+        dangerouslySetInnerHTML={{ __html: excerptHtml }}
+      />
 
       {/* Tags */}
       <div className="flex flex-wrap gap-2 mb-4">

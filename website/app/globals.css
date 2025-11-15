@@ -139,3 +139,75 @@ pre code {
 .animate-spin {
   animation: spin 1s linear infinite;
 }
+
+/* Markdown excerpt styling for blog post cards */
+.markdown-excerpt h1 {
+  font-size: 1.125rem; /* 18px - text-lg */
+  font-weight: 700; /* bold */
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  margin-top: 0.75rem;
+  line-height: 1.4;
+}
+
+.markdown-excerpt h2 {
+  font-size: 1rem; /* 16px - text-base */
+  font-weight: 600; /* semibold */
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+  line-height: 1.4;
+}
+
+.markdown-excerpt h3 {
+  font-size: 0.875rem; /* 14px - text-sm */
+  font-weight: 500; /* medium */
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+  margin-top: 0.5rem;
+  line-height: 1.4;
+}
+
+.markdown-excerpt p {
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.markdown-excerpt strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.markdown-excerpt em {
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+.markdown-excerpt ul,
+.markdown-excerpt ol {
+  margin: 0.5rem 0;
+  padding-left: 1rem;
+}
+
+.markdown-excerpt ul {
+  list-style-type: disc;
+}
+
+.markdown-excerpt ol {
+  list-style-type: decimal;
+}
+
+.markdown-excerpt li {
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.markdown-excerpt a {
+  color: var(--brand-secondary);
+  text-decoration: none;
+}
+
+.markdown-excerpt a:hover {
+  text-decoration: underline;
+}

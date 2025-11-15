@@ -18,11 +18,13 @@ import { NextRequest, NextResponse } from 'next/server';
  * Reference: CLAUDE.md - Security-First Development Principles
  */
 
-// Define protected admin routes
-const ADMIN_ROUTES = ['/admin', '/api/metrics'];
+// Define protected admin routes (but NOT /admin itself - it has its own auth)
+// NOTE: /api/admin/* routes are NOT included here because they handle their own authentication
+// This middleware only protects non-API admin routes
+const ADMIN_ROUTES = ['/api/metrics'];
 
 // Define public routes that should never be protected
-const PUBLIC_ROUTES = ['/api/auth/login', '/api/auth/logout', '/api/auth'];
+const PUBLIC_ROUTES = ['/api/auth/login', '/api/auth/logout', '/api/auth', '/admin'];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -153,19 +155,27 @@ function redirectToLogin(request: NextRequest): NextResponse {
  * - https: for images: Allows CDN usage while maintaining security
  */
 function addSecurityHeaders(request: NextRequest, nonce: string): NextResponse {
+  // Determine if we're in development mode
+  const isDev = process.env.NODE_ENV === 'development';
+
   // Build Content Security Policy with nonce
   const csp = [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`,
+    // In dev: allow unsafe-eval for React Fast Refresh
+    isDev
+      ? `script-src 'self' 'nonce-${nonce}' 'unsafe-eval' 'strict-dynamic'`
+      : `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`,
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: https:",
-    "font-src 'self' data:",
+    // Allow fonts from self, data URIs, and CDNs
+    "font-src 'self' data: https:",
     "connect-src 'self'",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",
     "frame-ancestors 'none'",
-    "upgrade-insecure-requests",
+    // Only upgrade in production (causes issues with localhost in dev)
+    ...(isDev ? [] : ["upgrade-insecure-requests"]),
   ].join('; ');
 
   // CRITICAL: Set CSP in REQUEST headers for Next.js SSR nonce injection

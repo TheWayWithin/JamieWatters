@@ -197,7 +197,7 @@ export function extractTokenFromRequest(request: Request): string | null {
   if (cookies) {
     const tokenMatch = cookies.match(/auth-token=([^;]+)/);
     if (tokenMatch) {
-      return tokenMatch[1];
+      return decodeURIComponent(tokenMatch[1]);
     }
   }
   

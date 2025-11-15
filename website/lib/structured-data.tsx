@@ -132,7 +132,7 @@ export function getBlogPostSchema(post: Post, content?: string) {
     headline: post.title,
     description: post.excerpt,
     url: `${SITE_URL}/journey/${post.slug}`,
-    datePublished: post.publishedAt.toISOString(),
+    datePublished: (post.publishedAt || post.createdAt).toISOString(),
     dateModified: post.updatedAt.toISOString(),
     author: {
       '@type': 'Person',
