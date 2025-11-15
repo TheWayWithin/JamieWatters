@@ -115,7 +115,7 @@
 4. FOR EACH PROJECT
    └─> Project 1: Agent-11
        ├─> Parse URL: { owner: "user", repo: "agent-11" }
-       ├─> Decrypt token: "ghp_xxxxxxxxxxxxx"
+       ├─> Decrypt token: "github_pat_EXAMPLE_xxxxxxxxxxxxx"
        ├─> GitHub API: GET /repos/user/agent-11/contents/project-plan.md
        ├─> Response: { content: "base64...", sha: "abc123" }
        ├─> Decode: "# Project Plan\n\n- [x] Task 1\n- [x] Task 2\n..."
@@ -183,7 +183,7 @@
 ┌─────────────────────────────────────────────────────────────────┐
 │ GITHUB TOKEN ENCRYPTION (From Day 1)                            │
 │                                                                  │
-│  Admin enters token:     "ghp_1234567890abcdefghijklmnopqrst"   │
+│  Admin enters token:     "github_pat_EXAMPLE_1234567890abcdefghijklmnopqrst"   │
 │         │                                                        │
 │         ▼                                                        │
 │  encryptToken()                                                 │
@@ -209,7 +209,7 @@
 │         ├─> Derive key from SESSION_SECRET                     │
 │         ├─> Verify auth tag (prevents tampering)              │
 │         ├─> Decrypt with AES-256-GCM                           │
-│         └─> Return: "ghp_1234567890abcdefghijklmnopqrst"       │
+│         └─> Return: "github_pat_EXAMPLE_1234567890abcdefghijklmnopqrst"       │
 │                                                                  │
 │  Used immediately for GitHub API call                           │
 │  NEVER logged or returned in API response                       │
