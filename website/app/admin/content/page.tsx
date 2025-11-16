@@ -22,6 +22,8 @@ interface Post {
   tags: string[];
 }
 
+type DeletingState = string | null;
+
 export default function ContentPage() {
   const router = useRouter();
   const [recentPosts, setRecentPosts] = useState<Post[]>([]);
@@ -29,6 +31,7 @@ export default function ContentPage() {
   const [preview, setPreview] = useState<any>(null);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [publishError, setPublishError] = useState('');
+  const [deletingId, setDeletingId] = useState<DeletingState>(null);
 
   // Fetch recent posts on mount
   useEffect(() => {
@@ -50,6 +53,32 @@ export default function ContentPage() {
       console.error('Fetch posts error:', err);
     } finally {
       setLoadingPosts(false);
+    }
+  };
+
+  const handleDeletePost = async (post: Post) => {
+    if (!confirm(`Are you sure you want to delete "${post.title}"? This action cannot be undone.`)) {
+      return;
+    }
+
+    setDeletingId(post.id);
+    try {
+      const res = await fetch(`/api/admin/posts/${post.id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+
+      if (res.ok) {
+        setRecentPosts((prev) => prev.filter((p) => p.id !== post.id));
+      } else {
+        const data = await res.json();
+        alert(`Failed to delete post: ${data.error}`);
+      }
+    } catch (err) {
+      alert('Failed to delete post');
+      console.error('Delete post error:', err);
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -199,6 +228,14 @@ export default function ContentPage() {
                             Edit
                           </Button>
                         </Link>
+                        <Button
+                          variant="ghost"
+                          onClick={() => handleDeletePost(post)}
+                          disabled={deletingId === post.id}
+                          className="text-error hover:text-error"
+                        >
+                          {deletingId === post.id ? 'Deleting...' : 'Delete'}
+                        </Button>
                       </div>
                     </div>
                   </Card>
