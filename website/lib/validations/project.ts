@@ -7,10 +7,10 @@
 import { z } from 'zod';
 
 // Valid project categories (must match Prisma enum)
-const categoryEnum = z.enum(['AI_TOOLS', 'FRAMEWORKS', 'EDUCATION', 'MARKETPLACE', 'OTHER']);
+const categoryEnum = z.enum(['AI_TOOLS', 'FRAMEWORKS', 'EDUCATION', 'MARKETPLACE', 'PRODUCTIVITY', 'FINANCE', 'WELLBEING', 'OTHER']);
 
-// Valid project statuses (must match Prisma enum)
-const statusEnum = z.enum(['ACTIVE', 'BETA', 'PLANNING', 'ARCHIVED']);
+// Valid project statuses (must match Prisma enum) - in chronological order
+const statusEnum = z.enum(['RESEARCH', 'DESIGN', 'PLANNING', 'BUILD', 'BETA', 'MVP', 'LIVE', 'ARCHIVED']);
 
 /**
  * Schema for project metrics
@@ -35,7 +35,7 @@ export const createProjectSchema = z.object({
   techStack: z.array(z.string()).min(1, 'At least one technology required'),
   url: z.string().url('Must be a valid URL'),
   category: categoryEnum,
-  status: statusEnum.default('ACTIVE'),
+  status: statusEnum.default('LIVE'),
   featured: z.boolean().default(false),
 
   // Metrics

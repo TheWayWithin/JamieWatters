@@ -48,9 +48,13 @@ export default async function ProjectPage({
 
   // Status badge color mapping
   const statusColors: Record<typeof project.status, 'success' | 'warning' | 'info' | 'error'> = {
-    ACTIVE: 'success',
-    BETA: 'warning',
+    RESEARCH: 'info',
+    DESIGN: 'info',
     PLANNING: 'info',
+    BUILD: 'warning',
+    BETA: 'warning',
+    MVP: 'warning',
+    LIVE: 'success',
     ARCHIVED: 'error',
   };
 

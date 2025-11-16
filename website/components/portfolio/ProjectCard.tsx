@@ -10,9 +10,13 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project }: ProjectCardProps) {
   const statusColors = {
-    ACTIVE: 'bg-green-500/15 text-green-400',
-    BETA: 'bg-blue-500/15 text-blue-400',
+    RESEARCH: 'bg-purple-500/15 text-purple-400',
+    DESIGN: 'bg-indigo-500/15 text-indigo-400',
     PLANNING: 'bg-yellow-500/15 text-yellow-400',
+    BUILD: 'bg-orange-500/15 text-orange-400',
+    BETA: 'bg-blue-500/15 text-blue-400',
+    MVP: 'bg-cyan-500/15 text-cyan-400',
+    LIVE: 'bg-green-500/15 text-green-400',
     ARCHIVED: 'bg-gray-500/15 text-gray-400',
   };
 

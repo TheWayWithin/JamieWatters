@@ -70,12 +70,16 @@ export async function getFeaturedProjects(): Promise<ProjectWithMetrics[]> {
 }
 
 /**
- * Get active projects only
+ * Get active projects only (LIVE, MVP, BETA, BUILD statuses)
  */
 export async function getActiveProjects(): Promise<ProjectWithMetrics[]> {
   try {
     const projects = await prisma.project.findMany({
-      where: { status: ProjectStatus.ACTIVE },
+      where: {
+        status: {
+          in: [ProjectStatus.LIVE, ProjectStatus.MVP, ProjectStatus.BETA, ProjectStatus.BUILD]
+        }
+      },
       orderBy: { createdAt: 'desc' },
     });
     return projects;
@@ -183,7 +187,11 @@ export async function getMetrics(): Promise<DatabaseMetrics> {
         },
       }),
       prisma.project.count({
-        where: { status: ProjectStatus.ACTIVE },
+        where: {
+          status: {
+            in: [ProjectStatus.LIVE, ProjectStatus.MVP, ProjectStatus.BETA, ProjectStatus.BUILD]
+          }
+        },
       }),
     ]);
 

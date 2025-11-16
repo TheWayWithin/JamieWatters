@@ -40,7 +40,7 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
   const [url, setUrl] = useState(project?.url || '');
   const [techStack, setTechStack] = useState(project?.techStack.join(', ') || '');
   const [category, setCategory] = useState(project?.category || 'AI_TOOLS');
-  const [status, setStatus] = useState(project?.status || 'ACTIVE');
+  const [status, setStatus] = useState(project?.status || 'LIVE');
   const [featured, setFeatured] = useState(project?.featured || false);
   const [mrr, setMrr] = useState(project?.mrr?.toString() || '0');
   const [users, setUsers] = useState(project?.users?.toString() || '0');
@@ -228,6 +228,9 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
                 <option value="FRAMEWORKS">Frameworks</option>
                 <option value="EDUCATION">Education</option>
                 <option value="MARKETPLACE">Marketplace</option>
+                <option value="PRODUCTIVITY">Productivity</option>
+                <option value="FINANCE">Finance</option>
+                <option value="WELLBEING">Well Being</option>
                 <option value="OTHER">Other</option>
               </select>
             </div>
@@ -243,9 +246,13 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
                 className="w-full bg-bg-primary border border-border-default rounded-md px-4 py-3 text-body text-text-primary focus:border-brand-primary transition-base"
                 disabled={loading}
               >
-                <option value="ACTIVE">Active</option>
-                <option value="BETA">Beta</option>
+                <option value="RESEARCH">Research</option>
+                <option value="DESIGN">Design</option>
                 <option value="PLANNING">Planning</option>
+                <option value="BUILD">Build</option>
+                <option value="BETA">Beta</option>
+                <option value="MVP">MVP</option>
+                <option value="LIVE">Live</option>
                 <option value="ARCHIVED">Archived</option>
               </select>
             </div>

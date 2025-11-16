@@ -19,7 +19,7 @@ model Project {
   featured         Boolean          @default(false)
   mrr              Decimal          @default(0) @db.Decimal(10, 2)
   users            Int              @default(0)
-  status           ProjectStatus    @default(ACTIVE)
+  status           ProjectStatus    @default(LIVE)
   problemStatement String?
   solutionApproach String?
   lessonsLearned   String?
@@ -76,12 +76,19 @@ enum Category {
   FRAMEWORKS
   EDUCATION
   MARKETPLACE
+  PRODUCTIVITY
+  FINANCE
+  WELLBEING
   OTHER
 }
 
 enum ProjectStatus {
-  ACTIVE
-  BETA
+  RESEARCH
+  DESIGN
   PLANNING
+  BUILD
+  BETA
+  MVP
+  LIVE
   ARCHIVED
 }
