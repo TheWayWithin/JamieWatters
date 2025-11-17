@@ -87,9 +87,15 @@ export default function AboutPage() {
           </h2>
           <div className="space-y-6 text-body-lg text-text-primary leading-relaxed">
             <p>
-              My goal is simple but audacious: reach $1 billion in portfolio value by 2030. Not
-              through a single unicorn startup, but through a diversified portfolio of 10-20
-              AI-powered businesses, each generating $5-50M ARR.
+              I'm building a portfolio of AI-powered businesses through systematic iteration.
+              I track real metrics, celebrate small wins, learn publicly from failures, and
+              compound insights across multiple products. Each business teaches me something
+              that makes the next one more likely to succeed.
+            </p>
+            <p>
+              My ultimate goal? Reach $1 billion in portfolio value by 2030. Not through a
+              single unicorn startup, but through a diversified portfolio of 10-20 AI-powered
+              businesses, each generating $5-50M ARR.
             </p>
             <p>
               This isn't just about the money. It's about proving a new model of entrepreneurship

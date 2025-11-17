@@ -165,8 +165,63 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Featured Projects */}
+      {/* The Approach */}
       <section className="py-16 lg:py-24 px-6 bg-bg-primary">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-display-lg font-bold text-text-primary mb-4">
+              The Systematic Approach
+            </h2>
+            <p className="text-body-base text-text-secondary max-w-2xl mx-auto">
+              I'm not hoping to stumble into a billion dollars. I'm building systematically with a method designed to compound results.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Multiple Bets */}
+            <div className="text-center">
+              <div className="text-4xl mb-4">🎯</div>
+              <h3 className="text-body-lg font-semibold text-text-primary mb-3">
+                Multiple Bets
+              </h3>
+              <p className="text-body-base text-text-secondary leading-relaxed">
+                10+ products, diverse revenue streams. Each product teaches lessons that make the next more likely to succeed.
+              </p>
+            </div>
+
+            {/* AI Leverage */}
+            <div className="text-center">
+              <div className="text-4xl mb-4">🤖</div>
+              <h3 className="text-body-lg font-semibold text-text-primary mb-3">
+                AI Leverage
+              </h3>
+              <p className="text-body-base text-text-secondary leading-relaxed">
+                Build faster than humanly possible. AI agents handle the complexity while I focus on strategy and execution.
+              </p>
+            </div>
+
+            {/* Transparent Learning */}
+            <div className="text-center">
+              <div className="text-4xl mb-4">📊</div>
+              <h3 className="text-body-lg font-semibold text-text-primary mb-3">
+                Transparent Learning
+              </h3>
+              <p className="text-body-base text-text-secondary leading-relaxed">
+                Share everything publicly. Real metrics, real failures, real lessons. Accountability drives progress.
+              </p>
+            </div>
+          </div>
+
+          <div className="text-center mt-12">
+            <Button asChild variant="secondary" size="lg">
+              <Link href="/about">Learn More About My Method →</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Projects */}
+      <section className="py-16 lg:py-24 px-6 bg-bg-surface">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-end justify-between mb-12">
             <div>
