@@ -11,6 +11,7 @@ interface Project {
   slug: string;
   name: string;
   description: string;
+  longDescription?: string | null;
   url: string;
   techStack: string[];
   category: string;
@@ -18,6 +19,11 @@ interface Project {
   featured: boolean;
   mrr: number;
   users: number;
+  problemStatement?: string | null;
+  solutionApproach?: string | null;
+  lessonsLearned?: string | null;
+  screenshots: string[];
+  launchedAt?: string | null;
   githubUrl?: string | null;
   trackProgress: boolean;
 }
@@ -37,6 +43,7 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
   const [name, setName] = useState(project?.name || '');
   const [slug, setSlug] = useState(project?.slug || '');
   const [description, setDescription] = useState(project?.description || '');
+  const [longDescription, setLongDescription] = useState(project?.longDescription || '');
   const [url, setUrl] = useState(project?.url || '');
   const [techStack, setTechStack] = useState(project?.techStack.join(', ') || '');
   const [category, setCategory] = useState(project?.category || 'AI_TOOLS');
@@ -44,6 +51,11 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
   const [featured, setFeatured] = useState(project?.featured || false);
   const [mrr, setMrr] = useState(project?.mrr?.toString() || '0');
   const [users, setUsers] = useState(project?.users?.toString() || '0');
+  const [launchedAt, setLaunchedAt] = useState(project?.launchedAt || '');
+  const [problemStatement, setProblemStatement] = useState(project?.problemStatement || '');
+  const [solutionApproach, setSolutionApproach] = useState(project?.solutionApproach || '');
+  const [lessonsLearned, setLessonsLearned] = useState(project?.lessonsLearned || '');
+  const [screenshots, setScreenshots] = useState(project?.screenshots?.join('\n') || '');
   const [githubUrl, setGithubUrl] = useState(project?.githubUrl || '');
   const [githubToken, setGithubToken] = useState(''); // Never pre-populate for security
   const [trackProgress, setTrackProgress] = useState(project?.trackProgress || false);
@@ -68,11 +80,18 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
         .map((tech) => tech.trim())
         .filter((tech) => tech.length > 0);
 
+      // Parse screenshots (newline-separated)
+      const screenshotsArray = screenshots
+        .split('\n')
+        .map((url) => url.trim())
+        .filter((url) => url.length > 0);
+
       // Prepare data
       const data = {
         name,
         slug,
         description,
+        longDescription: longDescription.trim() || null,
         url,
         techStack: techStackArray,
         category,
@@ -80,6 +99,11 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
         featured,
         mrr: parseFloat(mrr) || 0,
         users: parseInt(users) || 0,
+        launchedAt: launchedAt ? new Date(launchedAt).toISOString() : null,
+        problemStatement: problemStatement.trim() || null,
+        solutionApproach: solutionApproach.trim() || null,
+        lessonsLearned: lessonsLearned.trim() || null,
+        screenshots: screenshotsArray,
         githubUrl: githubUrl.trim() || null,
         githubToken: githubToken.trim() || null,
         trackProgress,
@@ -206,6 +230,30 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
           </div>
         </div>
 
+        {/* Long Description */}
+        <div className="bg-bg-surface border border-border-default rounded-lg p-6">
+          <h2 className="text-display-sm font-semibold text-text-primary mb-6">
+            Long Description (Optional)
+          </h2>
+
+          <div>
+            <label htmlFor="longDescription" className="block text-body-sm font-medium text-text-primary mb-2">
+              Detailed Description
+            </label>
+            <textarea
+              id="longDescription"
+              value={longDescription}
+              onChange={(e) => setLongDescription(e.target.value)}
+              placeholder="Expanded description for the portfolio detail page..."
+              className="w-full bg-bg-primary border border-border-default rounded-md px-4 py-3 text-body text-text-primary focus:border-brand-primary focus:shadow-brand transition-base min-h-[150px]"
+              disabled={loading}
+            />
+            <p className="mt-2 text-body-sm text-text-tertiary">
+              This will be displayed on the project detail page
+            </p>
+          </div>
+        </div>
+
         {/* Category and Status */}
         <div className="bg-bg-surface border border-border-default rounded-lg p-6">
           <h2 className="text-display-sm font-semibold text-text-primary mb-6">
@@ -302,6 +350,90 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
               onChange={(e) => setUsers(e.target.value)}
               disabled={loading}
             />
+
+            <Input
+              label="Launch Date"
+              type="date"
+              value={launchedAt}
+              onChange={(e) => setLaunchedAt(e.target.value)}
+              helperText="When was this project launched?"
+              disabled={loading}
+            />
+          </div>
+        </div>
+
+        {/* Case Study Content */}
+        <div className="bg-bg-surface border border-border-default rounded-lg p-6">
+          <h2 className="text-display-sm font-semibold text-text-primary mb-6">
+            Case Study Content (Optional)
+          </h2>
+
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="problemStatement" className="block text-body-sm font-medium text-text-primary mb-2">
+                Problem Statement
+              </label>
+              <textarea
+                id="problemStatement"
+                value={problemStatement}
+                onChange={(e) => setProblemStatement(e.target.value)}
+                placeholder="Describe the problem this project solves..."
+                className="w-full bg-bg-primary border border-border-default rounded-md px-4 py-3 text-body text-text-primary focus:border-brand-primary focus:shadow-brand transition-base min-h-[120px]"
+                disabled={loading}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="solutionApproach" className="block text-body-sm font-medium text-text-primary mb-2">
+                Solution Approach
+              </label>
+              <textarea
+                id="solutionApproach"
+                value={solutionApproach}
+                onChange={(e) => setSolutionApproach(e.target.value)}
+                placeholder="Explain how you solved the problem..."
+                className="w-full bg-bg-primary border border-border-default rounded-md px-4 py-3 text-body text-text-primary focus:border-brand-primary focus:shadow-brand transition-base min-h-[120px]"
+                disabled={loading}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="lessonsLearned" className="block text-body-sm font-medium text-text-primary mb-2">
+                Lessons Learned
+              </label>
+              <textarea
+                id="lessonsLearned"
+                value={lessonsLearned}
+                onChange={(e) => setLessonsLearned(e.target.value)}
+                placeholder="What did you learn from building this project?..."
+                className="w-full bg-bg-primary border border-border-default rounded-md px-4 py-3 text-body text-text-primary focus:border-brand-primary focus:shadow-brand transition-base min-h-[120px]"
+                disabled={loading}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Screenshots */}
+        <div className="bg-bg-surface border border-border-default rounded-lg p-6">
+          <h2 className="text-display-sm font-semibold text-text-primary mb-6">
+            Screenshots (Optional)
+          </h2>
+
+          <div>
+            <label htmlFor="screenshots" className="block text-body-sm font-medium text-text-primary mb-2">
+              Screenshot URLs
+            </label>
+            <textarea
+              id="screenshots"
+              value={screenshots}
+              onChange={(e) => setScreenshots(e.target.value)}
+              placeholder="/images/projects/screenshot-1.png&#10;/images/projects/screenshot-2.png&#10;/images/projects/screenshot-3.png"
+              className="w-full bg-bg-primary border border-border-default rounded-md px-4 py-3 text-body text-text-primary focus:border-brand-primary focus:shadow-brand transition-base min-h-[120px] font-mono text-sm"
+              disabled={loading}
+            />
+            <p className="mt-2 text-body-sm text-text-tertiary">
+              Enter one URL per line. Images should be placed in <code className="bg-bg-primary px-1 py-0.5 rounded">/public/images/projects/</code>
+            </p>
           </div>
         </div>
 
