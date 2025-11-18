@@ -9,6 +9,7 @@ import {
   getRecentPosts,
   getMetrics,
 } from '@/lib/database';
+import { ACHIEVEMENTS, NEXT_MILESTONE } from '@/lib/achievements';
 import { getSEOMetadata } from '@/lib/seo';
 import {
   getPersonSchema,
@@ -220,8 +221,78 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Featured Projects */}
+      {/* Journey So Far */}
       <section className="py-16 lg:py-24 px-6 bg-bg-surface">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-display-lg font-bold text-text-primary mb-4">
+              Journey So Far
+            </h2>
+            <p className="text-body-base text-text-secondary max-w-2xl mx-auto">
+              Milestones achieved on the path to building a billion-dollar portfolio.
+              Each win validates the systematic approach.
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            {ACHIEVEMENTS.map((achievement, index) => (
+              <div
+                key={achievement.date}
+                className="flex items-start gap-4 p-6 bg-bg-primary rounded-lg border border-border-default hover:border-brand-primary transition-colors"
+              >
+                <div className="flex-shrink-0 text-4xl">{achievement.icon}</div>
+                <div className="flex-grow">
+                  <div className="flex items-start justify-between gap-4 mb-2">
+                    <h3 className="text-body-lg font-semibold text-text-primary">
+                      {achievement.title}
+                    </h3>
+                    <span className="text-xs text-green-400 font-mono whitespace-nowrap">
+                      ✓ Done
+                    </span>
+                  </div>
+                  <p className="text-body-base text-text-secondary mb-2">
+                    {achievement.description}
+                  </p>
+                  <time className="text-xs text-text-tertiary">
+                    {new Date(achievement.date).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </time>
+                </div>
+              </div>
+            ))}
+
+            {/* Next Milestone */}
+            <div className="flex items-start gap-4 p-6 bg-bg-primary rounded-lg border border-brand-primary/30">
+              <div className="flex-shrink-0 text-4xl opacity-60">🎯</div>
+              <div className="flex-grow">
+                <div className="flex items-start justify-between gap-4 mb-2">
+                  <h3 className="text-body-lg font-semibold text-text-primary">
+                    {NEXT_MILESTONE.title}
+                  </h3>
+                  <span className="text-xs text-brand-accent font-mono whitespace-nowrap">
+                    → Next
+                  </span>
+                </div>
+                <p className="text-body-base text-text-secondary">
+                  {NEXT_MILESTONE.description}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center mt-12">
+            <Button asChild variant="secondary" size="lg">
+              <Link href="/journey">Read Weekly Updates →</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Projects */}
+      <section className="py-16 lg:py-24 px-6 bg-bg-primary">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-end justify-between mb-12">
             <div>

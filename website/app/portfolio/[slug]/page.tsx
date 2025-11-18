@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ExternalLink, Github } from 'lucide-react';
 import { getAllProjects, getProjectBySlug, getProjectSlugs } from '@/lib/database';
 import { Button } from '@/components/ui/Button';
@@ -191,20 +192,22 @@ export default async function ProjectPage({
         </div>
       </section>
 
-      {/* Hero Screenshot Placeholder */}
-      <section className="px-6 pb-8 sm:pb-12 max-w-5xl mx-auto">
-        <div className="relative w-full aspect-video bg-bg-surface border border-border-default rounded-lg flex items-center justify-center">
-          <div className="text-center">
-            <div className="text-6xl mb-4">📸</div>
-            <p className="text-body text-text-secondary">
-              Screenshot placeholder - 16:9 ratio
-            </p>
-            <p className="text-caption text-text-tertiary mt-2">
-              {project.name} dashboard preview
-            </p>
+      {/* Screenshots */}
+      {project.screenshots && project.screenshots.length > 0 && (
+        <section className="px-6 pb-8 sm:pb-12 max-w-5xl mx-auto">
+          <div className="space-y-6">
+            {project.screenshots.map((screenshot, index) => (
+              <div key={index} className="relative w-full aspect-video bg-bg-surface border border-border-default rounded-lg overflow-hidden">
+                <img
+                  src={screenshot}
+                  alt={`${project.name} screenshot ${index + 1}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ))}
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Case Study Content */}
       <section className="px-6 pb-12 sm:pb-16 max-w-3xl mx-auto prose prose-invert">
