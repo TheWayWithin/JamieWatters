@@ -11,6 +11,7 @@ interface Project {
   slug: string;
   name: string;
   description: string;
+  longDescription?: string | null;
   url: string;
   techStack: string[];
   category: string;
@@ -18,6 +19,11 @@ interface Project {
   featured: boolean;
   mrr: number;
   users: number;
+  problemStatement?: string | null;
+  solutionApproach?: string | null;
+  lessonsLearned?: string | null;
+  screenshots: string[];
+  launchedAt?: string | null;
   githubUrl?: string | null;
   trackProgress: boolean;
 }
