@@ -59,8 +59,7 @@ export default async function BlogPostPage({
         year: 'numeric',
       });
 
-  // Since we're only storing metadata in the database, we'll need the content from placeholder data for now
-  // TODO: Implement markdown file storage or full content in database
+  // Use actual post content from database, with fallback to placeholder for legacy posts
   const placeholderContent = `# ${post.title}
 
 ${post.excerpt}
@@ -75,11 +74,14 @@ This is a placeholder content until the full markdown content system is implemen
 
 For now, this shows that the database integration is working correctly for post metadata.`;
 
+  // Use post.content if available, otherwise fall back to placeholder
+  const contentToRender = post.content || placeholderContent;
+
   // Render markdown content to HTML
-  const contentHtml = await renderMarkdown(placeholderContent);
+  const contentHtml = await renderMarkdown(contentToRender);
 
   // Generate structured data for SEO
-  const blogPostSchema = getBlogPostSchema(post, placeholderContent);
+  const blogPostSchema = getBlogPostSchema(post, contentToRender);
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: 'Home', url: 'https://jamiewatters.work' },
     { name: 'The Journey', url: 'https://jamiewatters.work/journey' },
