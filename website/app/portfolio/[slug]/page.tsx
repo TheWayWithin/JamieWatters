@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ExternalLink, Github } from 'lucide-react';
 import { getAllProjects, getProjectBySlug, getProjectSlugs } from '@/lib/database';
+import { renderMarkdown } from '@/lib/markdown';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { ProjectCard } from '@/components/portfolio/ProjectCard';
@@ -65,6 +66,14 @@ export default async function ProjectPage({
     { name: 'Home', url: 'https://jamiewatters.work' },
     { name: 'Portfolio', url: 'https://jamiewatters.work/portfolio' },
     { name: project.name, url: `https://jamiewatters.work/portfolio/${project.slug}` },
+  ]);
+
+  // Render markdown content for case study sections
+  const [longDescriptionHtml, problemStatementHtml, solutionApproachHtml, lessonsLearnedHtml] = await Promise.all([
+    project.longDescription ? renderMarkdown(project.longDescription) : null,
+    project.problemStatement ? renderMarkdown(project.problemStatement) : null,
+    project.solutionApproach ? renderMarkdown(project.solutionApproach) : null,
+    project.lessonsLearned ? renderMarkdown(project.lessonsLearned) : null,
   ]);
 
   return (
@@ -210,54 +219,58 @@ export default async function ProjectPage({
       )}
 
       {/* Case Study Content */}
-      {(project.problemStatement || project.solutionApproach || project.lessonsLearned || project.longDescription) && (
-        <section className="px-6 pb-12 sm:pb-16 max-w-3xl mx-auto prose prose-invert">
+      {(longDescriptionHtml || problemStatementHtml || solutionApproachHtml || lessonsLearnedHtml) && (
+        <section className="px-6 pb-12 sm:pb-16 max-w-3xl mx-auto">
           <h2 className="text-display-md font-semibold text-text-primary mb-6">
             Case Study
           </h2>
 
           {/* Long Description */}
-          {project.longDescription && (
+          {longDescriptionHtml && (
             <div className="mb-12">
-              <div className="text-body-lg text-text-primary leading-relaxed whitespace-pre-wrap">
-                {project.longDescription}
-              </div>
+              <div
+                className="prose prose-invert max-w-none prose-headings:text-text-primary prose-p:text-text-secondary prose-a:text-brand-secondary prose-a:hover:text-brand-primary prose-strong:text-text-primary prose-code:text-brand-accent prose-code:bg-bg-surface prose-code:px-2 prose-code:py-1 prose-code:rounded prose-ul:text-text-primary prose-ol:text-text-primary prose-li:text-text-secondary"
+                dangerouslySetInnerHTML={{ __html: longDescriptionHtml }}
+              />
             </div>
           )}
 
           {/* Problem Statement */}
-          {project.problemStatement && (
+          {problemStatementHtml && (
             <div className="mb-12">
               <h3 className="text-display-sm font-semibold text-text-primary mb-4">
                 Problem Statement
               </h3>
-              <div className="text-body-lg text-text-primary leading-relaxed whitespace-pre-wrap">
-                {project.problemStatement}
-              </div>
+              <div
+                className="prose prose-invert max-w-none prose-headings:text-text-primary prose-p:text-text-secondary prose-a:text-brand-secondary prose-a:hover:text-brand-primary prose-strong:text-text-primary prose-code:text-brand-accent prose-code:bg-bg-surface prose-code:px-2 prose-code:py-1 prose-code:rounded prose-ul:text-text-primary prose-ol:text-text-primary prose-li:text-text-secondary"
+                dangerouslySetInnerHTML={{ __html: problemStatementHtml }}
+              />
             </div>
           )}
 
           {/* Solution Approach */}
-          {project.solutionApproach && (
+          {solutionApproachHtml && (
             <div className="mb-12">
               <h3 className="text-display-sm font-semibold text-text-primary mb-4">
                 Solution Approach
               </h3>
-              <div className="text-body-lg text-text-primary leading-relaxed whitespace-pre-wrap">
-                {project.solutionApproach}
-              </div>
+              <div
+                className="prose prose-invert max-w-none prose-headings:text-text-primary prose-p:text-text-secondary prose-a:text-brand-secondary prose-a:hover:text-brand-primary prose-strong:text-text-primary prose-code:text-brand-accent prose-code:bg-bg-surface prose-code:px-2 prose-code:py-1 prose-code:rounded prose-ul:text-text-primary prose-ol:text-text-primary prose-li:text-text-secondary"
+                dangerouslySetInnerHTML={{ __html: solutionApproachHtml }}
+              />
             </div>
           )}
 
           {/* Lessons Learned */}
-          {project.lessonsLearned && (
+          {lessonsLearnedHtml && (
             <div className="mb-12">
               <h3 className="text-display-sm font-semibold text-text-primary mb-4">
                 Lessons Learned
               </h3>
-              <div className="text-body-lg text-text-primary leading-relaxed whitespace-pre-wrap">
-                {project.lessonsLearned}
-              </div>
+              <div
+                className="prose prose-invert max-w-none prose-headings:text-text-primary prose-p:text-text-secondary prose-a:text-brand-secondary prose-a:hover:text-brand-primary prose-strong:text-text-primary prose-code:text-brand-accent prose-code:bg-bg-surface prose-code:px-2 prose-code:py-1 prose-code:rounded prose-ul:text-text-primary prose-ol:text-text-primary prose-li:text-text-secondary"
+                dangerouslySetInnerHTML={{ __html: lessonsLearnedHtml }}
+              />
             </div>
           )}
         </section>
