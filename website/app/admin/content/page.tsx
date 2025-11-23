@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { DailyUpdateGenerator } from '@/components/admin/DailyUpdateGenerator';
+import { ProgressReportGenerator } from '@/components/admin/ProgressReportGenerator';
 import { ContentPreviewModal } from '@/components/admin/ContentPreviewModal';
 
 interface Post {
@@ -32,6 +33,7 @@ export default function ContentPage() {
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [publishError, setPublishError] = useState('');
   const [deletingId, setDeletingId] = useState<DeletingState>(null);
+  const [previewPostType, setPreviewPostType] = useState<'daily-update' | 'progress-report'>('daily-update');
 
   // Fetch recent posts on mount
   useEffect(() => {
@@ -84,6 +86,13 @@ export default function ContentPage() {
 
   const handleGeneratePreview = (generatedPreview: any) => {
     setPreview(generatedPreview);
+    setPreviewPostType('daily-update');
+    setShowPreviewModal(true);
+  };
+
+  const handleProgressReportPreview = (generatedPreview: any) => {
+    setPreview(generatedPreview);
+    setPreviewPostType('progress-report');
     setShowPreviewModal(true);
   };
 
@@ -101,7 +110,7 @@ export default function ContentPage() {
           excerpt: preview.excerpt,
           tags: preview.tags,
           readTime: preview.readTime,
-          postType: 'daily-update',
+          postType: previewPostType,
           published: data.published,
         }),
       });
@@ -115,7 +124,8 @@ export default function ContentPage() {
         await fetchRecentPosts();
 
         // Show success message
-        alert(data.published ? 'Daily update published!' : 'Daily update saved as draft!');
+        const typeLabel = previewPostType === 'progress-report' ? 'Progress report' : 'Daily update';
+        alert(data.published ? `${typeLabel} published!` : `${typeLabel} saved as draft!`);
       } else {
         const error = await res.json();
         setPublishError(error.error || 'Failed to publish');
@@ -147,6 +157,12 @@ export default function ContentPage() {
         <div className="space-y-8">
           {/* Daily Update Generator */}
           <DailyUpdateGenerator onGenerate={handleGeneratePreview} />
+
+          {/* Divider */}
+          <hr className="border-border-subtle" />
+
+          {/* Progress Report Generator */}
+          <ProgressReportGenerator onGenerate={handleProgressReportPreview} />
 
           {/* Divider */}
           <hr className="border-border-subtle" />
@@ -202,6 +218,9 @@ export default function ContentPage() {
                           </Badge>
                           {post.postType === 'daily-update' && (
                             <Badge variant="info">Daily Update</Badge>
+                          )}
+                          {post.postType === 'progress-report' && (
+                            <Badge variant="info">Progress Report</Badge>
                           )}
                         </div>
 

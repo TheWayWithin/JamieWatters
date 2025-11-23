@@ -210,76 +210,58 @@ export default async function ProjectPage({
       )}
 
       {/* Case Study Content */}
-      <section className="px-6 pb-12 sm:pb-16 max-w-3xl mx-auto prose prose-invert">
-        <h2 className="text-display-md font-semibold text-text-primary mb-6">
-          Case Study
-        </h2>
+      {(project.problemStatement || project.solutionApproach || project.lessonsLearned || project.longDescription) && (
+        <section className="px-6 pb-12 sm:pb-16 max-w-3xl mx-auto prose prose-invert">
+          <h2 className="text-display-md font-semibold text-text-primary mb-6">
+            Case Study
+          </h2>
 
-        {/* Problem Statement */}
-        <div className="mb-12">
-          <h3 className="text-display-sm font-semibold text-text-primary mb-4">
-            Problem Statement
-          </h3>
-          <p className="text-body-lg text-text-primary leading-relaxed mb-4">
-            {project.description.split('.')[0] + '.'} This project addresses a critical need in the market. This section will contain
-            detailed analysis of the problem this project solves.
-          </p>
-          <p className="text-body-lg text-text-primary leading-relaxed">
-            Key challenges identified and validated through user research.
-          </p>
-        </div>
+          {/* Long Description */}
+          {project.longDescription && (
+            <div className="mb-12">
+              <div className="text-body-lg text-text-primary leading-relaxed whitespace-pre-wrap">
+                {project.longDescription}
+              </div>
+            </div>
+          )}
 
-        {/* Solution Approach */}
-        <div className="mb-12">
-          <h3 className="text-display-sm font-semibold text-text-primary mb-4">
-            Solution Approach
-          </h3>
-          <p className="text-body-lg text-text-primary leading-relaxed mb-4">
-            Built with {project.techStack[0]} to provide a scalable, performant solution.
-            The architecture prioritizes speed and reliability.
-          </p>
-          <ul className="list-disc list-inside text-body-lg text-text-primary space-y-2 ml-4">
-            <li>Modern tech stack for rapid iteration</li>
-            <li>AI-powered features for automation</li>
-            <li>Built for scale from day one</li>
-          </ul>
-        </div>
+          {/* Problem Statement */}
+          {project.problemStatement && (
+            <div className="mb-12">
+              <h3 className="text-display-sm font-semibold text-text-primary mb-4">
+                Problem Statement
+              </h3>
+              <div className="text-body-lg text-text-primary leading-relaxed whitespace-pre-wrap">
+                {project.problemStatement}
+              </div>
+            </div>
+          )}
 
-        {/* Implementation Details */}
-        <div className="mb-12">
-          <h3 className="text-display-sm font-semibold text-text-primary mb-4">
-            Implementation Details
-          </h3>
-          <p className="text-body-lg text-text-primary leading-relaxed mb-4">
-            Technical implementation highlights and key architectural decisions.
-          </p>
+          {/* Solution Approach */}
+          {project.solutionApproach && (
+            <div className="mb-12">
+              <h3 className="text-display-sm font-semibold text-text-primary mb-4">
+                Solution Approach
+              </h3>
+              <div className="text-body-lg text-text-primary leading-relaxed whitespace-pre-wrap">
+                {project.solutionApproach}
+              </div>
+            </div>
+          )}
 
-          {/* Code snippet example */}
-          <div className="bg-bg-surface border border-border-default rounded-lg p-4 mb-4">
-            <pre className="text-sm font-mono text-text-primary overflow-x-auto">
-              <code>{`// Example implementation
-const solution = {
-  framework: "${project.techStack[0]}",
-  deployment: "automated",
-  monitoring: "real-time"
-};`}</code>
-            </pre>
-          </div>
-        </div>
-
-        {/* Lessons Learned */}
-        <div className="mb-12">
-          <h3 className="text-display-sm font-semibold text-text-primary mb-4">
-            Lessons Learned
-          </h3>
-          <ul className="list-disc list-inside text-body-lg text-text-primary space-y-3 ml-4">
-            <li>Ship fast, iterate based on real usage</li>
-            <li>Focus on core value proposition first</li>
-            <li>Monitor metrics from day one</li>
-            <li>Build in public for accountability</li>
-          </ul>
-        </div>
-      </section>
+          {/* Lessons Learned */}
+          {project.lessonsLearned && (
+            <div className="mb-12">
+              <h3 className="text-display-sm font-semibold text-text-primary mb-4">
+                Lessons Learned
+              </h3>
+              <div className="text-body-lg text-text-primary leading-relaxed whitespace-pre-wrap">
+                {project.lessonsLearned}
+              </div>
+            </div>
+          )}
+        </section>
+      )}
 
       {/* Related Projects */}
       {relatedProjects.length > 0 && (
