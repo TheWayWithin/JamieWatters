@@ -1,37 +1,36 @@
 /**
- * API Route: Generate Blog Post from Progress Report
+ * API Route: Generate Blog Post from Progress Report (GitHub)
  *
- * Reads a local progress report file and generates a blog-ready
- * post with issues and learnings included for authentic content.
+ * Fetches a progress report file from a project's GitHub repository
+ * and generates a blog-ready post with issues and learnings included.
  *
  * POST /api/admin/content/generate-from-progress
- * Body: { filePath: string, format?: 'full' | 'summary' }
+ * Body: { projectId: string, repoPath: string, format?: 'full' | 'summary' }
  * Returns: { success: true, preview: ProgressReportOutput }
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken, extractTokenFromRequest } from '@/lib/auth';
-import { promises as fs } from 'fs';
-import path from 'path';
+import { prisma } from '@/lib/prisma';
+import { parseGitHubUrl, fetchFileFromGitHub, GitHubConfig } from '@/lib/github';
 import { parseProgressReport } from '@/lib/progress-parser';
 import { generateProgressBlogPost, generateProgressSummary } from '@/lib/progress-report-generator';
+import { decryptToken } from '@/lib/encryption';
 import { z } from 'zod';
 
-// Force Node.js runtime for auth and file operations
+// Force Node.js runtime for auth and encryption
 export const runtime = 'nodejs';
-
-// Base directory for progress files (relative to project root)
-const PROGRESS_DIR = process.env.PROGRESS_DIR || 'progress';
 
 // Request validation schema
 const requestSchema = z.object({
-  filePath: z.string().min(1, 'filePath is required'),
+  projectId: z.string().min(1, 'projectId is required'),
+  repoPath: z.string().min(1, 'repoPath is required'),
   format: z.enum(['full', 'summary']).optional().default('full'),
 });
 
 export async function POST(req: NextRequest) {
   try {
-    // Verify authentication (same pattern as generate-daily)
+    // Verify authentication
     const token = extractTokenFromRequest(req) || req.headers.get('x-auth-token');
 
     if (!token) {
@@ -54,46 +53,105 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { filePath, format } = validation.data;
+    const { projectId, repoPath, format } = validation.data;
 
-    // Security: Validate file path to prevent directory traversal
-    const normalizedPath = path.normalize(filePath);
-    if (normalizedPath.includes('..') || path.isAbsolute(normalizedPath)) {
+    // Security: Validate repoPath doesn't contain directory traversal
+    if (repoPath.includes('..') || !repoPath.startsWith('progress/')) {
       return NextResponse.json(
-        { error: 'Invalid file path' },
+        { error: 'Invalid file path. Must be within progress directory.' },
         { status: 400 }
       );
     }
 
     // Ensure the file has .md extension
-    if (!normalizedPath.endsWith('.md')) {
+    if (!repoPath.endsWith('.md')) {
       return NextResponse.json(
         { error: 'Only .md files are allowed' },
         { status: 400 }
       );
     }
 
-    // Construct full file path
-    const fullPath = path.join(process.cwd(), PROGRESS_DIR, normalizedPath);
+    // Fetch the project from database
+    const project = await prisma.project.findUnique({
+      where: { id: projectId },
+      select: {
+        id: true,
+        name: true,
+        githubUrl: true,
+        githubToken: true,
+        trackProgress: true,
+      },
+    });
 
-    // Verify the file is within the progress directory
-    const progressDirFull = path.join(process.cwd(), PROGRESS_DIR);
-    if (!fullPath.startsWith(progressDirFull)) {
+    if (!project) {
       return NextResponse.json(
-        { error: 'File must be within progress directory' },
+        { error: 'Project not found' },
+        { status: 404 }
+      );
+    }
+
+    if (!project.githubUrl) {
+      return NextResponse.json(
+        { error: 'Project does not have a GitHub URL configured' },
         { status: 400 }
       );
     }
 
-    // Read the file
+    // Parse GitHub URL
+    const parsed = parseGitHubUrl(project.githubUrl);
+    if (!parsed) {
+      return NextResponse.json(
+        { error: 'Invalid GitHub URL format for project' },
+        { status: 400 }
+      );
+    }
+
+    // Build GitHub config
+    const config: GitHubConfig = {
+      owner: parsed.owner,
+      repo: parsed.repo,
+    };
+
+    // Decrypt token if exists
+    if (project.githubToken) {
+      try {
+        config.token = decryptToken(project.githubToken);
+      } catch (error) {
+        console.error(`Failed to decrypt token for project ${project.name}`);
+        return NextResponse.json(
+          { error: 'Failed to decrypt GitHub token' },
+          { status: 500 }
+        );
+      }
+    }
+
+    // Fetch the file from GitHub
     let fileContent: string;
     try {
-      fileContent = await fs.readFile(fullPath, 'utf-8');
-    } catch (readError) {
-      console.error('Error reading progress file:', readError);
+      fileContent = await fetchFileFromGitHub(config, repoPath);
+    } catch (fetchError) {
+      console.error('Error fetching progress file from GitHub:', fetchError);
+
+      // Handle specific GitHub errors
+      if (fetchError && typeof fetchError === 'object' && 'status' in fetchError) {
+        const status = (fetchError as { status: number }).status;
+        if (status === 404) {
+          return NextResponse.json(
+            { error: 'Progress file not found in repository' },
+            { status: 404 }
+          );
+        }
+        if (status === 403) {
+          return NextResponse.json(
+            { error: 'Access denied. Check GitHub token permissions.' },
+            { status: 403 }
+          );
+        }
+      }
+
       return NextResponse.json(
-        { error: 'Progress file not found', details: `Could not read: ${normalizedPath}` },
-        { status: 404 }
+        { error: 'Failed to fetch progress file from GitHub' },
+        { status: 500 }
       );
     }
 
@@ -109,13 +167,14 @@ export async function POST(req: NextRequest) {
       success: true,
       preview,
       parsed: {
-        projectName: parsedReport.projectName,
+        projectId: project.id,
+        projectName: project.name,
         date: parsedReport.date,
         taskCount: parsedReport.completedTasks.length,
         issueCount: parsedReport.issues.length,
         hasImpact: !!parsedReport.impactSummary,
-        nextStepCount: parsedReport.nextSteps.length
-      }
+        nextStepCount: parsedReport.nextSteps.length,
+      },
     });
 
   } catch (error) {

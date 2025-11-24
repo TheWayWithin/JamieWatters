@@ -222,6 +222,124 @@ export async function fetchProjectPlan(config: GitHubConfig): Promise<string> {
   return fetchFileFromGitHub(config, 'project-plan.md');
 }
 
+export interface GitHubDirectoryEntry {
+  name: string;        // File or directory name
+  path: string;        // Full path in repo
+  type: 'file' | 'dir';
+  size: number;        // Size in bytes (0 for directories)
+  sha: string;         // Git SHA
+}
+
+/**
+ * List contents of a directory from GitHub
+ *
+ * @param config - GitHub configuration (owner, repo, optional token)
+ * @param dirPath - Path to directory in repository (e.g., "progress")
+ * @param branch - Optional branch name (default: repository's default branch)
+ * @returns Array of directory entries
+ * @throws GitHubError with status code and message
+ */
+export async function listDirectoryFromGitHub(
+  config: GitHubConfig,
+  dirPath: string,
+  branch?: string
+): Promise<GitHubDirectoryEntry[]> {
+  try {
+    const { owner, repo, token } = config;
+
+    // Build API URL
+    let url = `https://api.github.com/repos/${owner}/${repo}/contents/${dirPath}`;
+    if (branch) {
+      url += `?ref=${encodeURIComponent(branch)}`;
+    }
+
+    // Build headers
+    const headers: HeadersInit = {
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      'User-Agent': 'JamieWatters-BuildInPublic/1.0',
+    };
+
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers,
+      next: { revalidate: 60 },
+    });
+
+    // Handle rate limiting
+    if (response.status === 403) {
+      const rateLimitRemaining = response.headers.get('x-ratelimit-remaining');
+      const rateLimitReset = response.headers.get('x-ratelimit-reset');
+
+      if (rateLimitRemaining === '0') {
+        const resetDate = rateLimitReset
+          ? new Date(parseInt(rateLimitReset) * 1000)
+          : new Date(Date.now() + 3600000);
+
+        const error: GitHubError = {
+          status: 403,
+          message: 'GitHub API rate limit exceeded',
+          rateLimitRemaining: 0,
+          rateLimitReset: resetDate,
+        };
+        throw error;
+      }
+
+      const error: GitHubError = {
+        status: 403,
+        message: 'Access forbidden. Check repository permissions or token.',
+      };
+      throw error;
+    }
+
+    // Handle not found (directory doesn't exist)
+    if (response.status === 404) {
+      // Return empty array instead of throwing - directory just doesn't exist yet
+      return [];
+    }
+
+    if (!response.ok) {
+      const error: GitHubError = {
+        status: response.status,
+        message: `GitHub API error: ${response.statusText}`,
+      };
+      throw error;
+    }
+
+    const data = await response.json();
+
+    // GitHub returns an array for directories
+    if (!Array.isArray(data)) {
+      // Path points to a file, not a directory
+      return [];
+    }
+
+    // Map to our interface
+    return data.map((entry: { name: string; path: string; type: string; size: number; sha: string }) => ({
+      name: entry.name,
+      path: entry.path,
+      type: entry.type === 'dir' ? 'dir' : 'file',
+      size: entry.size || 0,
+      sha: entry.sha,
+    }));
+
+  } catch (error) {
+    if (error && typeof error === 'object' && 'status' in error) {
+      throw error;
+    }
+
+    console.error('GitHub API error:', error instanceof Error ? error.message : 'Unknown error');
+    throw {
+      status: 500,
+      message: error instanceof Error ? error.message : 'Failed to list directory from GitHub',
+    } as GitHubError;
+  }
+}
+
 /**
  * Format GitHub error for user display
  *
