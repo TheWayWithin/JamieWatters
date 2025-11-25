@@ -1,33 +1,45 @@
-// Completed milestones - evidence of progress
+// Completed milestones - real progress, honestly documented
 export const ACHIEVEMENTS = [
   {
-    date: '2025-10-15',
-    title: 'Launched JamieWatters.work',
-    description: 'Personal brand site with real-time metrics and transparent tracking',
-    icon: '🚀',
+    date: '2025-05-01',
+    title: 'Started Coding Journey',
+    description: 'Built FreeCalcHub as first AI-assisted coding project. Zero coding experience to shipping in weeks.',
+    icon: '🎯',
+  },
+  {
+    date: '2025-07-01',
+    title: 'The Pivot: AI Search Realization',
+    description: 'Built AImpactScanner after realizing websites are meaningless without AI search optimization.',
+    icon: '🔍',
+  },
+  {
+    date: '2025-08-01',
+    title: 'Created Development Infrastructure',
+    description: 'Shipped LLMtxtMastery, AGENT-11, Evolve-7, and BOS-AI suite. Built the tools to build faster.',
+    icon: '🛠️',
+  },
+  {
+    date: '2025-09-01',
+    title: 'Launched Solo Market Platform',
+    description: 'Built marketplace for solopreneur apps before having products to sell. Building the platform first.',
+    icon: '🏪',
   },
   {
     date: '2025-11-01',
-    title: 'First Paying Customer',
-    description: 'Validated product-market fit with $99 MRR',
-    icon: '💰',
+    title: 'Shipped JamieWatters.work',
+    description: 'Personal build-in-public site with admin dashboard, progress tracking, and GitHub integration.',
+    icon: '📝',
   },
   {
-    date: '2025-11-10',
-    title: 'Built 6 Active Products',
-    description: 'Portfolio diversification across SaaS, tools, and frameworks',
-    icon: '📦',
-  },
-  {
-    date: '2025-11-15',
-    title: 'Shipped Admin Dashboard',
-    description: 'Full CMS with content management and project tracking',
-    icon: '⚙️',
+    date: '2025-11-23',
+    title: '10+ Projects Built in 6 Months',
+    description: 'From zero code to 10+ projects. Zero revenue yet—but massive execution. Time to sell.',
+    icon: '🚀',
   },
 ] as const;
 
 export const NEXT_MILESTONE = {
-  title: 'First $1K MRR',
-  description: 'Scaling from multiple product revenue streams',
-  // No date - just the goal
+  title: 'First Dollar of Revenue',
+  description: 'Built the stack. Now shifting focus from building to marketing, validation, and customer acquisition.',
+  // No date - the next frontier
 } as const;

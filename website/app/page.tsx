@@ -229,8 +229,7 @@ export default async function Home() {
               Journey So Far
             </h2>
             <p className="text-body-base text-text-secondary max-w-2xl mx-auto">
-              Milestones achieved on the path to building a billion-dollar portfolio.
-              Each win validates the systematic approach.
+              Honest milestones from 6 months of building. From zero coding experience to 10+ shipped projects. Zero revenue, but massive momentum.
             </p>
           </div>
 
