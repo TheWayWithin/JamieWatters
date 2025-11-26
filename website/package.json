@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "verify:deps": "node scripts/verify-dependencies.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
@@ -43,6 +44,7 @@
   "devDependencies": {
     "@netlify/plugin-nextjs": "^5.14.5",
     "@next/bundle-analyzer": "^15.5.4",
+    "@tailwindcss/typography": "^0.5.19",
     "@types/bcrypt": "^6.0.0",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
