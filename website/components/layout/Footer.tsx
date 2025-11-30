@@ -18,7 +18,7 @@ export default function Footer() {
       icon: Twitter,
     },
     {
-      href: 'https://linkedin.com/in/jamiewatters',
+      href: 'https://www.linkedin.com/in/jamie-watters-solo',
       label: 'LinkedIn',
       icon: Linkedin,
     },

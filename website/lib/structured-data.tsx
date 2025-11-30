@@ -30,7 +30,7 @@ export function getPersonSchema() {
     image: `${SITE_URL}/images/jamie-profile.jpg`,
     sameAs: [
       'https://twitter.com/jamiewatters',
-      'https://linkedin.com/in/jamiewatters',
+      'https://www.linkedin.com/in/jamie-watters-solo',
       'https://github.com/TheWayWithin',
     ],
     knowsAbout: [

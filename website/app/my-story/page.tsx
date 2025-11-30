@@ -298,7 +298,7 @@ export default function MyStoryPage() {
               <Twitter className="w-8 h-8" />
             </a>
             <a
-              href="https://linkedin.com/in/jamiewatters"
+              href="https://www.linkedin.com/in/jamie-watters-solo"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Connect on LinkedIn"
