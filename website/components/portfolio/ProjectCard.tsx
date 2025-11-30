@@ -3,6 +3,8 @@ import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
 import { ExternalLink, Github } from 'lucide-react';
 import type { ProjectWithMetrics } from '@/lib/database';
+import { ProjectType } from '@prisma/client';
+import { METRIC_TEMPLATES, formatMetricValue, type MetricDefinition } from '@/lib/metrics';
 
 interface ProjectCardProps {
   project: ProjectWithMetrics;
@@ -18,6 +20,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
     MVP: 'bg-cyan-500/15 text-cyan-400',
     LIVE: 'bg-green-500/15 text-green-400',
     ARCHIVED: 'bg-gray-500/15 text-gray-400',
+    ACTIVE: 'bg-green-500/15 text-green-400', // Legacy - same as LIVE
   };
 
   return (
@@ -44,20 +47,46 @@ export function ProjectCard({ project }: ProjectCardProps) {
         {project.description}
       </p>
 
-      {/* Metrics */}
+      {/* Dynamic Metrics based on Project Type */}
       <div className="flex gap-4 mb-4 pb-4 border-b border-white/10">
-        <div>
-          <div className="text-xs text-text-tertiary">MRR</div>
-          <div className="text-lg font-semibold text-brand-accent">
-            ${Number(project.mrr).toFixed(2)}
-          </div>
-        </div>
-        <div>
-          <div className="text-xs text-text-tertiary">Users</div>
-          <div className="text-lg font-semibold text-brand-accent">
-            {project.users.toLocaleString()}
-          </div>
-        </div>
+        {(() => {
+          const projectType = (project.projectType as ProjectType) || ProjectType.SAAS;
+          const metrics = METRIC_TEMPLATES[projectType]?.slice(0, 2) || [];
+          const customMetrics = project.customMetrics as Record<string, number> | null;
+
+          // For SAAS, use legacy mrr/users if no customMetrics
+          if (projectType === ProjectType.SAAS && (!customMetrics || Object.keys(customMetrics).length === 0)) {
+            return (
+              <>
+                <div>
+                  <div className="text-xs text-text-tertiary">MRR</div>
+                  <div className="text-lg font-semibold text-brand-accent">
+                    {formatMetricValue(Number(project.mrr), 'currency')}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs text-text-tertiary">Users</div>
+                  <div className="text-lg font-semibold text-brand-accent">
+                    {formatMetricValue(project.users, 'number')}
+                  </div>
+                </div>
+              </>
+            );
+          }
+
+          // For other project types, show first 2 metrics from template
+          return metrics.map((metric: MetricDefinition) => {
+            const value = customMetrics?.[metric.key] ?? 0;
+            return (
+              <div key={metric.key}>
+                <div className="text-xs text-text-tertiary">{metric.label}</div>
+                <div className="text-lg font-semibold text-brand-accent">
+                  {formatMetricValue(value, metric.format)}
+                </div>
+              </div>
+            );
+          });
+        })()}
       </div>
 
       {/* Tech Stack */}

@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { generateSlug } from '@/lib/validations/project';
+import { ProjectType } from '@prisma/client';
+import { METRIC_TEMPLATES, type MetricDefinition, formatMetricValue } from '@/lib/metrics';
 
 interface Project {
   id: string;
@@ -16,9 +18,11 @@ interface Project {
   techStack: string[];
   category: string;
   status: string;
+  projectType: string;
   featured: boolean;
   mrr: number;
   users: number;
+  customMetrics?: Record<string, number> | null;
   problemStatement?: string | null;
   solutionApproach?: string | null;
   lessonsLearned?: string | null;
@@ -48,9 +52,15 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
   const [techStack, setTechStack] = useState(project?.techStack.join(', ') || '');
   const [category, setCategory] = useState(project?.category || 'AI_TOOLS');
   const [status, setStatus] = useState(project?.status || 'LIVE');
+  const [projectType, setProjectType] = useState<ProjectType>(
+    (project?.projectType as ProjectType) || ProjectType.SAAS
+  );
   const [featured, setFeatured] = useState(project?.featured || false);
   const [mrr, setMrr] = useState(project?.mrr?.toString() || '0');
   const [users, setUsers] = useState(project?.users?.toString() || '0');
+  const [metricsData, setMetricsData] = useState<Record<string, number | undefined>>(
+    project?.customMetrics || {}
+  );
   const [launchedAt, setLaunchedAt] = useState(project?.launchedAt || '');
   const [problemStatement, setProblemStatement] = useState(project?.problemStatement || '');
   const [solutionApproach, setSolutionApproach] = useState(project?.solutionApproach || '');
@@ -96,9 +106,17 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
         techStack: techStackArray,
         category,
         status,
+        projectType,
         featured,
-        mrr: parseFloat(mrr) || 0,
-        users: parseInt(users) || 0,
+        // Legacy mrr/users fields for backward compatibility
+        mrr: projectType === ProjectType.SAAS
+          ? (metricsData.mrr ?? parseFloat(mrr) ?? 0)
+          : (parseFloat(mrr) || 0),
+        users: projectType === ProjectType.SAAS
+          ? (metricsData.activeUsers ?? parseInt(users) ?? 0)
+          : (parseInt(users) || 0),
+        // New configurable metrics
+        customMetrics: Object.keys(metricsData).length > 0 ? metricsData : null,
         launchedAt: launchedAt ? new Date(launchedAt).toISOString() : null,
         problemStatement: problemStatement.trim() || null,
         solutionApproach: solutionApproach.trim() || null,
@@ -304,6 +322,31 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
                 <option value="ARCHIVED">Archived</option>
               </select>
             </div>
+
+            <div>
+              <label htmlFor="projectType" className="block text-body-sm font-medium text-text-primary mb-2">
+                Project Type *
+              </label>
+              <select
+                id="projectType"
+                value={projectType}
+                onChange={(e) => {
+                  const newType = e.target.value as ProjectType;
+                  setProjectType(newType);
+                  // Reset metrics when type changes
+                  setMetricsData({});
+                }}
+                className="w-full bg-bg-primary border border-border-default rounded-md px-4 py-3 text-body text-text-primary focus:border-brand-primary transition-base"
+                disabled={loading}
+              >
+                <option value="SAAS">SaaS Product</option>
+                <option value="TRADING">Trading Tool</option>
+                <option value="OPEN_SOURCE">Open Source</option>
+                <option value="CONTENT">Content Site</option>
+                <option value="PERSONAL">Personal Website</option>
+                <option value="MARKETPLACE">Marketplace</option>
+              </select>
+            </div>
           </div>
 
           <div className="mt-4">
@@ -320,37 +363,62 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
           </div>
         </div>
 
-        {/* Metrics */}
+        {/* Dynamic Metrics based on Project Type */}
         <div className="bg-bg-surface border border-border-default rounded-lg p-6">
-          <h2 className="text-display-sm font-semibold text-text-primary mb-6">Metrics</h2>
+          <h2 className="text-display-sm font-semibold text-text-primary mb-6">
+            Metrics
+            <span className="text-body-sm font-normal text-text-tertiary ml-2">
+              ({projectType.replace('_', ' ')} metrics)
+            </span>
+          </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="mrr" className="block text-body-sm font-medium text-text-primary mb-2">
-                Monthly Recurring Revenue (MRR)
-              </label>
-              <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary">$</span>
-                <input
-                  id="mrr"
-                  type="number"
-                  step="0.01"
-                  value={mrr}
-                  onChange={(e) => setMrr(e.target.value)}
-                  className="w-full bg-bg-primary border border-border-default rounded-md pl-8 pr-4 py-3 text-body text-text-primary focus:border-brand-primary transition-base"
-                  disabled={loading}
-                />
+            {METRIC_TEMPLATES[projectType]?.map((metric: MetricDefinition) => (
+              <div key={metric.key}>
+                <label
+                  htmlFor={`metric-${metric.key}`}
+                  className="block text-body-sm font-medium text-text-primary mb-2"
+                >
+                  {metric.label}
+                  {metric.description && (
+                    <span className="text-text-tertiary font-normal ml-1">
+                      ({metric.description})
+                    </span>
+                  )}
+                </label>
+                <div className="relative">
+                  {metric.format === 'currency' && (
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary">
+                      $
+                    </span>
+                  )}
+                  <input
+                    id={`metric-${metric.key}`}
+                    type="number"
+                    step={metric.format === 'currency' ? '0.01' : '1'}
+                    value={metricsData[metric.key] ?? ''}
+                    onChange={(e) =>
+                      setMetricsData((prev) => ({
+                        ...prev,
+                        [metric.key]: e.target.value === '' ? undefined : parseFloat(e.target.value),
+                      }))
+                    }
+                    className={`w-full bg-bg-primary border border-border-default rounded-md py-3 text-body text-text-primary focus:border-brand-primary transition-base ${
+                      metric.format === 'currency' ? 'pl-8 pr-4' : 'px-4'
+                    } ${metric.format === 'percent' ? 'pr-8' : ''}`}
+                    disabled={loading}
+                    placeholder={`Enter ${metric.label.toLowerCase()}`}
+                  />
+                  {metric.format === 'percent' && (
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-text-secondary">
+                      %
+                    </span>
+                  )}
+                </div>
               </div>
-            </div>
+            ))}
 
-            <Input
-              label="Active Users"
-              type="number"
-              value={users}
-              onChange={(e) => setUsers(e.target.value)}
-              disabled={loading}
-            />
-
+            {/* Launch Date - always shown for all project types */}
             <Input
               label="Launch Date"
               type="date"
@@ -360,6 +428,12 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
               disabled={loading}
             />
           </div>
+
+          {(!METRIC_TEMPLATES[projectType] || METRIC_TEMPLATES[projectType].length === 0) && (
+            <p className="text-body-sm text-text-tertiary mt-4">
+              No metrics configured for this project type.
+            </p>
+          )}
         </div>
 
         {/* Case Study Content */}

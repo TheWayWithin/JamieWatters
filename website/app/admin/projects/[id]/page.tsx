@@ -16,9 +16,11 @@ interface Project {
   techStack: string[];
   category: string;
   status: string;
+  projectType: string;
   featured: boolean;
   mrr: number;
   users: number;
+  customMetrics?: Record<string, number> | null;
   problemStatement?: string | null;
   solutionApproach?: string | null;
   lessonsLearned?: string | null;

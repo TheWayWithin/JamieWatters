@@ -12,6 +12,8 @@ import {
   getBreadcrumbSchema,
   renderStructuredData,
 } from '@/lib/structured-data';
+import { ProjectType } from '@prisma/client';
+import { METRIC_TEMPLATES, formatMetricValue, type MetricDefinition } from '@/lib/metrics';
 
 // Generate static params for all projects (SSG)
 export async function generateStaticParams() {
@@ -58,6 +60,7 @@ export default async function ProjectPage({
     MVP: 'warning',
     LIVE: 'success',
     ARCHIVED: 'error',
+    ACTIVE: 'success', // Legacy - same as LIVE
   };
 
   // Generate structured data for SEO
@@ -146,35 +149,76 @@ export default async function ProjectPage({
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {/* MRR */}
-          <div className="bg-bg-surface border border-border-default rounded-lg p-6">
-            <div className="text-4xl font-bold text-brand-accent font-mono mb-2">
-              ${Number(project.mrr).toFixed(2)}
-            </div>
-            <div className="text-body-sm text-text-secondary">
-              Monthly Recurring Revenue
-            </div>
-          </div>
+          {(() => {
+            const projectType = (project.projectType as ProjectType) || ProjectType.SAAS;
+            const metrics = METRIC_TEMPLATES[projectType] || [];
+            const customMetrics = project.customMetrics as Record<string, number> | null;
 
-          {/* Users */}
-          <div className="bg-bg-surface border border-border-default rounded-lg p-6">
-            <div className="text-4xl font-bold text-brand-accent font-mono mb-2">
-              {project.users.toLocaleString()}
-            </div>
-            <div className="text-body-sm text-text-secondary">
-              Active Users
-            </div>
-          </div>
+            // For SAAS, use legacy mrr/users if no customMetrics
+            if (projectType === ProjectType.SAAS && (!customMetrics || Object.keys(customMetrics).length === 0)) {
+              return (
+                <>
+                  {/* MRR */}
+                  <div className="bg-bg-surface border border-border-default rounded-lg p-6">
+                    <div className="text-4xl font-bold text-brand-accent font-mono mb-2">
+                      {formatMetricValue(Number(project.mrr), 'currency')}
+                    </div>
+                    <div className="text-body-sm text-text-secondary">
+                      Monthly Recurring Revenue
+                    </div>
+                  </div>
 
-          {/* Status */}
-          <div className="bg-bg-surface border border-border-default rounded-lg p-6">
-            <div className="text-2xl font-semibold text-text-primary mb-2 capitalize">
-              {project.status.charAt(0) + project.status.slice(1).toLowerCase()}
-            </div>
-            <div className="text-body-sm text-text-secondary">
-              Status
-            </div>
-          </div>
+                  {/* Users */}
+                  <div className="bg-bg-surface border border-border-default rounded-lg p-6">
+                    <div className="text-4xl font-bold text-brand-accent font-mono mb-2">
+                      {formatMetricValue(project.users, 'number')}
+                    </div>
+                    <div className="text-body-sm text-text-secondary">
+                      Active Users
+                    </div>
+                  </div>
+
+                  {/* Status */}
+                  <div className="bg-bg-surface border border-border-default rounded-lg p-6">
+                    <div className="text-2xl font-semibold text-text-primary mb-2 capitalize">
+                      {project.status.charAt(0) + project.status.slice(1).toLowerCase()}
+                    </div>
+                    <div className="text-body-sm text-text-secondary">
+                      Status
+                    </div>
+                  </div>
+                </>
+              );
+            }
+
+            // For other project types, show all metrics from template
+            return (
+              <>
+                {metrics.map((metric: MetricDefinition) => {
+                  const value = customMetrics?.[metric.key] ?? 0;
+                  const Icon = metric.icon;
+                  return (
+                    <div key={metric.key} className="bg-bg-surface border border-border-default rounded-lg p-6">
+                      <div className="flex items-center gap-2 mb-2">
+                        {Icon && <Icon className="w-5 h-5 text-brand-accent" />}
+                        <div className="text-body-sm text-text-secondary">
+                          {metric.label}
+                        </div>
+                      </div>
+                      <div className="text-4xl font-bold text-brand-accent font-mono">
+                        {formatMetricValue(value, metric.format)}
+                      </div>
+                      {metric.description && (
+                        <div className="text-caption text-text-tertiary mt-2">
+                          {metric.description}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </>
+            );
+          })()}
         </div>
 
         <p className="text-caption text-text-tertiary mt-4">

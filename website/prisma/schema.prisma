@@ -20,6 +20,8 @@ model Project {
   mrr              Decimal          @default(0) @db.Decimal(10, 2)
   users            Int              @default(0)
   status           ProjectStatus    @default(LIVE)
+  projectType      ProjectType      @default(SAAS)
+  customMetrics    Json?
   problemStatement String?
   solutionApproach String?
   lessonsLearned   String?
@@ -91,4 +93,14 @@ enum ProjectStatus {
   MVP
   LIVE
   ARCHIVED
+  ACTIVE // Legacy value - kept for database compatibility, use LIVE instead
+}
+
+enum ProjectType {
+  SAAS
+  TRADING
+  OPEN_SOURCE
+  CONTENT
+  PERSONAL
+  MARKETPLACE
 }

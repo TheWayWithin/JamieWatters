@@ -10,7 +10,10 @@ import { z } from 'zod';
 const categoryEnum = z.enum(['AI_TOOLS', 'FRAMEWORKS', 'EDUCATION', 'MARKETPLACE', 'PRODUCTIVITY', 'FINANCE', 'WELLBEING', 'OTHER']);
 
 // Valid project statuses (must match Prisma enum) - in chronological order
-const statusEnum = z.enum(['RESEARCH', 'DESIGN', 'PLANNING', 'BUILD', 'BETA', 'MVP', 'LIVE', 'ARCHIVED']);
+const statusEnum = z.enum(['RESEARCH', 'DESIGN', 'PLANNING', 'BUILD', 'BETA', 'MVP', 'LIVE', 'ARCHIVED', 'ACTIVE']);
+
+// Valid project types (must match Prisma enum)
+const projectTypeEnum = z.enum(['SAAS', 'TRADING', 'OPEN_SOURCE', 'CONTENT', 'PERSONAL', 'MARKETPLACE']);
 
 /**
  * Schema for project metrics
@@ -36,11 +39,15 @@ export const createProjectSchema = z.object({
   url: z.string().url('Must be a valid URL'),
   category: categoryEnum,
   status: statusEnum.default('LIVE'),
+  projectType: projectTypeEnum.default('SAAS'),
   featured: z.boolean().default(false),
 
-  // Metrics
+  // Legacy metrics (kept for backward compatibility)
   mrr: z.number().min(0, 'MRR must be positive').default(0),
   users: z.number().int().min(0, 'Users must be positive').default(0),
+
+  // Configurable metrics (new system)
+  customMetrics: z.record(z.string(), z.number()).optional().nullable(),
 
   // GitHub Integration
   githubUrl: z
@@ -89,6 +96,7 @@ export type UpdateProjectInput = z.infer<typeof updateProjectSchema>;
 export type ProjectQueryParams = z.infer<typeof projectQuerySchema>;
 export type ProjectCategory = z.infer<typeof categoryEnum>;
 export type ProjectStatus = z.infer<typeof statusEnum>;
+export type ProjectTypeValidation = z.infer<typeof projectTypeEnum>;
 
 /**
  * Helper function to generate slug from project name
