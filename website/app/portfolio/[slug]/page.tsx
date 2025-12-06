@@ -2,11 +2,13 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ExternalLink, Github } from 'lucide-react';
-import { getAllProjects, getProjectBySlug, getProjectSlugs } from '@/lib/database';
+import { getAllProjects, getProjectWithPosts, getProjectSlugs } from '@/lib/database';
 import { renderMarkdown } from '@/lib/markdown';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { ProjectCard } from '@/components/portfolio/ProjectCard';
+import { ProjectTimeline, type TimelineEvent } from '@/components/projects/ProjectTimeline';
+import { RelatedPosts } from '@/components/projects/RelatedPosts';
 import {
   getProjectSchema,
   getBreadcrumbSchema,
@@ -38,7 +40,7 @@ export default async function ProjectPage({
     notFound();
   }
 
-  const project = await getProjectBySlug(slug);
+  const project = await getProjectWithPosts(slug);
 
   if (!project) {
     notFound();
@@ -244,6 +246,34 @@ export default async function ProjectPage({
           ))}
         </div>
       </section>
+
+      {/* Project Timeline */}
+      {project.timelineEvents && Array.isArray(project.timelineEvents) && (project.timelineEvents as unknown as TimelineEvent[]).length > 0 && (
+        <section className="px-6 pb-8 sm:pb-12 max-w-4xl mx-auto">
+          <h2 className="text-display-md font-semibold text-text-primary mb-6">
+            Project Timeline
+          </h2>
+          <ProjectTimeline
+            events={project.timelineEvents as unknown as TimelineEvent[]}
+            currentPhase={project.currentPhase}
+            projectSlug={project.slug}
+          />
+        </section>
+      )}
+
+      {/* Related Posts */}
+      {project.posts && project.posts.length > 0 && (
+        <section className="px-6 pb-8 sm:pb-12 max-w-4xl mx-auto">
+          <h2 className="text-display-md font-semibold text-text-primary mb-6">
+            Build Journey Posts
+          </h2>
+          <RelatedPosts
+            posts={project.posts}
+            projectName={project.name}
+            limit={5}
+          />
+        </section>
+      )}
 
       {/* Screenshots */}
       {project.screenshots && project.screenshots.length > 0 && (

@@ -8,10 +8,34 @@
 import { z } from 'zod';
 
 /**
- * Post type enum
+ * Post type enum (legacy string field)
  */
 export const PostTypeSchema = z.enum(['manual', 'daily-update', 'weekly-plan']);
 export type PostType = z.infer<typeof PostTypeSchema>;
+
+/**
+ * Content pillar enum (Sprint 1)
+ */
+export const ContentPillarSchema = z.enum(['JOURNEY', 'FRAMEWORK', 'TOOL', 'COMMUNITY']).nullable().optional();
+export type ContentPillar = z.infer<typeof ContentPillarSchema>;
+
+/**
+ * Post type enum - structured categorization (Sprint 1)
+ */
+export const PostTypeEnumSchema = z.enum(['PROGRESS_UPDATE', 'MILESTONE', 'FAILURE', 'TUTORIAL', 'CASE_STUDY', 'GENERAL']).nullable().optional();
+export type PostTypeEnumType = z.infer<typeof PostTypeEnumSchema>;
+
+/**
+ * Target persona enum (Sprint 1)
+ */
+export const TargetPersonaSchema = z.enum(['CORPORATE_ESCAPIST', 'SERVICE_PROVIDER', 'BUILDER', 'ALL']).nullable().optional();
+export type TargetPersona = z.infer<typeof TargetPersonaSchema>;
+
+/**
+ * Project phase enum (Sprint 1)
+ */
+export const ProjectPhaseSchema = z.enum(['IDEATION', 'MVP', 'LAUNCH', 'GROWTH', 'MAINTENANCE', 'ARCHIVED', 'PAUSED']).nullable().optional();
+export type ProjectPhase = z.infer<typeof ProjectPhaseSchema>;
 
 /**
  * Schema for creating a new post
@@ -52,6 +76,12 @@ export const CreatePostSchema = z.object({
   published: z.boolean().default(false),
 
   readTime: z.number().int().positive().optional(),
+
+  // Content categorization (Sprint 1)
+  contentPillar: ContentPillarSchema,
+  postTypeEnum: PostTypeEnumSchema,
+  targetPersona: TargetPersonaSchema,
+  phase: ProjectPhaseSchema,
 });
 
 export type CreatePostInput = z.infer<typeof CreatePostSchema>;
@@ -96,6 +126,12 @@ export const UpdatePostSchema = z.object({
   published: z.boolean().optional(),
 
   readTime: z.number().int().positive().optional(),
+
+  // Content categorization (Sprint 1)
+  contentPillar: ContentPillarSchema,
+  postTypeEnum: PostTypeEnumSchema,
+  targetPersona: TargetPersonaSchema,
+  phase: ProjectPhaseSchema,
 });
 
 export type UpdatePostInput = z.infer<typeof UpdatePostSchema>;
@@ -126,6 +162,12 @@ export const PostFormSchema = z.object({
   projectId: z.string().optional(), // Empty string or UUID
 
   published: z.boolean().default(false),
+
+  // Content categorization (Sprint 1)
+  contentPillar: z.string().optional(), // Empty string or enum value
+  postTypeEnum: z.string().optional(),
+  targetPersona: z.string().optional(),
+  phase: z.string().optional(),
 });
 
 export type PostFormData = z.infer<typeof PostFormSchema>;
@@ -152,6 +194,19 @@ export function formDataToCreateInput(formData: PostFormData): CreatePostInput {
       ? formData.projectId
       : null,
     published: formData.published,
+    // Content categorization (Sprint 1)
+    contentPillar: formData.contentPillar && formData.contentPillar !== ''
+      ? formData.contentPillar as 'JOURNEY' | 'FRAMEWORK' | 'TOOL' | 'COMMUNITY'
+      : null,
+    postTypeEnum: formData.postTypeEnum && formData.postTypeEnum !== ''
+      ? formData.postTypeEnum as 'PROGRESS_UPDATE' | 'MILESTONE' | 'FAILURE' | 'TUTORIAL' | 'CASE_STUDY' | 'GENERAL'
+      : null,
+    targetPersona: formData.targetPersona && formData.targetPersona !== ''
+      ? formData.targetPersona as 'CORPORATE_ESCAPIST' | 'SERVICE_PROVIDER' | 'BUILDER' | 'ALL'
+      : null,
+    phase: formData.phase && formData.phase !== ''
+      ? formData.phase as 'IDEATION' | 'MVP' | 'LAUNCH' | 'GROWTH' | 'MAINTENANCE' | 'ARCHIVED' | 'PAUSED'
+      : null,
   };
 }
 
@@ -166,6 +221,10 @@ export function postToFormData(post: {
   postType: string;
   projectId: string | null;
   published: boolean;
+  contentPillar?: string | null;
+  postTypeEnum?: string | null;
+  targetPersona?: string | null;
+  phase?: string | null;
 }): PostFormData {
   return {
     title: post.title,
@@ -175,6 +234,11 @@ export function postToFormData(post: {
     postType: post.postType as PostType,
     projectId: post.projectId || '',
     published: post.published,
+    // Content categorization (Sprint 1)
+    contentPillar: post.contentPillar || '',
+    postTypeEnum: post.postTypeEnum || '',
+    targetPersona: post.targetPersona || '',
+    phase: post.phase || '',
   };
 }
 

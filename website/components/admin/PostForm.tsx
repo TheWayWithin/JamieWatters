@@ -31,6 +31,11 @@ export function PostForm({ mode, postId, initialData, projects = [] }: PostFormP
     postType: initialData?.postType || 'manual',
     projectId: initialData?.projectId || '',
     published: initialData?.published || false,
+    // Content categorization (Sprint 1)
+    contentPillar: initialData?.contentPillar || '',
+    postTypeEnum: initialData?.postTypeEnum || '',
+    targetPersona: initialData?.targetPersona || '',
+    phase: initialData?.phase || '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
@@ -253,6 +258,94 @@ export function PostForm({ mode, postId, initialData, projects = [] }: PostFormP
         error={errors.tagsInput}
         helperText="Separate multiple tags with commas"
       />
+
+      {/* Content Categorization (Sprint 1) */}
+      <div className="border border-border-subtle rounded-lg p-4">
+        <h3 className="text-body-sm font-semibold text-text-primary mb-4">
+          Content Categorization (Optional)
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Content Pillar */}
+          <div>
+            <label className="block text-body-sm font-medium text-text-primary mb-2">
+              Content Pillar
+            </label>
+            <select
+              value={formData.contentPillar}
+              onChange={(e) => updateField('contentPillar', e.target.value)}
+              className="w-full bg-bg-primary border border-border-default rounded-md px-4 py-3 text-body text-text-primary"
+            >
+              <option value="">Not Set</option>
+              <option value="JOURNEY">Journey (Build-in-public)</option>
+              <option value="FRAMEWORK">Framework (Methodologies)</option>
+              <option value="TOOL">Tool (Resources)</option>
+              <option value="COMMUNITY">Community (Contributions)</option>
+            </select>
+          </div>
+
+          {/* Post Type Enum */}
+          <div>
+            <label className="block text-body-sm font-medium text-text-primary mb-2">
+              Content Type
+            </label>
+            <select
+              value={formData.postTypeEnum}
+              onChange={(e) => updateField('postTypeEnum', e.target.value)}
+              className="w-full bg-bg-primary border border-border-default rounded-md px-4 py-3 text-body text-text-primary"
+            >
+              <option value="">Not Set</option>
+              <option value="PROGRESS_UPDATE">Progress Update</option>
+              <option value="MILESTONE">Milestone</option>
+              <option value="FAILURE">Failure / Lesson Learned</option>
+              <option value="TUTORIAL">Tutorial</option>
+              <option value="CASE_STUDY">Case Study</option>
+              <option value="GENERAL">General</option>
+            </select>
+          </div>
+
+          {/* Target Persona */}
+          <div>
+            <label className="block text-body-sm font-medium text-text-primary mb-2">
+              Target Audience
+            </label>
+            <select
+              value={formData.targetPersona}
+              onChange={(e) => updateField('targetPersona', e.target.value)}
+              className="w-full bg-bg-primary border border-border-default rounded-md px-4 py-3 text-body text-text-primary"
+            >
+              <option value="">Not Set</option>
+              <option value="CORPORATE_ESCAPIST">Corporate Escapists</option>
+              <option value="SERVICE_PROVIDER">Service Providers</option>
+              <option value="BUILDER">Technical Builders</option>
+              <option value="ALL">Everyone</option>
+            </select>
+          </div>
+
+          {/* Project Phase */}
+          <div>
+            <label className="block text-body-sm font-medium text-text-primary mb-2">
+              Project Phase
+            </label>
+            <select
+              value={formData.phase}
+              onChange={(e) => updateField('phase', e.target.value)}
+              className="w-full bg-bg-primary border border-border-default rounded-md px-4 py-3 text-body text-text-primary"
+            >
+              <option value="">Not Set</option>
+              <option value="IDEATION">Ideation</option>
+              <option value="MVP">MVP</option>
+              <option value="LAUNCH">Launch</option>
+              <option value="GROWTH">Growth</option>
+              <option value="MAINTENANCE">Maintenance</option>
+              <option value="ARCHIVED">Archived</option>
+              <option value="PAUSED">Paused</option>
+            </select>
+          </div>
+        </div>
+        <p className="mt-3 text-caption text-text-tertiary">
+          Categorization helps organize content for different audiences and project phases.
+        </p>
+      </div>
 
       {/* Content */}
       <div>

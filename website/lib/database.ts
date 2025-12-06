@@ -116,6 +116,48 @@ export async function getProjectBySlug(slug: string): Promise<ProjectWithMetrics
 }
 
 /**
+ * Get project by slug with related posts for detailed view
+ */
+export async function getProjectWithPosts(slug: string) {
+  try {
+    // Input validation
+    if (!slug || typeof slug !== 'string' || slug.length > 100) {
+      throw new Error('Invalid slug parameter');
+    }
+
+    const project = await prisma.project.findUnique({
+      where: { slug },
+      include: {
+        metricsHistory: {
+          orderBy: { recordedAt: 'desc' },
+          take: 10,
+        },
+        posts: {
+          where: { published: true },
+          orderBy: { publishedAt: 'desc' },
+          select: {
+            id: true,
+            slug: true,
+            title: true,
+            excerpt: true,
+            tags: true,
+            readTime: true,
+            publishedAt: true,
+            contentPillar: true,
+            postTypeEnum: true,
+            phase: true,
+          },
+        },
+      },
+    });
+    return project;
+  } catch (error) {
+    console.error('Error fetching project with posts:', error);
+    return null;
+  }
+}
+
+/**
  * Get all blog posts with proper ordering
  */
 export async function getAllPosts(): Promise<PostWithMetadata[]> {
