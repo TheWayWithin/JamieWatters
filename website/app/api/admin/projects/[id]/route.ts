@@ -47,6 +47,8 @@ export async function GET(
         techStack: true,
         category: true,
         status: true,
+        projectType: true,
+        customMetrics: true,
         featured: true,
         mrr: true,
         users: true,
@@ -198,6 +200,12 @@ export async function PUT(
     if (data.screenshots !== undefined) updateData.screenshots = data.screenshots;
     if (data.launchedAt !== undefined)
       updateData.launchedAt = data.launchedAt ? new Date(data.launchedAt) : null;
+    if (data.projectType !== undefined) updateData.projectType = data.projectType;
+    if (data.customMetrics !== undefined) {
+      updateData.customMetrics = data.customMetrics === null
+        ? Prisma.JsonNull
+        : data.customMetrics;
+    }
 
     // Update project in database
     const updatedProject = await prisma.project.update({
@@ -212,6 +220,8 @@ export async function PUT(
         techStack: true,
         category: true,
         status: true,
+        projectType: true,
+        customMetrics: true,
         featured: true,
         mrr: true,
         users: true,
