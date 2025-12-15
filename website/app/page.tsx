@@ -22,8 +22,8 @@ export const revalidate = 3600;
 
 // SEO Metadata
 export const metadata = getSEOMetadata({
-  title: 'Building $1B Solo by 2030',
-  description: 'AI-powered solopreneur building 10+ products simultaneously. Follow the journey from zero to billion in public—real metrics, real challenges, real lessons.',
+  title: 'Building $10M+ Portfolio in Public',
+  description: 'Real metrics, real failures. Follow the journey of a practitioner building AI-powered tools for solopreneurs.',
   type: 'website'
 });
 
