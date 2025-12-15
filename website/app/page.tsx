@@ -17,8 +17,8 @@ import {
   renderStructuredData,
 } from '@/lib/structured-data';
 
-// ISR: Revalidate every 1 hour
-export const revalidate = 3600;
+// ISR: Revalidate every 60 seconds (temporarily reduced to refresh OG tags)
+export const revalidate = 60;
 
 // SEO Metadata
 export const metadata = getSEOMetadata({
