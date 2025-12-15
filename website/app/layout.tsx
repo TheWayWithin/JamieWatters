@@ -28,11 +28,11 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Jamie Watters | Building $1B Solo by 2030',
+    default: 'Jamie Watters | Building $10M+ Portfolio in Public',
     template: '%s | Jamie Watters',
   },
   description:
-    'AI-powered solopreneur building 10+ products simultaneously. Follow the journey from zero to billion in public.',
+    'Real metrics, real failures. Follow the journey of a practitioner building AI-powered tools for solopreneurs.',
   keywords: [
     'solopreneur',
     'AI',
@@ -45,18 +45,27 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://jamiewatters.work',
-    title: 'Jamie Watters | Building $1B Solo by 2030',
+    url: 'https://jamiewatters.work/',
+    title: 'Jamie Watters | Building $10M+ Portfolio in Public',
     description:
-      'AI-powered solopreneur building 10+ products simultaneously. Follow the journey from zero to billion in public.',
+      'Real metrics, real failures. Follow the journey of a practitioner building AI-powered tools for solopreneurs.',
     siteName: 'Jamie Watters',
+    images: [
+      {
+        url: 'https://jamiewatters.work/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Jamie Watters - Building $10M+ Portfolio in Public',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Jamie Watters | Building $1B Solo by 2030',
+    title: 'Jamie Watters | Building $10M+ Portfolio in Public',
     description:
-      'AI-powered solopreneur building 10+ products simultaneously. Follow the journey from zero to billion in public.',
+      'Real metrics, real failures. Follow the journey of a practitioner building AI-powered tools for solopreneurs.',
     creator: '@jamiewatters',
+    images: ['https://jamiewatters.work/og-image.png'],
   },
   robots: {
     index: true,
