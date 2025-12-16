@@ -160,6 +160,112 @@ export default function AboutPage() {
             </p>
           </div>
         </div>
+
+        {/* My Philosophy */}
+        <div id="philosophy" className="mb-16 scroll-mt-24">
+          <h2 className="text-display-md font-semibold text-text-primary mb-6">
+            My Philosophy
+          </h2>
+          <div className="space-y-10">
+            {/* The Virtuous Circle */}
+            <div className="bg-bg-surface border border-border-default rounded-lg p-6">
+              <h3 className="text-body-lg font-semibold text-brand-primary mb-4 flex items-center gap-3">
+                <span className="text-2xl">🔄</span> The Virtuous Circle
+              </h3>
+              <div className="space-y-4 text-body-base text-text-primary leading-relaxed">
+                <p>
+                  Everything I build follows a flywheel that compounds over time:
+                </p>
+                <ol className="list-decimal list-inside space-y-2 ml-4">
+                  <li><strong>Build businesses</strong> in my portfolio</li>
+                  <li><strong>Encounter real operational problems</strong> that every solopreneur faces</li>
+                  <li><strong>Create tools</strong> to solve those problems for myself</li>
+                  <li><strong>Share the journey</strong> publicly with complete transparency</li>
+                  <li><strong>Tools become available</strong> for other solopreneurs to use</li>
+                  <li><strong>Revenue funds more building</strong> → cycle repeats</li>
+                </ol>
+                <p>
+                  This means every tool I share has been battle-tested in my own portfolio first.
+                  I'm not guessing what solopreneurs need—I'm solving problems I actually face.
+                </p>
+              </div>
+            </div>
+
+            {/* VC Portfolio Approach */}
+            <div className="bg-bg-surface border border-border-default rounded-lg p-6">
+              <h3 className="text-body-lg font-semibold text-brand-primary mb-4 flex items-center gap-3">
+                <span className="text-2xl">🎯</span> VC Portfolio Approach
+              </h3>
+              <div className="space-y-4 text-body-base text-text-primary leading-relaxed">
+                <p>
+                  Why am I building 10+ products instead of focusing on one big idea?
+                  Because I'm applying venture capital portfolio logic to solopreneurship.
+                </p>
+                <ul className="list-disc list-inside space-y-2 ml-4">
+                  <li><strong>Spread risk</strong> across multiple ventures instead of betting everything on one</li>
+                  <li><strong>Each product teaches lessons</strong> that make the next more likely to succeed</li>
+                  <li><strong>Ruthless pruning</strong>—if a product doesn't hit $1K MRR by Month 3, it gets parked or sunset</li>
+                  <li><strong>Double down on winners</strong> once they show traction</li>
+                  <li><strong>Failures are valuable data</strong>, not wasted effort</li>
+                </ul>
+                <p>
+                  VCs know that most bets fail, but the winners more than compensate.
+                  I'm applying that same logic, but as a solo operator with AI leverage.
+                </p>
+              </div>
+            </div>
+
+            {/* Practitioner-First */}
+            <div className="bg-bg-surface border border-border-default rounded-lg p-6">
+              <h3 className="text-body-lg font-semibold text-brand-primary mb-4 flex items-center gap-3">
+                <span className="text-2xl">🛠️</span> Practitioner-First
+              </h3>
+              <div className="space-y-4 text-body-base text-text-primary leading-relaxed">
+                <p>
+                  I'm not a guru selling courses based on what worked 10 years ago.
+                  I'm a systems programmer turned indie hacker who builds tools to solve my own problems first.
+                </p>
+                <ul className="list-disc list-inside space-y-2 ml-4">
+                  <li><strong>I solve my own problems first</strong>, then share the solutions</li>
+                  <li><strong>Every tool is battle-tested</strong> in my portfolio before I offer it to others</li>
+                  <li><strong>My success depends on these tools working</strong>—I use them daily to run my business</li>
+                  <li><strong>No fake screenshots or fabricated results</strong>—real metrics, wins AND failures</li>
+                  <li><strong>Skin in the game</strong>—if these tools don't work for me, they don't work for you</li>
+                </ul>
+                <p>
+                  This is what separates me from the guru economy. I'm not teaching theory—I'm
+                  building, proving it works, and sharing the infrastructure.
+                </p>
+              </div>
+            </div>
+
+            {/* Enabling Others */}
+            <div className="bg-bg-surface border border-border-default rounded-lg p-6">
+              <h3 className="text-body-lg font-semibold text-brand-primary mb-4 flex items-center gap-3">
+                <span className="text-2xl">🚀</span> Enabling Others
+              </h3>
+              <div className="space-y-4 text-body-base text-text-primary leading-relaxed">
+                <p>
+                  My goal isn't just to build a successful portfolio for myself. It's bigger than that.
+                </p>
+                <p>
+                  <strong>I want to enable at least one person to build a billion-dollar solo business by 2030
+                  using the tools, tactics, and know-how I'm creating.</strong>
+                </p>
+                <p>
+                  My $10M portfolio goal? That's the proof-of-concept—demonstrating the foundation works.
+                  But when someone else takes these same tools and builds something even bigger,
+                  that's the real success.
+                </p>
+                <p>
+                  I'm not just building for myself. I'm building infrastructure that makes
+                  billion-dollar solopreneurship possible for others. Your success validates
+                  the model and proves it's repeatable.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Contact Section */}

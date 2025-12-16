@@ -166,56 +166,67 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* The Approach */}
+      {/* My Philosophy */}
       <section className="py-16 lg:py-24 px-6 bg-bg-primary">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-display-lg font-bold text-text-primary mb-4">
-              The Systematic Approach
+              My Philosophy
             </h2>
             <p className="text-body-base text-text-secondary max-w-2xl mx-auto">
-              I'm not hoping to stumble into a billion dollars. I'm building systematically with a method designed to compound results.
+              I'm not hoping to stumble into success. I'm building systematically with principles designed to compound results—and help others do the same.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Multiple Bets */}
-            <div className="text-center">
-              <div className="text-4xl mb-4">🎯</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* The Virtuous Circle */}
+            <div className="bg-bg-surface border border-border-default rounded-lg p-6">
+              <div className="text-3xl mb-4">🔄</div>
               <h3 className="text-body-lg font-semibold text-text-primary mb-3">
-                Multiple Bets
+                The Virtuous Circle
               </h3>
               <p className="text-body-base text-text-secondary leading-relaxed">
-                10+ products, diverse revenue streams. Each product teaches lessons that make the next more likely to succeed.
+                I build businesses, encounter real problems, create tools to solve them, then share everything. Each cycle makes the next product better—and gives you battle-tested tools.
               </p>
             </div>
 
-            {/* AI Leverage */}
-            <div className="text-center">
-              <div className="text-4xl mb-4">🤖</div>
+            {/* VC Portfolio Approach */}
+            <div className="bg-bg-surface border border-border-default rounded-lg p-6">
+              <div className="text-3xl mb-4">🎯</div>
               <h3 className="text-body-lg font-semibold text-text-primary mb-3">
-                AI Leverage
+                VC Portfolio Approach
               </h3>
               <p className="text-body-base text-text-secondary leading-relaxed">
-                Build faster than humanly possible. AI agents handle the complexity while I focus on strategy and execution.
+                Why 10+ products instead of one big bet? Like a VC portfolio, I spread risk across multiple ventures. Each product teaches lessons that make the next more likely to succeed. Ruthless pruning kills what's not working.
               </p>
             </div>
 
-            {/* Transparent Learning */}
-            <div className="text-center">
-              <div className="text-4xl mb-4">📊</div>
+            {/* Practitioner-First */}
+            <div className="bg-bg-surface border border-border-default rounded-lg p-6">
+              <div className="text-3xl mb-4">🛠️</div>
               <h3 className="text-body-lg font-semibold text-text-primary mb-3">
-                Transparent Learning
+                Practitioner-First
               </h3>
               <p className="text-body-base text-text-secondary leading-relaxed">
-                Share everything publicly. Real metrics, real failures, real lessons. Accountability drives progress.
+                I'm not a guru selling courses. I'm a systems programmer turned indie hacker who builds tools to solve my own problems first. Every tool is battle-tested in my portfolio before I share it.
+              </p>
+            </div>
+
+            {/* Enabling Others */}
+            <div className="bg-bg-surface border border-border-default rounded-lg p-6">
+              <div className="text-3xl mb-4">🚀</div>
+              <h3 className="text-body-lg font-semibold text-text-primary mb-3">
+                Enabling Others
+              </h3>
+              <p className="text-body-base text-text-secondary leading-relaxed">
+                My goal isn't just to build a $10M portfolio. It's to prove this is possible—so at least one person can use the same tools and know-how to build a billion-dollar solo business by 2030. Your success is the real goal.
               </p>
             </div>
           </div>
 
           <div className="text-center mt-12">
             <Button asChild variant="secondary" size="lg">
-              <Link href="/about">Learn More About My Method →</Link>
+              <Link href="/about#philosophy">Learn More About My Philosophy →</Link>
             </Button>
           </div>
         </div>
@@ -362,15 +373,13 @@ export default async function Home() {
             About Jamie Watters
           </h2>
           <p className="text-body-lg text-text-secondary mb-6 leading-relaxed">
-            AI-first solopreneur obsessed with building products that solve real
-            problems. Former enterprise architect turned indie hacker, now
-            building 10+ AI-powered SaaS products simultaneously using AGENT-11
-            framework.
+            Systems programmer turned indie hacker, now building 10+ AI-powered
+            products simultaneously. I build tools to solve my own problems first,
+            then share them with other solopreneurs.
           </p>
           <p className="text-body-base text-text-secondary mb-8 leading-relaxed">
-            Mission: Prove that one person with the right AI tools can build a
-            billion-dollar portfolio by 2030. Sharing everything I learn along
-            the way.
+            Mission: Prove this is possible so others can do it too. My success
+            is the proof-of-concept. Your billion-dollar solo business is the real goal.
           </p>
           <Button asChild size="lg">
             <Link href="/about">Learn More About Me →</Link>
