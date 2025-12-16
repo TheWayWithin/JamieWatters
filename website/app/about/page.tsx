@@ -119,11 +119,11 @@ export default function AboutPage() {
           </h2>
           <div className="space-y-6 text-body-lg text-text-primary leading-relaxed">
             <p>
-              Right now, I'm actively building and operating 10 products across four categories:
+              Right now, I'm actively building and operating 12 projects across five categories:
             </p>
             <ul className="list-disc list-inside space-y-3 ml-4">
               <li>
-                <strong className="text-text-primary">SaaS & Solopreneur Tools:</strong> Automated workflows and 
+                <strong className="text-text-primary">SaaS & Solopreneur Tools:</strong> Automated workflows and
                 productivity solutions for solo entrepreneurs and small businesses
               </li>
               <li>
@@ -138,10 +138,16 @@ export default function AboutPage() {
                 <strong className="text-text-primary">Marketplaces:</strong> Platforms connecting
                 buyers and sellers in emerging niches
               </li>
+              <li>
+                <strong className="text-text-primary">Trading & Investment Tools:</strong> AI-powered
+                trading bots for crypto, fund arbitrage, and equities. These are purely for my own
+                prop trading—I'm not managing other people's money or selling the bots, mainly to
+                avoid the legal complexities
+              </li>
             </ul>
             <p>
               Each project is instrumented with real-time metrics, and I share progress
-              transparently through weekly updates. Every win, every failure, every lesson
+              transparently through daily updates. Every win, every failure, every lesson
               learned—all documented publicly.
             </p>
           </div>
