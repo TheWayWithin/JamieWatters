@@ -103,6 +103,12 @@ export default function AboutPage() {
               solo operators who can orchestrate intelligent systems to build at unprecedented
               scale. If I can do it, so can you.
             </p>
+            <p>
+              Sam Altman has predicted that in the next year or so we'll see the world's first
+              solo $1B company. I think it would be amazing if one of these new billionaires
+              learned something from my site—or even better, is using one of my tools. When that
+              happens, I'll have truly been a success beyond my dreams.
+            </p>
           </div>
         </div>
 
