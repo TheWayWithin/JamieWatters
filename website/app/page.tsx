@@ -44,15 +44,16 @@ export default async function Home() {
 
       <main id="main-content" className="min-h-screen">
       {/* Hero Section */}
-      <section className="min-h-[90vh] flex items-center justify-center bg-bg-primary px-6 py-12 lg:py-24">
+      <section className="min-h-[60vh] flex items-center justify-center bg-bg-primary px-6 py-12 lg:py-16">
         <div className="text-center max-w-4xl mx-auto">
           <h1 className="text-display-xl lg:text-display-2xl font-bold text-brand-primary mb-6 leading-tight">
-            Building $1B Solo by 2030
+            Follow the Journey — From $0 to $10M+
           </h1>
           <p className="text-body-lg lg:text-body-xl text-text-secondary max-w-2xl mx-auto mb-8 leading-relaxed">
-            AI-powered solopreneur building 10+ products simultaneously. Follow
-            the journey from zero to billion in public—real metrics, real
-            challenges, real lessons.
+            Just me and AI. No team, no employees—building a portfolio of businesses in public.
+            I encounter real problems, create tools to solve them, and share everything:
+            real metrics, real challenges, real lessons. A blueprint so you can build
+            a multi-million-dollar solo business too.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">
