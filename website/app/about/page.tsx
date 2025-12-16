@@ -309,16 +309,16 @@ export default function AboutPage() {
             </h3>
             <div className="flex justify-center gap-6">
               <a
-                href="https://twitter.com/jamiewatters"
+                href="https://x.com/Jamie_within"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Follow on Twitter"
+                aria-label="Follow on X"
                 className="text-brand-primary hover:text-brand-primary-hover transition-colors"
               >
                 <Twitter className="w-12 h-12" />
               </a>
               <a
-                href="https://linkedin.com/in/jamiewatters"
+                href="https://linkedin.com/in/jamie-watters-solo"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Connect on LinkedIn"
