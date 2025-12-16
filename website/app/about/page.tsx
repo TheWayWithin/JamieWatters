@@ -87,21 +87,21 @@ export default function AboutPage() {
           </h2>
           <div className="space-y-6 text-body-lg text-text-primary leading-relaxed">
             <p>
-              I'm building a portfolio of AI-powered businesses through systematic iteration.
-              I track real metrics, celebrate small wins, learn publicly from failures, and
-              compound insights across multiple products. Each business teaches me something
-              that makes the next one more likely to succeed.
+              I'm building a portfolio of AI-powered businesses through systematic iteration—just
+              me and AI, no team, no employees. I track real metrics, celebrate small wins, learn
+              publicly from failures, and compound insights across multiple products. Each business
+              teaches me something that makes the next one more likely to succeed.
             </p>
             <p>
-              My ultimate goal? Reach $1 billion in portfolio value by 2030. Not through a
-              single unicorn startup, but through a diversified portfolio of 10-20 AI-powered
-              businesses, each generating $5-50M ARR.
+              My goal? Build a $10M+ portfolio while documenting every step of the journey.
+              I'm creating a blueprint—real metrics, real challenges, real lessons—so others
+              can follow the same path and build their own multi-million-dollar solo businesses.
             </p>
             <p>
-              This isn't just about the money. It's about proving a new model of entrepreneurship
+              This isn't just about my success. It's about proving a new model of entrepreneurship
               is possible. We're at the dawn of the AI era, and I believe the future belongs to
               solo operators who can orchestrate intelligent systems to build at unprecedented
-              scale.
+              scale. If I can do it, so can you.
             </p>
           </div>
         </div>
@@ -249,18 +249,18 @@ export default function AboutPage() {
                   My goal isn't just to build a successful portfolio for myself. It's bigger than that.
                 </p>
                 <p>
-                  <strong>I want to enable at least one person to build a billion-dollar solo business by 2030
+                  <strong>I want to enable others to build multi-million-dollar solo businesses
                   using the tools, tactics, and know-how I'm creating.</strong>
                 </p>
                 <p>
-                  My $10M portfolio goal? That's the proof-of-concept—demonstrating the foundation works.
+                  My $10M+ portfolio goal? That's the proof-of-concept—demonstrating the foundation works.
                   But when someone else takes these same tools and builds something even bigger,
                   that's the real success.
                 </p>
                 <p>
                   I'm not just building for myself. I'm building infrastructure that makes
-                  billion-dollar solopreneurship possible for others. Your success validates
-                  the model and proves it's repeatable.
+                  solo success possible for others. Your success validates the model and proves
+                  it's repeatable.
                 </p>
               </div>
             </div>
