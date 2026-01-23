@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { getAllPosts, getPostBySlug, getPostSlugs } from '@/lib/database';
 import { renderMarkdown } from '@/lib/markdown';
 import { Badge } from '@/components/ui/Badge';
@@ -20,6 +21,52 @@ export async function generateStaticParams() {
     console.error('Error generating static params:', error);
     return [];
   }
+}
+
+// Generate metadata for each blog post (for social sharing)
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
+
+  if (!post) {
+    return {
+      title: 'Post Not Found',
+    };
+  }
+
+  const postUrl = `https://jamiewatters.work/journey/${slug}`;
+  const ogImage = 'https://jamiewatters.work/og-image.png';
+
+  return {
+    title: post.title,
+    description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url: postUrl,
+      type: 'article',
+      publishedTime: post.publishedAt || post.createdAt,
+      authors: ['Jamie Watters'],
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+      images: [ogImage],
+    },
+  };
 }
 
 export default async function BlogPostPage({
