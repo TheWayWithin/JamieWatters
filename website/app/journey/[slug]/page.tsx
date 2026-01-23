@@ -49,7 +49,7 @@ export async function generateMetadata({
       description: post.excerpt,
       url: postUrl,
       type: 'article',
-      publishedTime: post.publishedAt || post.createdAt,
+      publishedTime: (post.publishedAt || post.createdAt).toISOString(),
       authors: ['Jamie Watters'],
       images: [
         {
