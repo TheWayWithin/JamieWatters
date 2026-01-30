@@ -155,18 +155,6 @@ export default function ContentPage() {
       {/* Main Content */}
       <div>
         <div className="space-y-8">
-          {/* Daily Update Generator */}
-          <DailyUpdateGenerator onGenerate={handleGeneratePreview} />
-
-          {/* Divider */}
-          <hr className="border-border-subtle" />
-
-          {/* Progress Report Generator */}
-          <ProgressReportGenerator onGenerate={handleProgressReportPreview} />
-
-          {/* Divider */}
-          <hr className="border-border-subtle" />
-
           {/* Manual Post Creation */}
           <Card>
             <div className="flex items-start justify-between">
@@ -262,6 +250,18 @@ export default function ContentPage() {
               </div>
             )}
           </div>
+
+          {/* Divider */}
+          <hr className="border-border-subtle" />
+
+          {/* Daily Update Generator */}
+          <DailyUpdateGenerator onGenerate={handleGeneratePreview} />
+
+          {/* Divider */}
+          <hr className="border-border-subtle" />
+
+          {/* Progress Report Generator */}
+          <ProgressReportGenerator onGenerate={handleProgressReportPreview} />
         </div>
       </div>
 
