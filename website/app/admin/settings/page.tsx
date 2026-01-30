@@ -19,6 +19,15 @@ export default function SettingsPage() {
   const [syncing, setSyncing] = useState(false);
   const [syncMessage, setSyncMessage] = useState('');
 
+  // Password change state
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordChanging, setPasswordChanging] = useState(false);
+  const [passwordMessage, setPasswordMessage] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
   useEffect(() => {
     fetchProjects();
   }, []);
@@ -57,6 +66,50 @@ export default function SettingsPage() {
       setSyncMessage('Sync failed. Please try again.');
     } finally {
       setSyncing(false);
+    }
+  };
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPasswordMessage('');
+    setPasswordError('');
+
+    if (newPassword.length < 8) {
+      setPasswordError('New password must be at least 8 characters.');
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setPasswordError('Passwords do not match.');
+      return;
+    }
+
+    setPasswordChanging(true);
+
+    try {
+      const res = await fetch('/api/auth/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ currentPassword, newPassword, confirmPassword }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setPasswordMessage('Password changed successfully.');
+        setCurrentPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
+        setShowPasswordForm(false);
+        setTimeout(() => setPasswordMessage(''), 5000);
+      } else {
+        setPasswordError(data.error || 'Failed to change password.');
+      }
+    } catch {
+      setPasswordError('Something went wrong. Please try again.');
+    } finally {
+      setPasswordChanging(false);
     }
   };
 
@@ -113,10 +166,101 @@ export default function SettingsPage() {
               <label className="block text-body-sm font-medium text-text-primary mb-2">
                 Password
               </label>
-              <Button variant="secondary" size="sm" disabled>
-                Change Password
-              </Button>
-              <p className="text-caption text-text-tertiary mt-1">Coming soon</p>
+
+              {passwordMessage && (
+                <p className="text-body-sm text-success mb-2">{passwordMessage}</p>
+              )}
+
+              {!showPasswordForm ? (
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => {
+                    setShowPasswordForm(true);
+                    setPasswordError('');
+                    setPasswordMessage('');
+                  }}
+                >
+                  Change Password
+                </Button>
+              ) : (
+                <form onSubmit={handleChangePassword} className="space-y-3 max-w-sm">
+                  <div>
+                    <label className="block text-body-sm text-text-secondary mb-1">
+                      Current Password
+                    </label>
+                    <input
+                      type="password"
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      required
+                      className="w-full px-3 py-2 bg-bg-primary border border-border-subtle rounded-md text-body text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-transparent"
+                      autoComplete="current-password"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-body-sm text-text-secondary mb-1">
+                      New Password
+                    </label>
+                    <input
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      required
+                      minLength={8}
+                      className="w-full px-3 py-2 bg-bg-primary border border-border-subtle rounded-md text-body text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-transparent"
+                      autoComplete="new-password"
+                    />
+                    <p className="text-caption text-text-tertiary mt-1">Minimum 8 characters</p>
+                  </div>
+
+                  <div>
+                    <label className="block text-body-sm text-text-secondary mb-1">
+                      Confirm New Password
+                    </label>
+                    <input
+                      type="password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                      minLength={8}
+                      className="w-full px-3 py-2 bg-bg-primary border border-border-subtle rounded-md text-body text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-transparent"
+                      autoComplete="new-password"
+                    />
+                  </div>
+
+                  {passwordError && (
+                    <p className="text-body-sm text-error">{passwordError}</p>
+                  )}
+
+                  <div className="flex gap-2 pt-1">
+                    <Button
+                      type="submit"
+                      variant="primary"
+                      size="sm"
+                      disabled={passwordChanging}
+                    >
+                      {passwordChanging ? 'Changing...' : 'Update Password'}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => {
+                        setShowPasswordForm(false);
+                        setCurrentPassword('');
+                        setNewPassword('');
+                        setConfirmPassword('');
+                        setPasswordError('');
+                      }}
+                      disabled={passwordChanging}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </form>
+              )}
             </div>
           </div>
         </Card>
