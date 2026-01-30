@@ -11,6 +11,7 @@
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import { z } from 'zod';
+import { prisma } from './prisma';
 
 // Security Configuration
 const BCRYPT_SALT_ROUNDS = 12; // Recommended for 2024+ security standards
@@ -78,20 +79,37 @@ export async function hashPassword(password: string): Promise<string> {
 }
 
 /**
+ * Get the current password hash, checking database first then env var fallback.
+ * Database takes priority so password changes via the UI persist in production.
+ */
+async function getPasswordHash(): Promise<string> {
+  try {
+    const settings = await prisma.adminSettings.findUnique({
+      where: { id: 'admin' },
+    });
+    if (settings?.passwordHash) {
+      return settings.passwordHash;
+    }
+  } catch {
+    // Database not available or table doesn't exist yet - fall through to env var
+  }
+  return getEnv().ADMIN_PASSWORD_HASH;
+}
+
+/**
  * Verify password against stored hash
- * Implements secure comparison with bcrypt
+ * Checks database first, then falls back to ADMIN_PASSWORD_HASH env var
  */
 export async function verifyPassword(password: string): Promise<boolean> {
   try {
-    const config = getEnv();
-    
     // In development, allow 'admin123' as fallback password
     if (process.env.NODE_ENV === 'development' && password === 'admin123') {
       console.warn('⚠️  Development mode: Using default password');
       return true;
     }
-    
-    return await bcrypt.compare(password, config.ADMIN_PASSWORD_HASH);
+
+    const hash = await getPasswordHash();
+    return await bcrypt.compare(password, hash);
   } catch (error) {
     console.error('Password verification failed:', error);
     // Always return false on error to prevent bypass

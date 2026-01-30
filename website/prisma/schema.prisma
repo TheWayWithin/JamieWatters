@@ -20,8 +20,6 @@ model Project {
   mrr              Decimal          @default(0) @db.Decimal(10, 2)
   users            Int              @default(0)
   status           ProjectStatus    @default(LIVE)
-  projectType      ProjectType      @default(SAAS)
-  customMetrics    Json?
   problemStatement String?
   solutionApproach String?
   lessonsLearned   String?
@@ -33,13 +31,13 @@ model Project {
   githubUrl        String?
   lastSynced       DateTime?
   trackProgress    Boolean          @default(false)
+  customMetrics    Json?
+  projectType      ProjectType      @default(SAAS)
+  currentPhase     ProjectPhase?
+  techStackDetails String?
+  timelineEvents   Json?
   metricsHistory   MetricsHistory[]
   posts            Post[]
-
-  // Enhanced project metadata (Sprint 1)
-  currentPhase     ProjectPhase? // Current project phase
-  techStackDetails String? // Detailed tech stack markdown
-  timelineEvents   Json? // Array of {date, event, description, linkedPostId?}
 
   @@index([category])
   @@index([featured])
@@ -48,26 +46,24 @@ model Project {
 }
 
 model Post {
-  id          String    @id @default(uuid())
-  slug        String    @unique
-  title       String
-  excerpt     String
-  tags        String[]
-  readTime    Int
-  publishedAt DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  content     String?
-  postType    String    @default("manual")
-  projectId   String?
-  published   Boolean   @default(false)
-  project     Project?  @relation(fields: [projectId], references: [id])
-
-  // Content categorization (optional for backwards compatibility)
-  contentPillar ContentPillar? // Which content pillar this belongs to
-  postTypeEnum  PostTypeEnum? // Structured post type (separate from legacy postType string)
-  targetPersona TargetPersona? // Who this post is for
-  phase         ProjectPhase? // What project phase this relates to
+  id            String         @id @default(uuid())
+  slug          String         @unique
+  title         String
+  excerpt       String
+  tags          String[]
+  readTime      Int
+  publishedAt   DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  content       String?
+  postType      String         @default("manual")
+  projectId     String?
+  published     Boolean        @default(false)
+  contentPillar ContentPillar?
+  phase         ProjectPhase?
+  postTypeEnum  PostTypeEnum?
+  targetPersona TargetPersona?
+  project       Project?       @relation(fields: [projectId], references: [id])
 
   @@index([publishedAt])
   @@index([postType])
@@ -93,22 +89,22 @@ enum Category {
   FRAMEWORKS
   EDUCATION
   MARKETPLACE
+  OTHER
   PRODUCTIVITY
   FINANCE
   WELLBEING
-  OTHER
 }
 
 enum ProjectStatus {
+  ACTIVE
+  BETA
+  PLANNING
+  ARCHIVED
   RESEARCH
   DESIGN
-  PLANNING
   BUILD
-  BETA
   MVP
   LIVE
-  ARCHIVED
-  ACTIVE // Legacy value - kept for database compatibility, use LIVE instead
 }
 
 enum ProjectType {
@@ -120,28 +116,27 @@ enum ProjectType {
   MARKETPLACE
 }
 
-// Content categorization enums for Sprint 1
 enum ContentPillar {
-  JOURNEY // Build-in-public progress posts
-  FRAMEWORK // Reusable frameworks and methodologies
-  TOOL // Tools, templates, resources
-  COMMUNITY // Community content, contributions
+  JOURNEY
+  FRAMEWORK
+  TOOL
+  COMMUNITY
 }
 
 enum PostTypeEnum {
-  PROGRESS_UPDATE // Regular progress updates
-  MILESTONE // Major achievements
-  FAILURE // Failures and lessons (important for authenticity)
-  TUTORIAL // How-to content
-  CASE_STUDY // Deep dive case studies
-  GENERAL // General content
+  PROGRESS_UPDATE
+  MILESTONE
+  FAILURE
+  TUTORIAL
+  CASE_STUDY
+  GENERAL
 }
 
 enum TargetPersona {
-  CORPORATE_ESCAPIST // People leaving corporate jobs
-  SERVICE_PROVIDER // Freelancers, consultants
-  BUILDER // Technical builders, developers
-  ALL // Content for everyone
+  CORPORATE_ESCAPIST
+  SERVICE_PROVIDER
+  BUILDER
+  ALL
 }
 
 enum ProjectPhase {
@@ -152,4 +147,10 @@ enum ProjectPhase {
   MAINTENANCE
   ARCHIVED
   PAUSED
+}
+
+model AdminSettings {
+  id           String   @id @default("admin")
+  passwordHash String
+  updatedAt    DateTime @updatedAt
 }

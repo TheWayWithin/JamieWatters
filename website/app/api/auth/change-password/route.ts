@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyPassword, hashPassword, extractTokenFromRequest, verifyToken } from '@/lib/auth';
 import { checkRateLimit, getClientIdentifier } from '@/lib/rate-limit';
+import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
-import fs from 'fs/promises';
-import path from 'path';
 
-// Force Node.js runtime for bcrypt and filesystem access
+// Force Node.js runtime for bcrypt compatibility
 export const runtime = 'nodejs';
 
 const changePasswordSchema = z.object({
@@ -24,7 +23,7 @@ const changePasswordSchema = z.object({
  * - Requires valid session token (must be logged in)
  * - Verifies current password before allowing change
  * - Rate limited to prevent brute force
- * - Updates ADMIN_PASSWORD_HASH in .env.local
+ * - Stores new hash in database (works in production read-only filesystems)
  * - New password validated with minimum length
  */
 export async function POST(req: NextRequest) {
@@ -93,31 +92,12 @@ export async function POST(req: NextRequest) {
     // Hash the new password
     const newHash = await hashPassword(newPassword);
 
-    // Update .env.local with new hash
-    const envPath = path.join(process.cwd(), '.env.local');
-    let envContent = '';
-
-    try {
-      envContent = await fs.readFile(envPath, 'utf-8');
-    } catch {
-      // .env.local might not exist yet
-      envContent = '';
-    }
-
-    // Replace or add ADMIN_PASSWORD_HASH
-    if (envContent.includes('ADMIN_PASSWORD_HASH=')) {
-      envContent = envContent.replace(
-        /ADMIN_PASSWORD_HASH=.*/,
-        `ADMIN_PASSWORD_HASH=${newHash}`
-      );
-    } else {
-      envContent = envContent.trimEnd() + `\nADMIN_PASSWORD_HASH=${newHash}\n`;
-    }
-
-    await fs.writeFile(envPath, envContent, 'utf-8');
-
-    // Update the in-memory environment variable so the new password works immediately
-    process.env.ADMIN_PASSWORD_HASH = newHash;
+    // Store new hash in database (upsert so it works on first change too)
+    await prisma.adminSettings.upsert({
+      where: { id: 'admin' },
+      update: { passwordHash: newHash },
+      create: { id: 'admin', passwordHash: newHash },
+    });
 
     console.log('Admin password changed successfully at:', new Date().toISOString());
 
