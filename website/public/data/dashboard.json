@@ -1,0 +1,943 @@
+{
+  "generatedAt": "2026-01-31T00:58:15.699Z",
+  "projects": [
+    {
+      "name": "JamieWatters.work",
+      "status": "live",
+      "statusEmoji": "🟢",
+      "description": "Personal build-in-public site. Blog, portfolio, metrics dashboard.",
+      "repo": "JamieWatters",
+      "domain": "jamiewatters.work",
+      "stack": "Next.js 15, Prisma, Netlify",
+      "next": "Publish more journey posts, drive traffic, add analytics",
+      "revenue": "$0",
+      "users": "0"
+    },
+    {
+      "name": "FreeCalcHub",
+      "status": "live",
+      "statusEmoji": "🟢",
+      "description": "Free online calculators for finance, health, fitness, productivity. SEO play.",
+      "repo": "freecalchub",
+      "domain": "freecalchub.com",
+      "stack": "Next.js, Tailwind",
+      "next": "SEO optimization, add more calculators for organic traffic",
+      "revenue": "$0",
+      "users": "0"
+    },
+    {
+      "name": "Agent-11",
+      "status": "live",
+      "statusEmoji": "🟢",
+      "description": "Open-source AI dev agent suite for Claude Code. 11 specialized agents.",
+      "repo": "agent-11",
+      "domain": "agent-11.com",
+      "stack": "Markdown, Claude Code, Documentation",
+      "next": "GitHub stars campaign, write tutorial content",
+      "revenue": "$0",
+      "users": "0 ⭐"
+    },
+    {
+      "name": "Mastery-AI Framework",
+      "status": "live",
+      "statusEmoji": "🟢",
+      "description": "Open-source framework for AI search optimization.",
+      "repo": "mastery-ai-framework",
+      "domain": "",
+      "stack": "TypeScript",
+      "next": "Docs, community building",
+      "revenue": "$0",
+      "users": "0 ⭐"
+    },
+    {
+      "name": "AImpactScanner",
+      "status": "beta",
+      "statusEmoji": "🟡",
+      "description": "Analyze how content performs in AI search results.",
+      "repo": "aimpactscanner-mvp",
+      "domain": "aimpactscanner.com",
+      "stack": "Next.js, OpenAI, Neon",
+      "next": "Polish UI, get beta users, pricing page",
+      "revenue": "$0",
+      "users": "0"
+    },
+    {
+      "name": "LLMtxtMastery",
+      "status": "beta",
+      "statusEmoji": "🟡",
+      "description": "Generate optimized llms.txt files for websites.",
+      "repo": "llm-txt-mastery",
+      "domain": "llmtxtmastery.com",
+      "stack": "Next.js, OpenAI, Tailwind",
+      "next": "Landing page improvements, outreach to devs",
+      "revenue": "$0",
+      "users": "0"
+    },
+    {
+      "name": "BOS-AI",
+      "status": "beta",
+      "statusEmoji": "🟡",
+      "description": "AI agent framework for business operations.",
+      "repo": "BOS-AI",
+      "domain": "",
+      "stack": "TypeScript, Anthropic, LangChain",
+      "next": "Documentation, use cases",
+      "revenue": "$0",
+      "users": "0 ⭐"
+    },
+    {
+      "name": "AIsearchmastery.com",
+      "status": "beta",
+      "statusEmoji": "🟡",
+      "description": "AI search optimization courses and guides.",
+      "repo": "aisearchmastery",
+      "domain": "aisearchmastery.com",
+      "stack": "Next.js, MDX, Tailwind",
+      "next": "Content creation, email list",
+      "revenue": "$0",
+      "users": "0"
+    },
+    {
+      "name": "Crypto Trading Agent",
+      "status": "beta",
+      "statusEmoji": "🟡",
+      "description": "Personal autonomous crypto trading agent.",
+      "repo": "llm-trading-system",
+      "domain": "",
+      "stack": "Python, Streamlit, SQLite, Railway",
+      "next": "Backtest results, refine strategy",
+      "revenue": "",
+      "users": ""
+    },
+    {
+      "name": "SoloMarket",
+      "status": "build",
+      "statusEmoji": "🔵",
+      "description": "Product Hunt alternative / marketplace for solopreneurs.",
+      "repo": "SoloMarket",
+      "domain": "solomarket.work",
+      "stack": "Next.js, Stripe, Neon, Netlify",
+      "next": "Google Workspace domain recovery (submitted), finish MVP",
+      "revenue": "$0",
+      "users": "0"
+    },
+    {
+      "name": "PlebTest",
+      "status": "build",
+      "statusEmoji": "🔵",
+      "description": "AI-powered idea validation (\"The Mom Test\" methodology).",
+      "repo": "PlebTest",
+      "domain": "plebtest.com",
+      "stack": "Next.js, Supabase, Railway, Stripe",
+      "next": "Polish simulation flow, beta launch",
+      "revenue": "$0",
+      "users": "0"
+    },
+    {
+      "name": "ModelOptix",
+      "status": "build",
+      "statusEmoji": "🔵",
+      "description": "\"Mint for your LLM stack\" — AI model cost advisor.",
+      "repo": "ModelOptix",
+      "domain": "modeloptix.com",
+      "stack": "Next.js, Supabase, PostgreSQL, Railway",
+      "next": "Dashboard MVP, pricing model comparison engine",
+      "revenue": "$0",
+      "users": "0"
+    },
+    {
+      "name": "Evolve-7",
+      "status": "build",
+      "statusEmoji": "🔵",
+      "description": "Multi-model AI orchestration platform.",
+      "repo": "evolve-7",
+      "domain": "evolve-7.com",
+      "stack": "Next.js, TypeScript, Multi-LLM APIs",
+      "next": "Core orchestration logic, demo",
+      "revenue": "$0",
+      "users": "0"
+    },
+    {
+      "name": "ISO Tracker",
+      "status": "build",
+      "statusEmoji": "🔵",
+      "description": "Evidence-based analysis platform for interstellar objects.",
+      "repo": "iso-tracker",
+      "domain": "",
+      "stack": "Next.js 15, React 19, TypeScript, Tailwind",
+      "next": "Data pipeline, researcher outreach",
+      "revenue": "$0",
+      "users": "0"
+    },
+    {
+      "name": "ASMGE (AI Search Mastery Growth Engine)",
+      "status": "design",
+      "statusEmoji": "⚪",
+      "description": "Automated growth tool for AImpactScanner + LLMtxtMastery.",
+      "repo": "asmge",
+      "domain": "",
+      "stack": "Python, Railway",
+      "next": "Define growth loops, automation scripts",
+      "revenue": "",
+      "users": ""
+    },
+    {
+      "name": "SEO-Agent",
+      "status": "design",
+      "statusEmoji": "⚪",
+      "description": "Comprehensive SEO toolset — keyword research, rank tracking, competitor analysis.",
+      "repo": "SEO-AGENT",
+      "domain": "",
+      "stack": "Python, FastAPI, PostgreSQL, Redis",
+      "next": "Architecture planning",
+      "revenue": "",
+      "users": ""
+    }
+  ],
+  "projectCounts": {
+    "live": 4,
+    "beta": 5,
+    "build": 5,
+    "design": 2
+  },
+  "taskSections": [
+    {
+      "title": "Today / This Week",
+      "emoji": "🔥",
+      "tasks": [
+        {
+          "text": "Complete ModelOptix MVP",
+          "done": false,
+          "priority": true,
+          "subtasks": [
+            {
+              "text": "5.14 — Stripe Live Mode Setup (P0): switch from test keys to live keys",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "6.0.2 — Manually trigger model catalog sync, verify data flows (in progress)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "6.0.3 — Verify database has 200+ models after sync",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "6.3.1 — Test complete end-to-end user journey (signup → connect OpenRouter → import → recommendations)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "6.3.2 — Verify error handling (invalid key, rate limit, no data)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Build passes",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Test coverage >= 80%",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Lint passes",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "npm audit — no high/critical vulns",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Dashboard loads < 3s",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "All email templates render correctly",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            }
+          ]
+        },
+        {
+          "text": "Complete PlebTest MVP",
+          "done": false,
+          "priority": true,
+          "subtasks": [
+            {
+              "text": "task-1.13.4 — View Subscription (F-025): plan, usage, billing date, payment method",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "task-1.13.5 — Upgrade/Downgrade (F-026): plan change UI with proration",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "task-1.14.1 — Tier limit checking: enforce ideas/tests limits per plan",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "task-1.13.6 — Manage Payment Method (F-027)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "task-1.13.7 — Cancel Subscription (F-028)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "task-1.12.1 — Onboarding Flow (F-005)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "task-1.2.5 — Profile management (F-004)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            }
+          ]
+        },
+        {
+          "text": "Check DKIM status for all domains (24-72h wait from Jan 28) ✅ Jan 30 — DKIM records added to all 9 domains, authentication started in Google Admin",
+          "done": true,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Check solomarket.work Google domain recovery (reference #67359302)",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Check freecalchub.com nameserver propagation to Netlify",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Transfer Squarespace domains to Namecheap — theawarenessorganization.com + theaware.org (just auto-renewed Jan 27, so we have ~1 year)",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Post LinkedIn + X for Article 2 (AWS setup guide)",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Change jamiewatters.work admin password ✅ Jan 31",
+          "done": true,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Rotate Supabase access token ✅ Jan 31",
+          "done": true,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Establish secure credential sharing method ✅ Jan 31",
+          "done": true,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Stripe cleanup (AIsearchmastery account):",
+          "done": false,
+          "priority": false,
+          "subtasks": [
+            {
+              "text": "Audit all products — identify active vs defunct",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Archive/delete old products (old ISO Tracker, etc.)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Confirm only LLMtxt + AImpactScanner remain",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Create separate webhook endpoint for AImpactScanner",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Create separate webhook endpoint for LLMtxtMastery",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Remove old shared webhook",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Test both webhook endpoints",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            }
+          ]
+        }
+      ],
+      "completed": 4,
+      "total": 33
+    },
+    {
+      "title": "JamieWatters.work",
+      "emoji": "🌐",
+      "tasks": [
+        {
+          "text": "Review project metrics — ensure correct metrics per project",
+          "done": false,
+          "priority": false,
+          "subtasks": [
+            {
+              "text": "Automate MRR feed from Stripe API",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Automate user/signup counts",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Remove manual \"last updated\" — make it live data",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            }
+          ]
+        },
+        {
+          "text": "Update content creation: make \"Write Manual Post\" the primary option, remove daily update and progress report generation (unused)",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Add project plan / task pipeline dashboard (public, build-in-public transparency)",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        }
+      ],
+      "completed": 0,
+      "total": 5
+    },
+    {
+      "title": "Content Pipeline",
+      "emoji": "📝",
+      "tasks": [
+        {
+          "text": "Cross-post updates to wip.co",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Article 3: \"How we built and deployed a product in a weekend\"",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Article 4: \"The AI agent's daily routine (heartbeats, proactive checks, memory management)\"",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Article 5: \"When AI agents fail (and what to do about it)\"",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Write LinkedIn + X posts for each article as published",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        }
+      ],
+      "completed": 0,
+      "total": 5
+    },
+    {
+      "title": "Infrastructure",
+      "emoji": "🛠️",
+      "tasks": [
+        {
+          "text": "DKIM records for all 10 domains (cron set for Jan 29 4pm UTC) ✅ Jan 30 — All 9 active domains done (solomarket.work pending domain recovery)",
+          "done": true,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Test email receive on all domains — send test to each alias, confirm delivery:",
+          "done": false,
+          "priority": false,
+          "subtasks": [
+            {
+              "text": "jamie@aimpactscanner.com",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "jamie@llmtxtmastery.com",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "jamie@plebtest.com",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "jamie@modeloptix.com",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "jamie@agent-11.com",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "jamie@freecalchub.com",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "jamie@evolve-7.com",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "jamie@jamiewatters.work",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "jamie@solomarket.work (pending domain recovery)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            }
+          ]
+        },
+        {
+          "text": "Set up daily email check cron",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Supabase security vulnerabilities (59 errors → 0) ✅ Fixed Jan 30 — RLS enabled on all tables",
+          "done": true,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Set up Google Search Console for jamiewatters.work",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        }
+      ],
+      "completed": 2,
+      "total": 13
+    },
+    {
+      "title": "Growth / Revenue",
+      "emoji": "🚀",
+      "tasks": [
+        {
+          "text": "LLMtxt API integration test:",
+          "done": false,
+          "priority": false,
+          "subtasks": [
+            {
+              "text": "Verify LLMtxt API endpoint is live and callable",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Test end-to-end: AImpactScanner user triggers llms.txt generation",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Confirm file output is valid llms.txt format",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Verify tier-gating: user's AImpactScanner tier determines LLMtxt output tier (e.g. Growth tier → Growth-level llms.txt)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Check error handling / edge cases",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            }
+          ]
+        },
+        {
+          "text": "AImpactScanner user journey mapping:",
+          "done": false,
+          "priority": false,
+          "subtasks": [
+            {
+              "text": "Map full lifecycle: Discovery → Scan → Results → Remediation Plan → Fix Issues → Maintenance",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Identify feature gaps at each stage",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Define free vs paid boundaries",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Design retention loop (re-scan, monitoring, alerts)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            }
+          ]
+        },
+        {
+          "text": "Set up basic analytics on jamiewatters.work",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Create landing page CTAs for email capture",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        }
+      ],
+      "completed": 0,
+      "total": 11
+    },
+    {
+      "title": "Agent-11",
+      "emoji": "🤖",
+      "tasks": [
+        {
+          "text": "Fix/update MCP function so it works",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Add architecture.md to foundations command — also generate a YAML version of the architecture",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Add single-doc update to foundations command (e.g. `/foundations vision` regenerates just the vision YAML)",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        }
+      ],
+      "completed": 0,
+      "total": 3
+    },
+    {
+      "title": "SoloMarket",
+      "emoji": "🏪",
+      "tasks": [
+        {
+          "text": "Add the Launch Pad — feature for launching new products",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Auto-registration tool: automatically submit new products to multiple launch sites",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        }
+      ],
+      "completed": 0,
+      "total": 2
+    },
+    {
+      "title": "ISO Tracker",
+      "emoji": "🔭",
+      "tasks": [
+        {
+          "text": "Add Stripe payments integration (own Stripe account)",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Add Avi Loeb assessment content",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Add 3D plotting of ISOs (currently 2D only) — consider paid-tier-only (TBC)",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Complete phase 14.2",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        }
+      ],
+      "completed": 0,
+      "total": 4
+    },
+    {
+      "title": "Trader-7",
+      "emoji": "💹",
+      "tasks": [
+        {
+          "text": "Add funding arbitrage capability",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Create segregated dev-staging vs prod environments",
+          "done": false,
+          "priority": false,
+          "subtasks": [
+            {
+              "text": "Paper trading in staging to prove new features before promoting to prod",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            }
+          ]
+        },
+        {
+          "text": "Externalize model selection: move hardcoded OpenRouter model to Railway env variable (swap models without code changes)",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Add Grok sentiment feed — use Grok to analyze X/Twitter for crypto sentiment insights",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Consolidate Supabase data migrations",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        }
+      ],
+      "completed": 0,
+      "total": 5
+    },
+    {
+      "title": "Costs & Financial Tracking",
+      "emoji": "💰",
+      "tasks": [
+        {
+          "text": "Full cost audit ✅ Done Jan 30 — all 13 months of card statements extracted",
+          "done": true,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Document monthly cost per service ✅ COSTS.md created with vendor breakdown",
+          "done": true,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Set up ongoing cost tracking ✅ Statements in `statements/`, auto-labeled in Gmail",
+          "done": true,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Kit.com cancelled ✅ Saving ~$42/mo",
+          "done": true,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Replace Enzuzo ($29/mo) with native GDPR components:",
+          "done": false,
+          "priority": false,
+          "subtasks": [
+            {
+              "text": "Build shared cookie consent banner (React component)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Build privacy policy page template",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Build terms of service page template",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Deploy to all apps (AImpactScanner, LLMtxtMastery, PlebTest, ModelOptix, FreeCalcHub, SoloMarket)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Cancel Enzuzo after migration",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            }
+          ]
+        },
+        {
+          "text": "Review Manus AI ROI (Feb 2026)",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Allocate shared costs proportionally across products",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Map costs to projects/products (which product uses what)",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        }
+      ],
+      "completed": 4,
+      "total": 12
+    },
+    {
+      "title": "Backlog",
+      "emoji": "🧊",
+      "tasks": [
+        {
+          "text": "Weekly review cron job (Monday morning summary)",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Portfolio dashboard metrics automation",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "Playwright tests for key products",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "SEO audit across all domains",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        }
+      ],
+      "completed": 0,
+      "total": 4
+    }
+  ],
+  "taskStats": {
+    "total": 97,
+    "completed": 10,
+    "percentage": 10
+  }
+}
