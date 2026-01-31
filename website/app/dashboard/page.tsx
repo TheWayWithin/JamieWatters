@@ -96,6 +96,7 @@ const STATUS_CONFIG: Record<
 
 async function getDashboardData(): Promise<DashboardData | null> {
   try {
+    // Try filesystem first (works at build time)
     const fs = await import('fs');
     const path = await import('path');
     const filePath = path.join(
@@ -104,9 +105,21 @@ async function getDashboardData(): Promise<DashboardData | null> {
       'data',
       'dashboard.json'
     );
-    if (!fs.existsSync(filePath)) return null;
-    const raw = fs.readFileSync(filePath, 'utf-8');
-    return JSON.parse(raw) as DashboardData;
+    if (fs.existsSync(filePath)) {
+      const raw = fs.readFileSync(filePath, 'utf-8');
+      return JSON.parse(raw) as DashboardData;
+    }
+
+    // Fallback: fetch from public URL (works on Netlify at runtime)
+    const siteUrl =
+      process.env.URL ||
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      'https://jamiewatters.work';
+    const res = await fetch(`${siteUrl}/data/dashboard.json`, {
+      next: { revalidate: 60 },
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as DashboardData;
   } catch {
     return null;
   }
