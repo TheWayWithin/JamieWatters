@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-01-31T00:58:15.699Z",
+  "generatedAt": "2026-02-03T12:11:57.648Z",
   "projects": [
     {
       "name": "JamieWatters.work",
@@ -206,18 +206,104 @@
       "emoji": "🔥",
       "tasks": [
         {
-          "text": "Complete ModelOptix MVP",
+          "text": "**🚀 LLM.txt Mastery Marketing Launch**",
           "done": false,
           "priority": true,
           "subtasks": [
             {
-              "text": "5.14 — Stripe Live Mode Setup (P0): switch from test keys to live keys",
+              "text": "Test staging before production merge",
               "done": false,
               "priority": false,
               "subtasks": []
             },
             {
-              "text": "6.0.2 — Manually trigger model catalog sync, verify data flows (in progress)",
+              "text": "Merge develop → main (production deploy)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Post on Indie Hackers (launch post)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Tweet thread about AI search visibility",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Find 10 Webflow designers/agencies, DM them",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Find 10 custom site founders, DM them",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Write blog post about launch process (jamiewatters.work)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Prep Product Hunt launch (after 5+ customers)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            }
+          ]
+        },
+        {
+          "text": "**Build Prospecting System**",
+          "done": false,
+          "priority": false,
+          "subtasks": [
+            {
+              "text": "Design prospect tracking (CRM-lite): name, company, source, status, next action, notes",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Integrate with email protocol (`_Filed/Leads` → prospect record)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Define prospect stages: Lead → Contacted → Engaged → Opportunity → Won/Lost",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Track follow-up cadence (7-day rule for pending responses)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Location: `data/prospects.csv` or Notion?",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            }
+          ]
+        },
+        {
+          "text": "**Complete ModelOptix MVP**",
+          "done": false,
+          "priority": true,
+          "subtasks": [
+            {
+              "text": "6.0.2 — Manually trigger model catalog sync, verify data flows",
               "done": false,
               "priority": false,
               "subtasks": []
@@ -241,19 +327,7 @@
               "subtasks": []
             },
             {
-              "text": "Build passes",
-              "done": false,
-              "priority": false,
-              "subtasks": []
-            },
-            {
-              "text": "Test coverage >= 80%",
-              "done": false,
-              "priority": false,
-              "subtasks": []
-            },
-            {
-              "text": "Lint passes",
+              "text": "Build passes, test coverage >= 80%, lint passes",
               "done": false,
               "priority": false,
               "subtasks": []
@@ -269,17 +343,11 @@
               "done": false,
               "priority": false,
               "subtasks": []
-            },
-            {
-              "text": "All email templates render correctly",
-              "done": false,
-              "priority": false,
-              "subtasks": []
             }
           ]
         },
         {
-          "text": "Complete PlebTest MVP",
+          "text": "**Complete PlebTest MVP**",
           "done": false,
           "priority": true,
           "subtasks": [
@@ -346,7 +414,7 @@
           "subtasks": []
         },
         {
-          "text": "Transfer Squarespace domains to Namecheap — theawarenessorganization.com + theaware.org (just auto-renewed Jan 27, so we have ~1 year)",
+          "text": "**Transfer Squarespace domains to Namecheap** — theawarenessorganization.com + theaware.org (just auto-renewed Jan 27, so we have ~1 year)",
           "done": false,
           "priority": false,
           "subtasks": []
@@ -376,7 +444,7 @@
           "subtasks": []
         },
         {
-          "text": "Stripe cleanup (AIsearchmastery account):",
+          "text": "**Stripe cleanup (AIsearchmastery account):**",
           "done": false,
           "priority": false,
           "subtasks": [
@@ -426,7 +494,7 @@
         }
       ],
       "completed": 4,
-      "total": 33
+      "total": 13
     },
     {
       "title": "JamieWatters.work",
@@ -471,7 +539,7 @@
         }
       ],
       "completed": 0,
-      "total": 5
+      "total": 3
     },
     {
       "title": "Content Pipeline",
@@ -522,7 +590,7 @@
           "subtasks": []
         },
         {
-          "text": "Test email receive on all domains — send test to each alias, confirm delivery:",
+          "text": "**Test email receive on all domains** — send test to each alias, confirm delivery:",
           "done": false,
           "priority": false,
           "subtasks": [
@@ -602,14 +670,14 @@
         }
       ],
       "completed": 2,
-      "total": 13
+      "total": 5
     },
     {
       "title": "Growth / Revenue",
       "emoji": "🚀",
       "tasks": [
         {
-          "text": "LLMtxt API integration test:",
+          "text": "**LLMtxt API integration test:**",
           "done": false,
           "priority": false,
           "subtasks": [
@@ -646,7 +714,7 @@
           ]
         },
         {
-          "text": "AImpactScanner user journey mapping:",
+          "text": "**AImpactScanner user journey mapping:**",
           "done": false,
           "priority": false,
           "subtasks": [
@@ -690,7 +758,7 @@
         }
       ],
       "completed": 0,
-      "total": 11
+      "total": 4
     },
     {
       "title": "Agent-11",
@@ -844,25 +912,25 @@
           "subtasks": []
         },
         {
-          "text": "Replace Enzuzo ($29/mo) with native GDPR components:",
+          "text": "**Replace Enzuzo ($29/mo)** with native GDPR components:",
           "done": false,
           "priority": false,
           "subtasks": [
             {
-              "text": "Build shared cookie consent banner (React component)",
-              "done": false,
+              "text": "Build shared cookie consent banner (React component) ✅ Jan 30 — `/shared-components/gdpr/CookieConsent.tsx`",
+              "done": true,
               "priority": false,
               "subtasks": []
             },
             {
-              "text": "Build privacy policy page template",
-              "done": false,
+              "text": "Build privacy policy page template ✅ Jan 30 — `/shared-components/gdpr/PrivacyPolicy.tsx`",
+              "done": true,
               "priority": false,
               "subtasks": []
             },
             {
-              "text": "Build terms of service page template",
-              "done": false,
+              "text": "Build terms of service page template ✅ Jan 30 — `/shared-components/gdpr/TermsOfService.tsx`",
+              "done": true,
               "priority": false,
               "subtasks": []
             },
@@ -897,47 +965,69 @@
           "done": false,
           "priority": false,
           "subtasks": []
+        },
+        {
+          "text": "**AImpactScanner: Define paywall** — Free (1 scan/mo) vs Pro ($29/mo) vs Agency ($99/mo)",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "**AImpactScanner: Wire Stripe Checkout** — Subscription flow for paid tiers",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "**AImpactScanner: Landing page overhaul** — Hero, pricing table, free scan CTA",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "**AImpactScanner: Distribution sprint** — 20 cold DMs, 5 community posts, 3 free site audits",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "**AImpactScanner: First paying customer** 🎯 — Target: within 30 days",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "**Cost audit: Review Manus AI ROI** ($199/mo) — Cancel if not used regularly",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "**Cost audit: Review WIP.co** ($29/mo) — Cancel if not actively using",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "**Cost audit: Evaluate Claude Max vs API** ($218/mo) — Could save $100+/mo",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "**Read STRATEGY.md** — Full portfolio triage and 90-day revenue plan created overnight",
+          "done": false,
+          "priority": false,
+          "subtasks": []
         }
       ],
       "completed": 4,
-      "total": 12
-    },
-    {
-      "title": "Backlog",
-      "emoji": "🧊",
-      "tasks": [
-        {
-          "text": "Weekly review cron job (Monday morning summary)",
-          "done": false,
-          "priority": false,
-          "subtasks": []
-        },
-        {
-          "text": "Portfolio dashboard metrics automation",
-          "done": false,
-          "priority": false,
-          "subtasks": []
-        },
-        {
-          "text": "Playwright tests for key products",
-          "done": false,
-          "priority": false,
-          "subtasks": []
-        },
-        {
-          "text": "SEO audit across all domains",
-          "done": false,
-          "priority": false,
-          "subtasks": []
-        }
-      ],
-      "completed": 0,
-      "total": 4
+      "total": 17
     }
   ],
   "taskStats": {
-    "total": 97,
+    "total": 61,
     "completed": 10,
-    "percentage": 10
+    "percentage": 16
   }
 }
