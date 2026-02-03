@@ -148,8 +148,17 @@ function main() {
     totalTasks += section.total;
   }
   
-  // Update dashboard data
-  dashboardData.generatedAt = new Date().toISOString();
+  // Update dashboard data - use ET timezone for Jamie
+  const etTime = new Date().toLocaleString('en-US', { 
+    timeZone: 'America/New_York',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  });
+  dashboardData.generatedAt = etTime;
   dashboardData.taskSections = taskSections;
   dashboardData.taskStats = {
     total: totalTasks,
