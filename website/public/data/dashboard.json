@@ -1,5 +1,5 @@
 {
-  "generatedAt": "Feb 3, 2026, 7:38 AM",
+  "generatedAt": "Feb 5, 2026, 12:00 AM",
   "projects": [
     {
       "name": "JamieWatters.work",
@@ -546,6 +546,100 @@
       "emoji": "📝",
       "tasks": [
         {
+          "text": "**WIP.co daily updates** — automate posting, build solopreneur reputation",
+          "done": false,
+          "priority": false,
+          "subtasks": [
+            {
+              "text": "Check WIP.co API for automation",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Daily progress updates",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Cross-post salient posts from other platforms",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            }
+          ]
+        },
+        {
+          "text": "**Reddit social credit building** — ask good questions, share learnings",
+          "done": false,
+          "priority": false,
+          "subtasks": [
+            {
+              "text": "Post in r/ClaudeAI, r/ChatGPT, r/SideProject, r/indiehackers",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Start with genuine questions about AI agent experiences",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Share \"I broke prod\" story as learning post",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            }
+          ]
+        },
+        {
+          "text": "**Grow X/Twitter followers** — strategy TBD",
+          "done": false,
+          "priority": false,
+          "subtasks": [
+            {
+              "text": "Engage more with #buildinpublic community",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Regular posting cadence",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Reply to influential accounts",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            }
+          ]
+        },
+        {
+          "text": "**LinkedIn prospecting** — getting 10x more views there",
+          "done": false,
+          "priority": false,
+          "subtasks": [
+            {
+              "text": "Find LLMtxt prospects on LinkedIn",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Build connections with ICP founders",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            }
+          ]
+        },
+        {
           "text": "Cross-post updates to wip.co",
           "done": false,
           "priority": false,
@@ -577,12 +671,49 @@
         }
       ],
       "completed": 0,
-      "total": 5
+      "total": 9
     },
     {
       "title": "Infrastructure",
       "emoji": "🛠️",
       "tasks": [
+        {
+          "text": "**Update GitHub PAT** *(tonight)* — add `workflow` scope so Marvin can push CI/workflow changes",
+          "done": false,
+          "priority": false,
+          "subtasks": []
+        },
+        {
+          "text": "**Standardize LLM usage across all apps** — use OpenRouter + env vars for model selection",
+          "done": false,
+          "priority": false,
+          "subtasks": [
+            {
+              "text": "AImpactScanner",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "PlebTest",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "ModelOptix (if applicable)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Any other apps with LLM calls",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            }
+          ]
+        },
         {
           "text": "DKIM records for all 10 domains (cron set for Jan 29 4pm UTC) ✅ Jan 30 — All 9 active domains done (solomarket.work pending domain recovery)",
           "done": true,
@@ -670,12 +801,49 @@
         }
       ],
       "completed": 2,
-      "total": 5
+      "total": 7
     },
     {
       "title": "Growth / Revenue",
       "emoji": "🚀",
       "tasks": [
+        {
+          "text": "**Set up traffic analytics:**",
+          "done": false,
+          "priority": false,
+          "subtasks": [
+            {
+              "text": "llmtxtmastery.com — add analytics",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "jamiewatters.work — add analytics",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "aimpactscanner.com — add analytics",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "aisearchmastery.com — add analytics",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Decide on tool: privacy-friendly vs full-featured (PostHog? Plausible? GA?)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            }
+          ]
+        },
         {
           "text": "**LLMtxt API integration test:**",
           "done": false,
@@ -758,7 +926,7 @@
         }
       ],
       "completed": 0,
-      "total": 4
+      "total": 5
     },
     {
       "title": "Agent-11",
@@ -1026,8 +1194,8 @@
     }
   ],
   "taskStats": {
-    "total": 61,
+    "total": 68,
     "completed": 10,
-    "percentage": 16
+    "percentage": 15
   }
 }
