@@ -1,5 +1,5 @@
 {
-  "generatedAt": "Feb 5, 2026, 12:00 AM",
+  "generatedAt": "Feb 6, 2026, 3:00 PM",
   "projects": [
     {
       "name": "JamieWatters.work",
@@ -396,6 +396,67 @@
           ]
         },
         {
+          "text": "**Roll Out Plausible Analytics Across All Sites**",
+          "done": false,
+          "priority": false,
+          "subtasks": [
+            {
+              "text": "Sign up for Plausible ($9/mo for 10K pageviews, unlimited sites)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Add to jamiewatters.work (replace/complement Vercel Analytics)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Add to llmtxtmastery.com",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Add to aimpactscanner.com",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Add to freecalchub.com (if live)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Add to modeloptix.com (when live)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Add to plebtest.com (when live)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Verify all sites reporting in Plausible dashboard",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Review: Remove Google Analytics if present (privacy + simplicity)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            }
+          ]
+        },
+        {
           "text": "Check DKIM status for all domains (24-72h wait from Jan 28) ✅ Jan 30 — DKIM records added to all 9 domains, authentication started in Google Admin",
           "done": true,
           "priority": false,
@@ -494,7 +555,7 @@
         }
       ],
       "completed": 4,
-      "total": 13
+      "total": 14
     },
     {
       "title": "JamieWatters.work",
@@ -1194,8 +1255,8 @@
     }
   ],
   "taskStats": {
-    "total": 68,
+    "total": 69,
     "completed": 10,
-    "percentage": 15
+    "percentage": 14
   }
 }
