@@ -254,12 +254,84 @@ async function syncActivity() {
   }
 }
 
+async function processPendingTriggers() {
+  console.log('⚡ Processing pending triggers...');
+  
+  try {
+    const { execSync } = require('child_process');
+    
+    // Get pending triggers
+    const triggers = await prisma.agentCronTrigger.findMany({
+      where: { status: 'pending' },
+      orderBy: { createdAt: 'asc' },
+    });
+
+    if (triggers.length === 0) {
+      console.log('  ℹ️ No pending triggers');
+      return 0;
+    }
+
+    let processed = 0;
+    for (const trigger of triggers) {
+      console.log(`  ▶️ Running job: ${trigger.jobName}`);
+      
+      // Mark as running
+      await prisma.agentCronTrigger.update({
+        where: { id: trigger.id },
+        data: { status: 'running', startedAt: new Date() },
+      });
+
+      try {
+        // Execute the cron job
+        const output = execSync(`clawdbot cron run ${trigger.jobId} 2>&1`, {
+          encoding: 'utf8',
+          timeout: 300000, // 5 minute timeout
+        });
+
+        // Mark as completed
+        await prisma.agentCronTrigger.update({
+          where: { id: trigger.id },
+          data: { 
+            status: 'completed', 
+            completedAt: new Date(),
+            result: output.substring(0, 1000),
+          },
+        });
+        console.log(`  ✅ Completed: ${trigger.jobName}`);
+        processed++;
+      } catch (execError) {
+        // Mark as failed
+        await prisma.agentCronTrigger.update({
+          where: { id: trigger.id },
+          data: { 
+            status: 'failed', 
+            completedAt: new Date(),
+            result: execError.message?.substring(0, 1000) || 'Unknown error',
+          },
+        });
+        console.log(`  ❌ Failed: ${trigger.jobName} - ${execError.message}`);
+      }
+    }
+
+    console.log(`  ✅ Processed ${processed}/${triggers.length} triggers`);
+    return processed;
+  } catch (error) {
+    console.error('  ❌ Error processing triggers:', error.message);
+    return 0;
+  }
+}
+
 async function main() {
   console.log('🎛️ Mission Control Sync Starting...');
   console.log(`   Time: ${new Date().toISOString()}`);
   console.log('');
 
+  // Process any pending triggers first
+  const triggersProcessed = await processPendingTriggers();
+  console.log('');
+
   const results = {
+    triggersProcessed,
     scheduledTasks: await syncScheduledTasks(),
     tasks: await syncTasks(),
     memory: await syncMemory(),
@@ -268,6 +340,7 @@ async function main() {
 
   console.log('');
   console.log('📊 Sync Summary:');
+  console.log(`   Triggers Processed: ${results.triggersProcessed}`);
   console.log(`   Scheduled Tasks: ${results.scheduledTasks}`);
   console.log(`   Tasks: ${results.tasks}`);
   console.log(`   Memory Files: ${results.memory}`);

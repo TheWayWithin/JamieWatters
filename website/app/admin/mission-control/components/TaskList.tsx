@@ -3,26 +3,31 @@
 import { useState, useEffect } from 'react';
 
 interface Task {
-  text: string;
-  done: boolean;
+  content: string;
+  completed: boolean;
 }
 
 interface TaskSection {
   title: string;
   tasks: Task[];
+  total: number;
+  completed: number;
   collapsed?: boolean;
 }
 
 interface TaskListResponse {
   sections: TaskSection[];
-  lastModified: string;
+  totalTasks: number;
+  completedTasks: number;
+  lastSynced: string;
 }
 
 export function TaskList() {
   const [sections, setSections] = useState<TaskSection[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [lastModified, setLastModified] = useState<string>('');
+  const [lastSynced, setLastSynced] = useState<string>('');
+  const [updating, setUpdating] = useState<string | null>(null);
 
   useEffect(() => {
     fetchTasks();
@@ -40,8 +45,8 @@ export function TaskList() {
       }
 
       const data: TaskListResponse = await response.json();
-      setSections(data.sections || []);
-      setLastModified(data.lastModified || '');
+      setSections(data.sections?.map(s => ({ ...s, collapsed: true })) || []);
+      setLastSynced(data.lastSynced || '');
       setError(null);
     } catch (err) {
       console.error('Error fetching tasks:', err);
@@ -51,13 +56,53 @@ export function TaskList() {
     }
   };
 
+  const toggleTask = async (sectionTitle: string, taskContent: string, currentCompleted: boolean) => {
+    const taskKey = `${sectionTitle}:${taskContent}`;
+    setUpdating(taskKey);
+
+    try {
+      const response = await fetch('/api/admin/tasks', {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          section: sectionTitle,
+          content: taskContent,
+          completed: !currentCompleted,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update task');
+      }
+
+      // Update local state
+      setSections(prev => prev.map(section => {
+        if (section.title !== sectionTitle) return section;
+        return {
+          ...section,
+          tasks: section.tasks.map(task => {
+            if (task.content !== taskContent) return task;
+            return { ...task, completed: !currentCompleted };
+          }),
+          completed: section.completed + (currentCompleted ? -1 : 1),
+        };
+      }));
+    } catch (err) {
+      console.error('Error toggling task:', err);
+      // Could show a toast here
+    } finally {
+      setUpdating(null);
+    }
+  };
+
   const toggleSection = (index: number) => {
     setSections(prev => prev.map((section, i) => 
       i === index ? { ...section, collapsed: !section.collapsed } : section
     ));
   };
 
-  const formatLastModified = (dateStr: string) => {
+  const formatLastSynced = (dateStr: string) => {
     if (!dateStr) return '';
     
     try {
@@ -70,15 +115,9 @@ export function TaskList() {
         minute: '2-digit',
         hour12: true,
       }).format(date);
-    } catch (err) {
+    } catch {
       return dateStr;
     }
-  };
-
-  const getProgressStats = (section: TaskSection) => {
-    const completed = section.tasks.filter(task => task.done).length;
-    const total = section.tasks.length;
-    return { completed, total, percentage: total > 0 ? Math.round((completed / total) * 100) : 0 };
   };
 
   if (loading) {
@@ -111,83 +150,82 @@ export function TaskList() {
         <h3 className="text-title-lg font-semibold text-text-primary flex items-center gap-2">
           📋 Tasks
         </h3>
-        <div className="flex items-center gap-3">
-          {lastModified && (
-            <span className="text-body-xs text-text-tertiary">
-              Updated {formatLastModified(lastModified)}
-            </span>
-          )}
-          <button
-            onClick={fetchTasks}
-            className="text-brand-primary hover:text-brand-secondary text-body-sm font-medium"
-          >
-            Refresh
-          </button>
-        </div>
+        <button
+          onClick={fetchTasks}
+          className="text-brand-primary hover:text-brand-secondary text-body-sm font-medium"
+        >
+          Refresh
+        </button>
       </div>
 
       {sections.length === 0 ? (
         <p className="text-body text-text-secondary">No tasks found.</p>
       ) : (
-        <div className="space-y-4">
-          {sections.map((section, sectionIndex) => {
-            const stats = getProgressStats(section);
-            return (
-              <div key={sectionIndex} className="border border-border-default rounded-md">
-                <button
-                  onClick={() => toggleSection(sectionIndex)}
-                  className="w-full p-3 text-left hover:bg-bg-secondary transition-colors"
-                >
-                  <div className="flex items-center justify-between">
-                    <h4 className="font-medium text-text-primary text-body flex items-center gap-2">
-                      <span className="text-sm">
-                        {section.collapsed ? '▶️' : '▼'}
-                      </span>
-                      {section.title}
-                    </h4>
-                    <div className="flex items-center gap-2">
-                      <span className="text-body-sm text-text-secondary">
-                        {stats.completed}/{stats.total}
-                      </span>
-                      <div className="w-16 h-2 bg-bg-tertiary rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-success rounded-full transition-all duration-300"
-                          style={{ width: `${stats.percentage}%` }}
-                        />
-                      </div>
-                    </div>
+        <div className="space-y-3 max-h-[500px] overflow-y-auto">
+          {sections.map((section, sectionIndex) => (
+            <div key={sectionIndex} className="border border-border-default rounded-md">
+              <button
+                onClick={() => toggleSection(sectionIndex)}
+                className="w-full p-3 text-left hover:bg-bg-secondary transition-colors"
+              >
+                <div className="flex items-center justify-between">
+                  <h4 className="font-medium text-text-primary text-body-sm flex items-center gap-2">
+                    <span className="text-xs">
+                      {section.collapsed ? '▶' : '▼'}
+                    </span>
+                    {section.title}
+                  </h4>
+                  <div className="flex items-center gap-2">
+                    <span className="text-body-xs text-text-secondary">
+                      {section.tasks.filter(t => t.completed).length}/{section.tasks.length}
+                    </span>
                   </div>
-                </button>
-                
-                {!section.collapsed && (
-                  <div className="px-3 pb-3">
-                    <div className="space-y-2">
-                      {section.tasks.map((task, taskIndex) => (
-                        <div
-                          key={taskIndex}
-                          className="flex items-start gap-3 p-2 rounded hover:bg-bg-primary transition-colors"
+                </div>
+              </button>
+              
+              {!section.collapsed && (
+                <div className="px-3 pb-3 space-y-1">
+                  {section.tasks.map((task, taskIndex) => {
+                    const taskKey = `${section.title}:${task.content}`;
+                    const isUpdating = updating === taskKey;
+                    
+                    return (
+                      <button
+                        key={taskIndex}
+                        onClick={() => toggleTask(section.title, task.content, task.completed)}
+                        disabled={isUpdating}
+                        className={`w-full flex items-start gap-2 p-2 rounded text-left transition-colors ${
+                          isUpdating 
+                            ? 'opacity-50 cursor-wait' 
+                            : 'hover:bg-bg-primary cursor-pointer'
+                        }`}
+                      >
+                        <span className="text-sm mt-0.5 flex-shrink-0">
+                          {task.completed ? '✅' : '☐'}
+                        </span>
+                        <span 
+                          className={`text-body-sm flex-1 ${
+                            task.completed 
+                              ? 'text-text-tertiary line-through' 
+                              : 'text-text-primary'
+                          }`}
                         >
-                          <span className="text-lg mt-0.5">
-                            {task.done ? '✅' : '☐'}
-                          </span>
-                          <span 
-                            className={`text-body flex-1 ${
-                              task.done 
-                                ? 'text-text-tertiary line-through' 
-                                : 'text-text-primary'
-                            }`}
-                          >
-                            {task.text}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                          {task.content}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
+      )}
+
+      {lastSynced && (
+        <p className="text-body-xs text-text-tertiary mt-4">
+          Last synced: {formatLastSynced(lastSynced)}
+        </p>
       )}
     </div>
   );

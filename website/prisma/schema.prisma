@@ -205,3 +205,17 @@ model AgentActivity {
   @@index([occurredAt])
   @@index([category])
 }
+
+model AgentCronTrigger {
+  id        String   @id @default(uuid())
+  jobId     String
+  jobName   String
+  status    String   @default("pending") // pending, running, completed, failed
+  createdAt DateTime @default(now())
+  startedAt DateTime?
+  completedAt DateTime?
+  result    String?
+
+  @@index([status])
+  @@index([createdAt])
+}
