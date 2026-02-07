@@ -1,30 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken, extractTokenFromRequest } from '@/lib/auth';
-import { promises as fs } from 'fs';
-import { join } from 'path';
+import { prisma } from '@/lib/prisma';
 
-// Force Node.js runtime for consistency
 export const runtime = 'nodejs';
 
-interface Task {
-  text: string;
-  done: boolean;
-}
-
-interface TaskSection {
-  title: string;
-  tasks: Task[];
-}
-
-interface TaskListResponse {
-  sections: TaskSection[];
-  lastModified: string;
-}
-
 /**
- * GET /api/admin/tasks - Parse and return TASKS.md content
- *
- * Security: Authentication required
+ * GET /api/admin/tasks - Get tasks from database
+ * Data synced from TASKS.md via agent sync script
  */
 export async function GET(req: NextRequest) {
   try {
@@ -40,109 +22,45 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
     }
 
-    // Path to TASKS.md
-    const tasksPath = join('/home/ubuntu/clawd', 'TASKS.md');
+    // Fetch from database (synced by agent)
+    const tasks = await prisma.agentTask.findMany({
+      orderBy: [{ section: 'asc' }, { sortOrder: 'asc' }],
+    });
 
-    try {
-      // Read TASKS.md file
-      const content = await fs.readFile(tasksPath, 'utf-8');
-      const stats = await fs.stat(tasksPath);
+    // Group by section
+    const sections: { [key: string]: { content: string; completed: boolean }[] } = {};
+    let latestSync: Date | null = null;
 
-      // Parse the markdown content
-      const sections = parseTasksMarkdown(content);
-
-      const response: TaskListResponse = {
-        sections,
-        lastModified: stats.mtime.toISOString(),
-      };
-
-      return NextResponse.json(response);
-
-    } catch (fileError) {
-      console.error('Error reading TASKS.md:', fileError);
-      
-      // Return mock data if file doesn't exist
-      return NextResponse.json({
-        sections: [
-          {
-            title: 'TASKS.md not found',
-            tasks: [
-              { text: 'Create TASKS.md file in workspace root', done: false },
-              { text: 'Add task sections with ## headers', done: false },
-              { text: 'Use - [ ] for incomplete tasks and - [x] for completed', done: false },
-            ],
-          },
-        ],
-        lastModified: new Date().toISOString(),
+    for (const task of tasks) {
+      if (!sections[task.section]) {
+        sections[task.section] = [];
+      }
+      sections[task.section].push({
+        content: task.content,
+        completed: task.completed,
       });
+      if (!latestSync || task.syncedAt > latestSync) {
+        latestSync = task.syncedAt;
+      }
     }
+
+    // Convert to array format
+    const sectionArray = Object.entries(sections).map(([title, items]) => ({
+      title,
+      tasks: items,
+      total: items.length,
+      completed: items.filter((t) => t.completed).length,
+    }));
+
+    return NextResponse.json({
+      sections: sectionArray,
+      totalTasks: tasks.length,
+      completedTasks: tasks.filter((t) => t.completed).length,
+      lastSynced: latestSync?.toISOString() || null,
+    });
 
   } catch (error) {
     console.error('Tasks API error:', error);
     return NextResponse.json({ error: 'Failed to fetch tasks' }, { status: 500 });
   }
-}
-
-function parseTasksMarkdown(content: string): TaskSection[] {
-  const lines = content.split('\n');
-  const sections: TaskSection[] = [];
-  let currentSection: TaskSection | null = null;
-
-  for (const line of lines) {
-    const trimmedLine = line.trim();
-
-    // Check for section headers (## or ###)
-    if (trimmedLine.startsWith('## ') || trimmedLine.startsWith('### ')) {
-      // Save previous section if it exists
-      if (currentSection) {
-        sections.push(currentSection);
-      }
-      
-      // Start new section
-      currentSection = {
-        title: trimmedLine.replace(/^#+ /, ''),
-        tasks: [],
-      };
-    }
-    // Check for task items (- [ ] or - [x])
-    else if (trimmedLine.match(/^- \[([ x])\]/)) {
-      if (!currentSection) {
-        // Create a default section if we encounter tasks without a header
-        currentSection = {
-          title: 'Tasks',
-          tasks: [],
-        };
-      }
-
-      const isDone = trimmedLine.includes('[x]');
-      const taskText = trimmedLine.replace(/^- \[([ x])\] /, '');
-
-      currentSection.tasks.push({
-        text: taskText,
-        done: isDone,
-      });
-    }
-    // Check for alternative bullet formats (*, +, or numbered lists)
-    else if (trimmedLine.match(/^[*+-] .+/) || trimmedLine.match(/^\d+\. .+/)) {
-      if (!currentSection) {
-        currentSection = {
-          title: 'Tasks',
-          tasks: [],
-        };
-      }
-
-      const taskText = trimmedLine.replace(/^[*+-] /, '').replace(/^\d+\. /, '');
-      currentSection.tasks.push({
-        text: taskText,
-        done: false, // Assume incomplete for non-checkbox items
-      });
-    }
-  }
-
-  // Add the last section if it exists
-  if (currentSection) {
-    sections.push(currentSection);
-  }
-
-  return sections;
 }

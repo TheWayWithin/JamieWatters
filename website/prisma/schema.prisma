@@ -154,3 +154,54 @@ model AdminSettings {
   passwordHash String
   updatedAt    DateTime @updatedAt
 }
+
+// Mission Control Models - Agent sync data
+
+model AgentSchedule {
+  id         String    @id @default(uuid())
+  jobId      String    @unique
+  name       String
+  schedule   String
+  timezone   String?
+  nextRunAt  DateTime?
+  lastRunAt  DateTime?
+  lastStatus String?
+  enabled    Boolean   @default(true)
+  syncedAt   DateTime  @default(now())
+
+  @@index([name])
+}
+
+model AgentTask {
+  id        String   @id @default(uuid())
+  section   String
+  content   String
+  completed Boolean  @default(false)
+  sortOrder Int      @default(0)
+  syncedAt  DateTime @default(now())
+
+  @@index([section])
+  @@index([completed])
+}
+
+model AgentMemory {
+  id       String    @id @default(uuid())
+  filename String    @unique
+  content  String
+  fileDate DateTime?
+  syncedAt DateTime  @default(now())
+
+  @@index([fileDate])
+}
+
+model AgentActivity {
+  id         String   @id @default(uuid())
+  action     String
+  category   String
+  details    String?
+  occurredAt DateTime
+  syncedAt   DateTime @default(now())
+
+  @@index([occurredAt])
+  @@index([category])
+}

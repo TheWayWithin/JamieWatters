@@ -1,25 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken, extractTokenFromRequest } from '@/lib/auth';
-import { promises as fs } from 'fs';
-import { join } from 'path';
+import { prisma } from '@/lib/prisma';
 
-// Force Node.js runtime for consistency
 export const runtime = 'nodejs';
 
-interface MemoryFile {
-  name: string;
-  modified: string;
-  pinned?: boolean;
-}
-
-interface MemoryFilesResponse {
-  files: MemoryFile[];
-}
-
 /**
- * GET /api/admin/memory - List memory files
- *
- * Security: Authentication required
+ * GET /api/admin/memory - Get memory files from database
+ * Data synced from memory/*.md via agent sync script
  */
 export async function GET(req: NextRequest) {
   try {
@@ -35,67 +22,55 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
     }
 
-    // Paths to check for memory files
-    const workspaceRoot = '/home/ubuntu/clawd';
-    const memoryDir = join(workspaceRoot, 'memory');
-    const memoryMdPath = join(workspaceRoot, 'MEMORY.md');
+    const { searchParams } = new URL(req.url);
+    const filename = searchParams.get('file');
 
-    const files: MemoryFile[] = [];
-
-    // Check for MEMORY.md (pinned)
-    try {
-      const memoryStats = await fs.stat(memoryMdPath);
-      files.push({
-        name: 'MEMORY.md',
-        modified: memoryStats.mtime.toISOString(),
-        pinned: true,
+    // If specific file requested, return its content
+    if (filename) {
+      const memory = await prisma.agentMemory.findUnique({
+        where: { filename },
       });
-    } catch (error) {
-      // MEMORY.md doesn't exist, that's ok
-    }
 
-    // Check memory directory
-    try {
-      const memoryDirContents = await fs.readdir(memoryDir);
-      
-      // Filter for .md files and get their stats
-      for (const filename of memoryDirContents) {
-        if (filename.endsWith('.md')) {
-          try {
-            const filePath = join(memoryDir, filename);
-            const fileStats = await fs.stat(filePath);
-            
-            files.push({
-              name: filename,
-              modified: fileStats.mtime.toISOString(),
-            });
-          } catch (fileError) {
-            console.error(`Error reading memory file ${filename}:`, fileError);
-          }
-        }
+      if (!memory) {
+        return NextResponse.json({ error: 'File not found' }, { status: 404 });
       }
-    } catch (dirError) {
-      console.log('Memory directory not found, creating it...');
-      // Memory directory doesn't exist, that's ok - we'll just return what we have
+
+      return NextResponse.json({
+        filename: memory.filename,
+        content: memory.content,
+        fileDate: memory.fileDate?.toISOString() || null,
+        syncedAt: memory.syncedAt.toISOString(),
+      });
     }
 
-    // Sort files: MEMORY.md first (pinned), then by date (newest first)
-    files.sort((a, b) => {
-      if (a.pinned && !b.pinned) return -1;
-      if (!a.pinned && b.pinned) return 1;
-      
-      // Both are pinned or both are not pinned, sort by date
-      return new Date(b.modified).getTime() - new Date(a.modified).getTime();
+    // Otherwise return list of all files
+    const memories = await prisma.agentMemory.findMany({
+      orderBy: { fileDate: 'desc' },
+      select: {
+        filename: true,
+        fileDate: true,
+        syncedAt: true,
+      },
     });
 
-    const response: MemoryFilesResponse = {
-      files,
-    };
+    // Put MEMORY.md at top if it exists
+    const sortedFiles = memories.sort((a, b) => {
+      if (a.filename === 'MEMORY.md') return -1;
+      if (b.filename === 'MEMORY.md') return 1;
+      return 0;
+    });
 
-    return NextResponse.json(response);
+    return NextResponse.json({
+      files: sortedFiles.map((m) => ({
+        filename: m.filename,
+        fileDate: m.fileDate?.toISOString() || null,
+        syncedAt: m.syncedAt.toISOString(),
+        pinned: m.filename === 'MEMORY.md',
+      })),
+    });
 
   } catch (error) {
-    console.error('Memory files API error:', error);
-    return NextResponse.json({ error: 'Failed to fetch memory files' }, { status: 500 });
+    console.error('Memory API error:', error);
+    return NextResponse.json({ error: 'Failed to fetch memory' }, { status: 500 });
   }
 }
