@@ -15,6 +15,7 @@ interface Tab {
 }
 
 const tabs: Tab[] = [
+  { id: 'mission-control', label: 'Mission Control', href: '/admin/mission-control', icon: '🎛️' },
   { id: 'content', label: 'Content', href: '/admin/content', icon: '✍️' },
   { id: 'projects', label: 'Projects', href: '/admin/projects', icon: '🚀' },
   { id: 'metrics', label: 'Metrics', href: '/admin/metrics', icon: '📊' },
@@ -26,11 +27,12 @@ export function AdminTabs({ currentPath }: AdminTabsProps) {
 
   // Determine active tab based on current path
   const getActiveTab = (path: string) => {
+    if (path.startsWith('/admin/mission-control')) return 'mission-control';
     if (path.startsWith('/admin/content')) return 'content';
     if (path.startsWith('/admin/projects')) return 'projects';
     if (path.startsWith('/admin/metrics')) return 'metrics';
     if (path.startsWith('/admin/settings')) return 'settings';
-    return 'content'; // Default to content
+    return 'mission-control'; // Default to mission control
   };
 
   const activeTab = getActiveTab(currentPath);

@@ -7,8 +7,8 @@ export default function AdminPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Redirect to content tab (default tab)
-    router.replace('/admin/content');
+    // Redirect to mission control (default tab)
+    router.replace('/admin/mission-control');
   }, [router]);
 
   // Show loading while redirecting
