@@ -169,7 +169,7 @@ function addSecurityHeaders(request: NextRequest, nonce: string): NextResponse {
     "img-src 'self' data: https:",
     // Allow fonts from self, data URIs, and CDNs
     "font-src 'self' data: https:",
-    "connect-src 'self'",
+    "connect-src 'self' https://plausible.io",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",

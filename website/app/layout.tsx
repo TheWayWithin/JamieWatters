@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
+import Script from 'next/script';
 import { Analytics } from '@vercel/analytics/react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -83,24 +84,15 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
-      <head>
-        {/* Plausible Analytics */}
-        <script 
-          async 
-          src="https://plausible.io/js/pa-8bEwsdOvJOJOXR424j0Br.js"
-          nonce={nonce}
-        />
-        <script 
-          nonce={nonce}
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-              plausible.init()
-            `
-          }}
-        />
-      </head>
+      <head />
       <body className="font-sans">
+        {/* Plausible Analytics - using Next.js Script component for proper loading */}
+        <Script
+          src="https://plausible.io/js/script.js"
+          data-domain="jamiewatters.work"
+          strategy="afterInteractive"
+          nonce={nonce}
+        />
         <Header />
         <main>{children}</main>
         <Footer />
