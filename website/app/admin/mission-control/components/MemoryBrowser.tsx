@@ -32,18 +32,30 @@ export function MemoryBrowser() {
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch memory files: ${response.status}`);
+        const errorText = await response.text();
+        console.error('Memory API error response:', response.status, errorText);
+        throw new Error(`Failed to fetch memory files: ${response.status} - ${errorText.slice(0, 100)}`);
       }
 
       const data: MemoryFilesResponse = await response.json();
-      setFiles(data.files || []);
+      console.log('Memory API response:', data);
+      
+      if (!data.files) {
+        console.error('Memory API returned no files array:', data);
+        throw new Error('API returned invalid response (no files array)');
+      }
+      
+      setFiles(data.files);
       setError(null);
       
-      // Auto-select MEMORY.md if available
+      // Auto-select MEMORY.md if available, otherwise first file
       const memoryMd = data.files.find(f => f.name === 'MEMORY.md');
       if (memoryMd && !selectedFile) {
         setSelectedFile('MEMORY.md');
         fetchFileContent('MEMORY.md');
+      } else if (data.files.length > 0 && !selectedFile) {
+        setSelectedFile(data.files[0].name);
+        fetchFileContent(data.files[0].name);
       }
     } catch (err) {
       console.error('Error fetching memory files:', err);
@@ -173,7 +185,10 @@ export function MemoryBrowser() {
         <div className="w-1/3 border-r border-border-default overflow-y-auto">
           <div className="p-2">
             {files.length === 0 ? (
-              <p className="text-body-sm text-text-secondary p-2">No memory files found.</p>
+              <div className="p-2">
+                <p className="text-body-sm text-text-secondary">No memory files synced.</p>
+                <p className="text-body-xs text-text-tertiary mt-1">Run sync script to populate.</p>
+              </div>
             ) : (
               <div className="space-y-1">
                 {files.map((file, index) => (
