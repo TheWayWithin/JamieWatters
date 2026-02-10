@@ -1,5 +1,5 @@
 {
-  "generatedAt": "Feb 9, 2026, 8:09 PM",
+  "generatedAt": "Feb 9, 2026, 11:07 PM",
   "projects": [
     {
       "name": "JamieWatters.work",
@@ -205,6 +205,37 @@
       "title": "Today / This Week",
       "emoji": "🔥",
       "tasks": [
+        {
+          "text": "**📝 Review aisearchmastery.com Site Improvements**",
+          "done": false,
+          "priority": false,
+          "subtasks": [
+            {
+              "text": "Read `aisearchmastery/SITE_IMPROVEMENT_RECOMMENDATIONS.md`",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Decide on Phase 1 priorities (hero rewrite, primary CTA)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Implement changes (Jamie coding)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Test on staging before production push",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            }
+          ]
+        },
         {
           "text": "**🚨 CI/CD Failures (Feb 9)**  BLOCKING",
           "done": false,
@@ -684,7 +715,7 @@
         }
       ],
       "completed": 4,
-      "total": 15
+      "total": 16
     },
     {
       "title": "JamieWatters.work",
@@ -1384,7 +1415,7 @@
     }
   ],
   "taskStats": {
-    "total": 70,
+    "total": 71,
     "completed": 10,
     "percentage": 14
   }
