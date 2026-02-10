@@ -199,21 +199,13 @@ export function ActivityFeed() {
                   {getTypeIcon(activity.type)}
                 </span>
                 <div className="flex-1 min-w-0">
-                  <p className="text-body text-text-primary">
-                    {activity.action}
+                  <p className="text-body text-text-primary line-clamp-2">
+                    {activity.source || activity.action}
                   </p>
                   <div className="flex items-center gap-2 mt-1">
                     <span className="text-body-xs text-text-tertiary">
                       {formatTimestamp(activity.timestamp)}
                     </span>
-                    {activity.source && (
-                      <>
-                        <span className="text-text-tertiary">•</span>
-                        <span className="text-body-xs text-text-tertiary">
-                          {activity.source}
-                        </span>
-                      </>
-                    )}
                   </div>
                 </div>
               </div>
