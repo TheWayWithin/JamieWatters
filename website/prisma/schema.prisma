@@ -14,7 +14,7 @@ model AdminSettings {
 }
 
 model AgentActivity {
-  id         String   @id
+  id         String   @id @default(cuid())
   action     String
   category   String
   details    String?
@@ -26,7 +26,7 @@ model AgentActivity {
 }
 
 model AgentCronTrigger {
-  id          String    @id
+  id          String    @id @default(cuid())
   jobId       String
   jobName     String
   status      String    @default("pending")
@@ -40,7 +40,7 @@ model AgentCronTrigger {
 }
 
 model AgentMemory {
-  id       String    @id
+  id       String    @id @default(cuid())
   filename String    @unique
   content  String
   fileDate DateTime?
@@ -50,7 +50,7 @@ model AgentMemory {
 }
 
 model AgentSchedule {
-  id         String    @id
+  id         String    @id @default(cuid())
   jobId      String    @unique
   name       String
   schedule   String
@@ -65,7 +65,7 @@ model AgentSchedule {
 }
 
 model AgentTask {
-  id        String   @id
+  id        String   @id @default(cuid())
   section   String
   content   String
   completed Boolean  @default(false)
