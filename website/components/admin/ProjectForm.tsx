@@ -61,7 +61,9 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
   const [metricsData, setMetricsData] = useState<Record<string, number | undefined>>(
     project?.customMetrics || {}
   );
-  const [launchedAt, setLaunchedAt] = useState(project?.launchedAt || '');
+  const [launchedAt, setLaunchedAt] = useState(
+    project?.launchedAt ? new Date(project.launchedAt).toISOString().split('T')[0] : ''
+  );
   const [problemStatement, setProblemStatement] = useState(project?.problemStatement || '');
   const [solutionApproach, setSolutionApproach] = useState(project?.solutionApproach || '');
   const [lessonsLearned, setLessonsLearned] = useState(project?.lessonsLearned || '');
