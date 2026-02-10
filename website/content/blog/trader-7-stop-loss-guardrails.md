@@ -54,10 +54,14 @@ With a 1.15% stop and ~2% daily volatility, the probability of a noise-driven st
 
 Your trade has a coin-flip chance of dying before your thesis even plays out.
 
+![The 57% Problem - BTC trades stopped by noise](/images/blog/trader-7/57-percent-problem.jpg)
+
 For context:
 - **Professional standard**: 1.5-2.0x ATR
 - **Turtle Traders**: 2.0x ATR  
 - **Our AI**: 0.39-0.78x ATR
+
+![Stop Width Comparison - Our AI vs Industry Standards](/images/blog/trader-7/stop-width-comparison.jpg)
 
 Not even close.
 
@@ -68,6 +72,8 @@ Not even close.
 The solution was simple: an ATR-based stop floor.
 
 After the LLM generates its signal, we check: is this stop tighter than 1.5x ATR? If yes, widen it to 1.5x ATR and recalculate the stop price. Take-profit adjusts automatically to maintain risk-reward.
+
+![Before/After: Stop Width Fix](/images/blog/trader-7/before-after-stop-width.jpg)
 
 ```
 [ATR_FLOOR] XRP-PERP: Stop widened from 1.39% to 1.95% (1.5x ATR)

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "Feb 9, 2026, 11:07 PM",
+  "generatedAt": "Feb 10, 2026, 7:21 AM",
   "projects": [
     {
       "name": "JamieWatters.work",
@@ -237,34 +237,15 @@
           ]
         },
         {
-          "text": "**🚨 CI/CD Failures (Feb 9)**  BLOCKING",
+          "text": "**🚨 CI/CD Failures (Feb 9)**  PARTIALLY RESOLVED",
           "done": false,
-          "priority": true,
+          "priority": false,
           "subtasks": [
             {
-              "text": "**ModelOptix** — Railway build failed",
-              "done": false,
+              "text": "**ModelOptix** — Railway build failed ✅ FIXED (Feb 10)",
+              "done": true,
               "priority": false,
-              "subtasks": [
-                {
-                  "text": "Check Railway dashboard for build logs",
-                  "done": false,
-                  "priority": false,
-                  "subtasks": []
-                },
-                {
-                  "text": "Identify error (dependency? env var? build script?)",
-                  "done": false,
-                  "priority": false,
-                  "subtasks": []
-                },
-                {
-                  "text": "Fix and redeploy",
-                  "done": false,
-                  "priority": false,
-                  "subtasks": []
-                }
-              ]
+              "subtasks": []
             },
             {
               "text": "**llm-txt-mastery** — GitHub CI/CD failed on develop (2 workflow failures)",
@@ -296,6 +277,115 @@
                   "subtasks": []
                 }
               ]
+            }
+          ]
+        },
+        {
+          "text": "**🔧 AImpactScanner — Sprint 8: API Access**  IN PROGRESS",
+          "done": false,
+          "priority": true,
+          "subtasks": [
+            {
+              "text": "Railway backend built and tested on staging",
+              "done": true,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Backend DB live",
+              "done": true,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "UAT testing complete",
+              "done": true,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Enable `VITE_USE_RAILWAY_BACKEND=true` in Netlify production",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Production smoke tests",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Monitor analysis success rates",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Edge Function deprecation (after 30 days stable)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Expose API endpoints for programmatic scans",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "API authentication (Scale tier users)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Enable Ace to access AIS for outreach material generation",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Test CSR site analysis with Scale tier + renderJs",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Test validation endpoints on real sites",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Test JS render quota tracking",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Update architecture.md to v3.0",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Create ADR-016 for Railway migration",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Archive generate-llmstxt Edge Function",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Update CLAUDE.md with new backend structure",
+              "done": false,
+              "priority": false,
+              "subtasks": []
             }
           ]
         },
@@ -409,7 +499,7 @@
               "subtasks": []
             },
             {
-              "text": "6.3.1 — Test complete end-to-end user journey (signup → connect OpenRouter → import → recommendations)",
+              "text": "6.3.1 — Test complete end-to-end user journey (signup → connect OpenRouter → import → recommendations) ← NEXT",
               "done": false,
               "priority": false,
               "subtasks": []
@@ -421,7 +511,13 @@
               "subtasks": []
             },
             {
-              "text": "Build passes, test coverage >= 80%, lint passes",
+              "text": "Build passes ✅",
+              "done": true,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "Test coverage >= 80%, lint passes",
               "done": false,
               "priority": false,
               "subtasks": []
@@ -715,7 +811,7 @@
         }
       ],
       "completed": 4,
-      "total": 16
+      "total": 17
     },
     {
       "title": "JamieWatters.work",
@@ -1415,7 +1511,7 @@
     }
   ],
   "taskStats": {
-    "total": 71,
+    "total": 72,
     "completed": 10,
     "percentage": 14
   }
