@@ -48,12 +48,10 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       activities: activities.map((a) => ({
-        id: a.id,
+        timestamp: a.occurredAt.toISOString(),
         action: a.action,
-        category: a.category,
-        details: a.details,
-        occurredAt: a.occurredAt.toISOString(),
-        syncedAt: a.syncedAt.toISOString(),
+        type: a.category as 'content' | 'social' | 'outreach' | 'development' | 'document' | 'other',
+        source: a.details || undefined,
       })),
       categories: categoryMap,
       total: activities.length,

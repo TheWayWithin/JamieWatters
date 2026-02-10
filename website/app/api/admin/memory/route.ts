@@ -62,9 +62,8 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       files: sortedFiles.map((m) => ({
-        filename: m.filename,
-        fileDate: m.fileDate?.toISOString() || null,
-        syncedAt: m.syncedAt.toISOString(),
+        name: m.filename,
+        modified: m.fileDate?.toISOString() || m.syncedAt.toISOString(),
         pinned: m.filename === 'MEMORY.md',
       })),
     });

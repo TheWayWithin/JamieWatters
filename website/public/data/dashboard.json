@@ -1,5 +1,5 @@
 {
-  "generatedAt": "Feb 6, 2026, 3:00 PM",
+  "generatedAt": "Feb 9, 2026, 7:54 PM",
   "projects": [
     {
       "name": "JamieWatters.work",
@@ -206,6 +206,69 @@
       "emoji": "🔥",
       "tasks": [
         {
+          "text": "**🚨 CI/CD Failures (Feb 9)**  BLOCKING",
+          "done": false,
+          "priority": true,
+          "subtasks": [
+            {
+              "text": "**ModelOptix** — Railway build failed",
+              "done": false,
+              "priority": false,
+              "subtasks": [
+                {
+                  "text": "Check Railway dashboard for build logs",
+                  "done": false,
+                  "priority": false,
+                  "subtasks": []
+                },
+                {
+                  "text": "Identify error (dependency? env var? build script?)",
+                  "done": false,
+                  "priority": false,
+                  "subtasks": []
+                },
+                {
+                  "text": "Fix and redeploy",
+                  "done": false,
+                  "priority": false,
+                  "subtasks": []
+                }
+              ]
+            },
+            {
+              "text": "**llm-txt-mastery** — GitHub CI/CD failed on develop (2 workflow failures)",
+              "done": false,
+              "priority": false,
+              "subtasks": [
+                {
+                  "text": "Check GitHub Actions → develop branch",
+                  "done": false,
+                  "priority": false,
+                  "subtasks": []
+                },
+                {
+                  "text": "Review workflow run logs for both failures",
+                  "done": false,
+                  "priority": false,
+                  "subtasks": []
+                },
+                {
+                  "text": "Likely causes: Node version, test failures, lint errors",
+                  "done": false,
+                  "priority": false,
+                  "subtasks": []
+                },
+                {
+                  "text": "Fix and push to develop",
+                  "done": false,
+                  "priority": false,
+                  "subtasks": []
+                }
+              ]
+            }
+          ]
+        },
+        {
           "text": "**🚀 LLM.txt Mastery Marketing Launch**",
           "done": false,
           "priority": true,
@@ -352,43 +415,109 @@
           "priority": true,
           "subtasks": [
             {
-              "text": "task-1.13.4 — View Subscription (F-025): plan, usage, billing date, payment method",
+              "text": "Landing page sign-in/sign-up navigation missing",
               "done": false,
               "priority": false,
               "subtasks": []
             },
             {
-              "text": "task-1.13.5 — Upgrade/Downgrade (F-026): plan change UI with proration",
+              "text": "User record not auto-created on OAuth (Google OAuth creates auth user but not users table row)",
               "done": false,
               "priority": false,
               "subtasks": []
             },
             {
-              "text": "task-1.14.1 — Tier limit checking: enforce ideas/tests limits per plan",
+              "text": "Remove diagnostic endpoints before production (/api/stripe-diag, /api/sync-subscription)",
               "done": false,
               "priority": false,
               "subtasks": []
             },
             {
-              "text": "task-1.13.6 — Manage Payment Method (F-027)",
+              "text": "task-1.14.1 — Tier limit checking: enforce ideas/tests limits per billing period",
               "done": false,
               "priority": false,
               "subtasks": []
             },
             {
-              "text": "task-1.13.7 — Cancel Subscription (F-028)",
+              "text": "task-1.2.5 — Profile management (edit name, email, country, VAT)",
               "done": false,
               "priority": false,
               "subtasks": []
             },
             {
-              "text": "task-1.12.1 — Onboarding Flow (F-005)",
+              "text": "task-1.11.4 — Download Report (JSON export)",
               "done": false,
               "priority": false,
               "subtasks": []
             },
             {
-              "text": "task-1.2.5 — Profile management (F-004)",
+              "text": "task-1.12.1 — Onboarding Flow",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "task-1.13.6 — Manage Payment Method (Stripe portal)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "task-1.13.7 — Cancel Subscription",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "task-1.14.2 — Billing lock states (soft/hard lock for past due)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "task-1.14.4 — Cost alerting (daily spend tracking)",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "task-1.15.3 — Sentry error tracking",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "task-1.15.4 — Resend email templates",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "task-1.15.6 — Jest/Playwright tests",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "task-1.15.7 — Analytics event taxonomy + funnel dashboard",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "task-1.17.1 — Delete my account flow",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "task-1.17.2 — Data retention policy",
+              "done": false,
+              "priority": false,
+              "subtasks": []
+            },
+            {
+              "text": "task-1.17.3 — Secret scanning + CI security",
               "done": false,
               "priority": false,
               "subtasks": []
@@ -555,7 +684,7 @@
         }
       ],
       "completed": 4,
-      "total": 14
+      "total": 15
     },
     {
       "title": "JamieWatters.work",
@@ -1255,7 +1384,7 @@
     }
   ],
   "taskStats": {
-    "total": 69,
+    "total": 70,
     "completed": 10,
     "percentage": 14
   }

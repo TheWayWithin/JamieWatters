@@ -7,8 +7,116 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model AdminSettings {
+  id           String   @id @default("admin")
+  passwordHash String
+  updatedAt    DateTime
+}
+
+model AgentActivity {
+  id         String   @id
+  action     String
+  category   String
+  details    String?
+  occurredAt DateTime
+  syncedAt   DateTime @default(now())
+
+  @@index([category])
+  @@index([occurredAt])
+}
+
+model AgentCronTrigger {
+  id          String    @id
+  jobId       String
+  jobName     String
+  status      String    @default("pending")
+  createdAt   DateTime  @default(now())
+  startedAt   DateTime?
+  completedAt DateTime?
+  result      String?
+
+  @@index([createdAt])
+  @@index([status])
+}
+
+model AgentMemory {
+  id       String    @id
+  filename String    @unique
+  content  String
+  fileDate DateTime?
+  syncedAt DateTime  @default(now())
+
+  @@index([fileDate])
+}
+
+model AgentSchedule {
+  id         String    @id
+  jobId      String    @unique
+  name       String
+  schedule   String
+  timezone   String?
+  nextRunAt  DateTime?
+  lastRunAt  DateTime?
+  lastStatus String?
+  enabled    Boolean   @default(true)
+  syncedAt   DateTime  @default(now())
+
+  @@index([name])
+}
+
+model AgentTask {
+  id        String   @id
+  section   String
+  content   String
+  completed Boolean  @default(false)
+  sortOrder Int      @default(0)
+  syncedAt  DateTime @default(now())
+
+  @@index([completed])
+  @@index([section])
+}
+
+model MetricsHistory {
+  id         String   @id
+  projectId  String
+  mrr        Decimal  @db.Decimal(10, 2)
+  users      Int
+  recordedAt DateTime @default(now())
+  Project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, recordedAt])
+}
+
+model Post {
+  id            String         @id
+  slug          String         @unique
+  title         String
+  excerpt       String
+  tags          String[]
+  readTime      Int
+  publishedAt   DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime
+  content       String?
+  postType      String         @default("manual")
+  projectId     String?
+  published     Boolean        @default(false)
+  contentPillar ContentPillar?
+  phase         ProjectPhase?
+  postTypeEnum  PostTypeEnum?
+  targetPersona TargetPersona?
+  Project       Project?       @relation(fields: [projectId], references: [id])
+
+  @@index([contentPillar])
+  @@index([phase])
+  @@index([postType])
+  @@index([projectId])
+  @@index([publishedAt])
+  @@index([targetPersona])
+}
+
 model Project {
-  id               String           @id @default(uuid())
+  id               String           @id
   slug             String           @unique
   name             String
   description      String
@@ -26,7 +134,7 @@ model Project {
   screenshots      String[]
   launchedAt       DateTime?
   createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
+  updatedAt        DateTime
   githubToken      String?
   githubUrl        String?
   lastSynced       DateTime?
@@ -36,52 +144,13 @@ model Project {
   currentPhase     ProjectPhase?
   techStackDetails String?
   timelineEvents   Json?
-  metricsHistory   MetricsHistory[]
-  posts            Post[]
+  MetricsHistory   MetricsHistory[]
+  Post             Post[]
 
   @@index([category])
+  @@index([currentPhase])
   @@index([featured])
   @@index([trackProgress])
-  @@index([currentPhase])
-}
-
-model Post {
-  id            String         @id @default(uuid())
-  slug          String         @unique
-  title         String
-  excerpt       String
-  tags          String[]
-  readTime      Int
-  publishedAt   DateTime?
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  content       String?
-  postType      String         @default("manual")
-  projectId     String?
-  published     Boolean        @default(false)
-  contentPillar ContentPillar?
-  phase         ProjectPhase?
-  postTypeEnum  PostTypeEnum?
-  targetPersona TargetPersona?
-  project       Project?       @relation(fields: [projectId], references: [id])
-
-  @@index([publishedAt])
-  @@index([postType])
-  @@index([projectId])
-  @@index([contentPillar])
-  @@index([targetPersona])
-  @@index([phase])
-}
-
-model MetricsHistory {
-  id         String   @id @default(uuid())
-  projectId  String
-  mrr        Decimal  @db.Decimal(10, 2)
-  users      Int
-  recordedAt DateTime @default(now())
-  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-
-  @@index([projectId, recordedAt])
 }
 
 enum Category {
@@ -93,6 +162,32 @@ enum Category {
   PRODUCTIVITY
   FINANCE
   WELLBEING
+}
+
+enum ContentPillar {
+  JOURNEY
+  FRAMEWORK
+  TOOL
+  COMMUNITY
+}
+
+enum PostTypeEnum {
+  PROGRESS_UPDATE
+  MILESTONE
+  FAILURE
+  TUTORIAL
+  CASE_STUDY
+  GENERAL
+}
+
+enum ProjectPhase {
+  IDEATION
+  MVP
+  LAUNCH
+  GROWTH
+  MAINTENANCE
+  ARCHIVED
+  PAUSED
 }
 
 enum ProjectStatus {
@@ -116,106 +211,9 @@ enum ProjectType {
   MARKETPLACE
 }
 
-enum ContentPillar {
-  JOURNEY
-  FRAMEWORK
-  TOOL
-  COMMUNITY
-}
-
-enum PostTypeEnum {
-  PROGRESS_UPDATE
-  MILESTONE
-  FAILURE
-  TUTORIAL
-  CASE_STUDY
-  GENERAL
-}
-
 enum TargetPersona {
   CORPORATE_ESCAPIST
   SERVICE_PROVIDER
   BUILDER
   ALL
-}
-
-enum ProjectPhase {
-  IDEATION
-  MVP
-  LAUNCH
-  GROWTH
-  MAINTENANCE
-  ARCHIVED
-  PAUSED
-}
-
-model AdminSettings {
-  id           String   @id @default("admin")
-  passwordHash String
-  updatedAt    DateTime @updatedAt
-}
-
-// Mission Control Models - Agent sync data
-
-model AgentSchedule {
-  id         String    @id @default(uuid())
-  jobId      String    @unique
-  name       String
-  schedule   String
-  timezone   String?
-  nextRunAt  DateTime?
-  lastRunAt  DateTime?
-  lastStatus String?
-  enabled    Boolean   @default(true)
-  syncedAt   DateTime  @default(now())
-
-  @@index([name])
-}
-
-model AgentTask {
-  id        String   @id @default(uuid())
-  section   String
-  content   String
-  completed Boolean  @default(false)
-  sortOrder Int      @default(0)
-  syncedAt  DateTime @default(now())
-
-  @@index([section])
-  @@index([completed])
-}
-
-model AgentMemory {
-  id       String    @id @default(uuid())
-  filename String    @unique
-  content  String
-  fileDate DateTime?
-  syncedAt DateTime  @default(now())
-
-  @@index([fileDate])
-}
-
-model AgentActivity {
-  id         String   @id @default(uuid())
-  action     String
-  category   String
-  details    String?
-  occurredAt DateTime
-  syncedAt   DateTime @default(now())
-
-  @@index([occurredAt])
-  @@index([category])
-}
-
-model AgentCronTrigger {
-  id        String   @id @default(uuid())
-  jobId     String
-  jobName   String
-  status    String   @default("pending") // pending, running, completed, failed
-  createdAt DateTime @default(now())
-  startedAt DateTime?
-  completedAt DateTime?
-  result    String?
-
-  @@index([status])
-  @@index([createdAt])
 }
