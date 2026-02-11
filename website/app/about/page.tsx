@@ -93,9 +93,9 @@ export default function AboutPage() {
               teaches me something that makes the next one more likely to succeed.
             </p>
             <p>
-              My goal? Build a $10M+ portfolio while documenting every step of the journey.
+              My goal? Build my way to financial freedom while documenting every step of the journey.
               I'm creating a blueprint—real metrics, real challenges, real lessons—so others
-              can follow the same path and build their own multi-million-dollar solo businesses.
+              can follow the same path from side gig to full independence.
             </p>
             <p>
               This isn't just about my success. It's about proving a new model of entrepreneurship
@@ -265,7 +265,7 @@ export default function AboutPage() {
                   using the tools, tactics, and know-how I'm creating.</strong>
                 </p>
                 <p>
-                  My $10M+ portfolio goal? That's the proof-of-concept—demonstrating the foundation works.
+                  My financial freedom goal? That's the proof-of-concept—demonstrating the foundation works.
                   But when someone else takes these same tools and builds something even bigger,
                   that's the real success.
                 </p>

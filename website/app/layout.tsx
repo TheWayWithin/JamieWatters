@@ -29,7 +29,7 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Jamie Watters | Building $10M+ Portfolio in Public',
+    default: 'Jamie Watters | Side Gig to Financial Freedom — Built in Public',
     template: '%s | Jamie Watters',
   },
   description:
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://jamiewatters.work/',
-    title: 'Jamie Watters | Building $10M+ Portfolio in Public',
+    title: 'Jamie Watters | Side Gig to Financial Freedom — Built in Public',
     description:
       'Real metrics, real failures. Follow the journey of a practitioner building AI-powered tools for solopreneurs.',
     siteName: 'Jamie Watters',
@@ -56,13 +56,13 @@ export const metadata: Metadata = {
         url: 'https://jamiewatters.work/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Jamie Watters - Building $10M+ Portfolio in Public',
+        alt: 'Jamie Watters - Side Gig to Financial Freedom — Built in Public',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Jamie Watters | Building $10M+ Portfolio in Public',
+    title: 'Jamie Watters | Side Gig to Financial Freedom — Built in Public',
     description:
       'Real metrics, real failures. Follow the journey of a practitioner building AI-powered tools for solopreneurs.',
     creator: '@jamiewatters',

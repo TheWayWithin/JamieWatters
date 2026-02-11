@@ -22,7 +22,7 @@ export const revalidate = 60;
 
 // SEO Metadata
 export const metadata = getSEOMetadata({
-  title: 'Building $10M+ Portfolio in Public',
+  title: 'Side Gig to Financial Freedom — Built in Public',
   description: 'Real metrics, real failures. Follow the journey of a practitioner building AI-powered tools for solopreneurs.',
   type: 'website'
 });
@@ -47,13 +47,13 @@ export default async function Home() {
       <section className="min-h-[60vh] flex items-center justify-center bg-bg-primary px-6 py-12 lg:py-16">
         <div className="text-center max-w-4xl mx-auto">
           <h1 className="text-display-xl lg:text-display-2xl font-bold text-brand-primary mb-6 leading-tight">
-            Follow the Journey — From $0 to $10M+
+            Follow the Journey — From $0 to FU Money
           </h1>
           <p className="text-body-lg lg:text-body-xl text-text-secondary max-w-2xl mx-auto mb-8 leading-relaxed">
             Just me and AI. No team, no employees—building a portfolio of businesses in public.
             I encounter real problems, create tools to solve them, and share everything:
             real metrics, real challenges, real lessons. A blueprint so you can build
-            a multi-million-dollar solo business too.
+            your own path to financial freedom too.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">
@@ -220,7 +220,7 @@ export default async function Home() {
                 Enabling Others
               </h3>
               <p className="text-body-base text-text-secondary leading-relaxed">
-                My goal isn't just to build a $10M portfolio. It's to prove this is possible—so at least one person can use the same tools and know-how to build a billion-dollar solo business by 2030. Your success is the real goal.
+                My goal isn't just to reach financial freedom myself. It's to prove this is possible—so at least one person can use the same tools and know-how to escape the 9-to-5 and build something of their own. Your success is the real goal.
               </p>
             </div>
           </div>
@@ -343,8 +343,8 @@ export default async function Home() {
                 The Journey
               </h2>
               <p className="text-body-base text-text-secondary max-w-2xl">
-                Weekly updates documenting the path to billion-dollar
-                solopreneur. Real challenges, lessons learned, and transparent
+                Weekly updates documenting the path from side gig to financial
+                freedom. Real challenges, lessons learned, and transparent
                 metrics.
               </p>
             </div>
