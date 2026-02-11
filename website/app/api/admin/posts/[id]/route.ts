@@ -35,7 +35,7 @@ export async function GET(
     const post = await prisma.post.findUnique({
       where: { id },
       include: {
-        project: {
+        Project: {
           select: {
             id: true,
             name: true,
@@ -167,7 +167,7 @@ export async function PUT(
         ...(data.projectId !== undefined && { projectId: data.projectId }),
       },
       include: {
-        project: {
+        Project: {
           select: {
             id: true,
             name: true,

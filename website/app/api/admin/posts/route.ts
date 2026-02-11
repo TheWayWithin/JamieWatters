@@ -180,7 +180,7 @@ export async function GET(req: NextRequest) {
       ],
       take: limit,
       include: {
-        project: {
+        Project: {
           select: {
             id: true,
             name: true,
