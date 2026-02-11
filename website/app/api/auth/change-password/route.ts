@@ -95,8 +95,8 @@ export async function POST(req: NextRequest) {
     // Store new hash in database (upsert so it works on first change too)
     await prisma.adminSettings.upsert({
       where: { id: 'admin' },
-      update: { passwordHash: newHash },
-      create: { id: 'admin', passwordHash: newHash },
+      update: { passwordHash: newHash, updatedAt: new Date() },
+      create: { id: 'admin', passwordHash: newHash, updatedAt: new Date() },
     });
 
     console.log('Admin password changed successfully at:', new Date().toISOString());

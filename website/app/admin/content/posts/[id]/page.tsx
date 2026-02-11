@@ -23,7 +23,7 @@ async function getPost(id: string) {
     const post = await prisma.post.findUnique({
       where: { id },
       include: {
-        Project: {
+        project: {
           select: {
             id: true,
             name: true,

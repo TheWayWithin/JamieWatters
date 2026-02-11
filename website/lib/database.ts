@@ -287,6 +287,7 @@ export async function updateProjectMetrics(
       // Record metrics history for future charts
       await tx.metricsHistory.create({
         data: {
+          id: crypto.randomUUID(),
           projectId: projectId,
           mrr: metrics.mrr,
           users: metrics.users,

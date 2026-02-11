@@ -82,7 +82,7 @@ model MetricsHistory {
   mrr        Decimal  @db.Decimal(10, 2)
   users      Int
   recordedAt DateTime @default(now())
-  Project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@index([projectId, recordedAt])
 }
@@ -105,7 +105,7 @@ model Post {
   phase         ProjectPhase?
   postTypeEnum  PostTypeEnum?
   targetPersona TargetPersona?
-  Project       Project?       @relation(fields: [projectId], references: [id])
+  project       Project?       @relation(fields: [projectId], references: [id])
 
   @@index([contentPillar])
   @@index([phase])
@@ -144,8 +144,8 @@ model Project {
   currentPhase     ProjectPhase?
   techStackDetails String?
   timelineEvents   Json?
-  MetricsHistory   MetricsHistory[]
-  Post             Post[]
+  metricsHistory   MetricsHistory[]
+  posts            Post[]
 
   @@index([category])
   @@index([currentPhase])

@@ -166,6 +166,7 @@ export async function POST(req: NextRequest) {
 
     // Prepare data for database
     const projectData: Prisma.ProjectCreateInput = {
+      id: crypto.randomUUID(),
       slug,
       name: data.name,
       description: data.description,
@@ -185,6 +186,7 @@ export async function POST(req: NextRequest) {
       lessonsLearned: data.lessonsLearned || null,
       screenshots: data.screenshots || [],
       launchedAt: data.launchedAt ? new Date(data.launchedAt) : null,
+      updatedAt: new Date(),
     };
 
     // Create project in database

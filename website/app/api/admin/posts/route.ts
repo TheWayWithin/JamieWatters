@@ -103,6 +103,7 @@ export async function POST(req: NextRequest) {
     // Create post
     const post = await prisma.post.create({
       data: {
+        id: crypto.randomUUID(),
         title: data.title,
         slug,
         content: data.content,
@@ -113,6 +114,7 @@ export async function POST(req: NextRequest) {
         published: data.published,
         publishedAt: data.published ? new Date() : null,
         projectId: data.projectId || null,
+        updatedAt: new Date(),
       },
     });
 
@@ -180,7 +182,7 @@ export async function GET(req: NextRequest) {
       ],
       take: limit,
       include: {
-        Project: {
+        project: {
           select: {
             id: true,
             name: true,
