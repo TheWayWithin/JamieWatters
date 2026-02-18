@@ -1,28 +1,378 @@
 #!/usr/bin/env node
 /**
- * Sync Mission Control data from Clawdbot to jamiewatters.work database
- * Run via: node scripts/sync-mission-control.js
- * Or add to heartbeat for periodic sync
+ * Sync Mission Control data from plan/ files to jamiewatters.work database
+ * Source of truth: /home/ubuntu/clawd/plan/ (PORTFOLIO.md, SPRINT.md, BACKLOG.md)
+ * Run: node scripts/sync-mission-control.js
  */
 
 const { PrismaClient } = require('@prisma/client');
+const crypto = require('crypto');
 const fs = require('fs');
+const uuid = () => crypto.randomUUID();
 const path = require('path');
 
 const prisma = new PrismaClient();
-const CLAWD_DIR = '/home/ubuntu/clawd';
+const CLAWD_DIR = process.env.CLAWD_DIR || '/home/ubuntu/clawd';
+const PLAN_DIR = path.join(CLAWD_DIR, 'plan');
+
+// ─── Portfolio Sync ───────────────────────────────────────────────────────────
+// Reads plan/PORTFOLIO.md and syncs to Project table
+
+const PORTFOLIO_MAP = {
+  'LLM-TXT-MASTERY': {
+    slug: 'llmtxtmastery',
+    url: 'https://llmtxtmastery.com',
+    category: 'AI_TOOLS',
+    projectType: 'SAAS',
+  },
+  'AImpactScanner': {
+    slug: 'aimpactscanner',
+    url: 'https://aimpactscanner.com',
+    category: 'AI_TOOLS',
+    projectType: 'SAAS',
+  },
+  'PlebTest': {
+    slug: 'plebtest',
+    url: 'https://plebtest.com',
+    category: 'AI_TOOLS',
+    projectType: 'SAAS',
+  },
+  'ModelOptix': {
+    slug: 'modeloptix',
+    url: 'https://modeloptix.com',
+    category: 'AI_TOOLS',
+    projectType: 'SAAS',
+  },
+  'FreeCalcHub': {
+    slug: 'freecalchub',
+    url: 'https://freecalchub.com',
+    category: 'PRODUCTIVITY',
+    projectType: 'CONTENT',
+  },
+  'SoloMarket': {
+    slug: 'solomarket',
+    url: 'https://solomarket.work',
+    category: 'MARKETPLACE',
+    projectType: 'MARKETPLACE',
+  },
+  'Evolve-7': {
+    slug: 'evolve-7',
+    url: 'https://evolve-7.com',
+    category: 'AI_TOOLS',
+    projectType: 'SAAS',
+  },
+  'ISO Tracker': {
+    slug: 'iso-tracker',
+    url: 'https://isotracker.com',
+    category: 'OTHER',
+    projectType: 'SAAS',
+  },
+  'JamieWatters.work': {
+    slug: 'jamiewatters-work',
+    url: 'https://jamiewatters.work',
+    category: 'OTHER',
+    projectType: 'PERSONAL',
+  },
+};
+
+const STATUS_MAP = {
+  'MVP Live': 'LIVE',
+  'Live': 'LIVE',
+  'Building': 'BUILD',
+  'Building (75%)': 'BUILD',
+  'Pre-launch': 'BUILD',
+  'Paused': 'ARCHIVED',
+  'Concept': 'PLANNING',
+};
+
+const PHASE_MAP = {
+  'MVP Live': 'MVP',
+  'Live': 'MAINTENANCE',
+  'Building': 'MVP',
+  'Building (75%)': 'MVP',
+  'Pre-launch': 'LAUNCH',
+  'Paused': 'PAUSED',
+  'Concept': 'IDEATION',
+};
+
+function parsePortfolio() {
+  const filePath = path.join(PLAN_DIR, 'PORTFOLIO.md');
+  if (!fs.existsSync(filePath)) {
+    console.log('  ⚠️ PORTFOLIO.md not found');
+    return [];
+  }
+
+  const content = fs.readFileSync(filePath, 'utf8');
+  const products = [];
+
+  // Parse the overview table
+  const tableRegex = /\|\s*\d+\s*\|\s*\*\*(.+?)\*\*\s*\|\s*(.+?)\s*\|\s*(.+?)\s*\|\s*(.+?)\s*\|\s*(.+?)\s*\|\s*(.+?)\s*\|/g;
+  let match;
+  while ((match = tableRegex.exec(content)) !== null) {
+    products.push({
+      name: match[1].trim(),
+      statusText: match[2].trim(),
+      revenue: match[3].trim(),
+      users: match[4].trim(),
+      priority: match[5].trim(),
+      owner: match[6].trim(),
+    });
+  }
+
+  // Parse product details sections for descriptions
+  const sections = content.split(/### \d+\.\s+/);
+  const details = {};
+  for (const section of sections) {
+    const nameMatch = section.match(/^(.+?)[\s🔴🟡🟢]/);
+    if (nameMatch) {
+      const name = nameMatch[1].trim();
+      const descMatch = section.match(/\*\*One-liner:\*\*\s*(.+)/);
+      const repoMatch = section.match(/\*\*Repo:\*\*\s*`(.+?)`/);
+      const pricingMatch = section.match(/\*\*Pricing:\*\*\s*(.+)/);
+      const targetMatch = section.match(/\*\*Target:\*\*\s*(.+)/);
+      const nextActions = [];
+      const actionRegex = /^\d+\.\s+(.+)/gm;
+      let actionMatch;
+      while ((actionMatch = actionRegex.exec(section)) !== null) {
+        nextActions.push(actionMatch[1].trim());
+      }
+      details[name] = {
+        description: descMatch ? descMatch[1].trim() : '',
+        repo: repoMatch ? repoMatch[1].trim() : '',
+        pricing: pricingMatch ? pricingMatch[1].trim() : '',
+        target: targetMatch ? targetMatch[1].trim() : '',
+        nextActions,
+      };
+    }
+  }
+
+  return products.map(p => ({ ...p, details: details[p.name] || {} }));
+}
+
+async function syncPortfolio() {
+  console.log('📦 Syncing portfolio...');
+
+  const products = parsePortfolio();
+  if (products.length === 0) {
+    console.log('  ⚠️ No products parsed');
+    return 0;
+  }
+
+  // Get valid slugs from our portfolio
+  const validSlugs = new Set();
+
+  let synced = 0;
+  for (const product of products) {
+    const mapping = PORTFOLIO_MAP[product.name];
+    if (!mapping) {
+      console.log(`  ⚠️ No mapping for "${product.name}", skipping`);
+      continue;
+    }
+
+    validSlugs.add(mapping.slug);
+    const status = STATUS_MAP[product.statusText] || 'LIVE';
+    const phase = PHASE_MAP[product.statusText] || 'MAINTENANCE';
+    const mrrMatch = product.revenue.match(/\$(\d+)/);
+    const mrr = mrrMatch ? parseInt(mrrMatch[1]) : 0;
+
+    const description = product.details.description || `${product.name} — ${product.statusText}`;
+    const longDesc = [
+      product.details.target ? `**Target:** ${product.details.target}` : '',
+      product.details.pricing ? `**Pricing:** ${product.details.pricing}` : '',
+      product.details.nextActions?.length ? `**Next:**\n${product.details.nextActions.map(a => `- ${a}`).join('\n')}` : '',
+    ].filter(Boolean).join('\n\n');
+
+    await prisma.project.upsert({
+      where: { slug: mapping.slug },
+      update: {
+        name: product.name,
+        description,
+        longDescription: longDesc || null,
+        url: mapping.url,
+        status,
+        currentPhase: phase,
+        mrr,
+        updatedAt: new Date(),
+        lastSynced: new Date(),
+      },
+      create: {
+        id: mapping.slug,
+        slug: mapping.slug,
+        name: product.name,
+        description,
+        longDescription: longDesc || null,
+        url: mapping.url,
+        techStack: [],
+        category: mapping.category,
+        projectType: mapping.projectType,
+        status,
+        currentPhase: phase,
+        mrr,
+        screenshots: [],
+        updatedAt: new Date(),
+        lastSynced: new Date(),
+      },
+    });
+    synced++;
+  }
+
+  // Archive projects not in our portfolio
+  const allProjects = await prisma.project.findMany({ select: { slug: true } });
+  const staleProjects = allProjects.filter(p => !validSlugs.has(p.slug));
+  if (staleProjects.length > 0) {
+    for (const stale of staleProjects) {
+      await prisma.project.update({
+        where: { slug: stale.slug },
+        data: { status: 'ARCHIVED', updatedAt: new Date() },
+      });
+    }
+    console.log(`  🗄️ Archived ${staleProjects.length} stale projects`);
+  }
+
+  console.log(`  ✅ Synced ${synced} products`);
+  return synced;
+}
+
+// ─── Sprint Sync ──────────────────────────────────────────────────────────────
+// Reads plan/SPRINT.md and syncs to AgentTask table with section="Sprint"
+
+function parseSprint() {
+  const filePath = path.join(PLAN_DIR, 'SPRINT.md');
+  if (!fs.existsSync(filePath)) {
+    console.log('  ⚠️ SPRINT.md not found');
+    return { tasks: [], sprintName: 'Unknown' };
+  }
+
+  const content = fs.readFileSync(filePath, 'utf8');
+  
+  // Get sprint date range
+  const sprintMatch = content.match(/\*Sprint:\s*(.+?)\*/);
+  const sprintName = sprintMatch ? sprintMatch[1].trim() : 'Current Sprint';
+
+  // Parse task table
+  const tasks = [];
+  const tableRegex = /\|\s*(\d+)\s*\|\s*(.+?)\s*\|\s*(.+?)\s*\|\s*(.+?)\s*\|\s*(.+?)\s*\|/g;
+  let match;
+  while ((match = tableRegex.exec(content)) !== null) {
+    const status = match[5].trim();
+    if (status === 'Status') continue; // Skip header
+    tasks.push({
+      number: parseInt(match[1]),
+      task: match[2].trim(),
+      owner: match[3].trim(),
+      product: match[4].trim(),
+      status: status,
+      completed: status.includes('DONE') || status.includes('✅'),
+    });
+  }
+
+  // Parse "Done This Sprint" section
+  const doneSection = content.split('## Done This Sprint')[1];
+  if (doneSection) {
+    const doneRegex = /^[-*]\s+(.+)/gm;
+    let doneMatch;
+    while ((doneMatch = doneRegex.exec(doneSection)) !== null) {
+      tasks.push({
+        number: tasks.length + 1,
+        task: doneMatch[1].trim(),
+        owner: '',
+        product: '',
+        status: '✅ DONE',
+        completed: true,
+      });
+    }
+  }
+
+  return { tasks, sprintName };
+}
+
+async function syncSprint() {
+  console.log('🎯 Syncing sprint...');
+
+  const { tasks, sprintName } = parseSprint();
+
+  // Clear old sprint tasks
+  await prisma.agentTask.deleteMany({ where: { section: { startsWith: 'Sprint' } } });
+
+  let synced = 0;
+  for (const task of tasks) {
+    const label = `[${task.owner}] [${task.product}] ${task.task}`;
+    await prisma.agentTask.create({
+      data: {
+        id: uuid(),
+        section: `Sprint: ${sprintName}`,
+        content: label,
+        completed: task.completed,
+        sortOrder: task.number,
+        syncedAt: new Date(),
+      },
+    });
+    synced++;
+  }
+
+  console.log(`  ✅ Synced ${synced} sprint tasks (${sprintName})`);
+  return synced;
+}
+
+// ─── Backlog Sync ─────────────────────────────────────────────────────────────
+
+async function syncBacklog() {
+  console.log('📋 Syncing backlog...');
+
+  const filePath = path.join(PLAN_DIR, 'BACKLOG.md');
+  if (!fs.existsSync(filePath)) {
+    console.log('  ⚠️ BACKLOG.md not found');
+    return 0;
+  }
+
+  const content = fs.readFileSync(filePath, 'utf8');
+
+  // Clear old backlog tasks
+  await prisma.agentTask.deleteMany({ where: { section: { startsWith: 'Backlog' } } });
+
+  let currentSection = 'Backlog';
+  let sortOrder = 100; // Start after sprint tasks
+  let synced = 0;
+
+  for (const line of content.split('\n')) {
+    const sectionMatch = line.match(/^#{2,3}\s+(.+)/);
+    if (sectionMatch) {
+      currentSection = `Backlog: ${sectionMatch[1].trim()}`;
+      continue;
+    }
+
+    const taskMatch = line.match(/^[-*]\s+\[([ xX])\]\s+(.+)/);
+    if (taskMatch) {
+      await prisma.agentTask.create({
+        data: {
+          id: uuid(),
+          section: currentSection,
+          content: taskMatch[2].trim(),
+          completed: taskMatch[1].toLowerCase() === 'x',
+          sortOrder: sortOrder++,
+          syncedAt: new Date(),
+        },
+      });
+      synced++;
+    }
+  }
+
+  console.log(`  ✅ Synced ${synced} backlog tasks`);
+  return synced;
+}
+
+// ─── Scheduled Tasks (OpenClaw cron) ──────────────────────────────────────────
 
 async function syncScheduledTasks() {
   console.log('📅 Syncing scheduled tasks...');
-  
+
   try {
-    // Read cron jobs from Clawdbot via CLI
     const { execSync } = require('child_process');
-    const cronOutput = execSync('clawdbot cron list --json 2>/dev/null || echo "[]"', { 
+    const cronOutput = execSync('openclaw cron list --json 2>/dev/null || echo "[]"', {
       encoding: 'utf8',
-      timeout: 10000 
+      timeout: 10000,
     });
-    
+
     let jobs = [];
     try {
       const parsed = JSON.parse(cronOutput);
@@ -32,28 +382,21 @@ async function syncScheduledTasks() {
       return 0;
     }
 
+    // Clear and re-sync
+    await prisma.agentSchedule.deleteMany({});
+
     let synced = 0;
     for (const job of jobs) {
       const schedule = job.schedule?.expr || job.schedule?.kind || 'unknown';
       const timezone = job.schedule?.tz || 'UTC';
-      
-      await prisma.agentSchedule.upsert({
-        where: { jobId: job.id },
-        update: {
-          name: job.name,
-          schedule: schedule,
-          timezone: timezone,
-          nextRunAt: job.state?.nextRunAtMs ? new Date(job.state.nextRunAtMs) : null,
-          lastRunAt: job.state?.lastRunAtMs ? new Date(job.state.lastRunAtMs) : null,
-          lastStatus: job.state?.lastStatus || null,
-          enabled: job.enabled !== false,
-          syncedAt: new Date(),
-        },
-        create: {
+
+      await prisma.agentSchedule.create({
+        data: {
+          id: uuid(),
           jobId: job.id,
-          name: job.name,
-          schedule: schedule,
-          timezone: timezone,
+          name: job.name || 'unnamed',
+          schedule,
+          timezone,
           nextRunAt: job.state?.nextRunAtMs ? new Date(job.state.nextRunAtMs) : null,
           lastRunAt: job.state?.lastRunAtMs ? new Date(job.state.lastRunAtMs) : null,
           lastStatus: job.state?.lastStatus || null,
@@ -63,7 +406,7 @@ async function syncScheduledTasks() {
       });
       synced++;
     }
-    
+
     console.log(`  ✅ Synced ${synced} scheduled tasks`);
     return synced;
   } catch (error) {
@@ -72,68 +415,15 @@ async function syncScheduledTasks() {
   }
 }
 
-async function syncTasks() {
-  console.log('📋 Syncing tasks...');
-  
-  try {
-    const tasksPath = path.join(CLAWD_DIR, 'TASKS.md');
-    if (!fs.existsSync(tasksPath)) {
-      console.log('  ⚠️ TASKS.md not found, skipping');
-      return 0;
-    }
-
-    const content = fs.readFileSync(tasksPath, 'utf8');
-    const lines = content.split('\n');
-    
-    // Clear existing tasks and re-sync
-    await prisma.agentTask.deleteMany({});
-    
-    let currentSection = 'Uncategorized';
-    let sortOrder = 0;
-    let synced = 0;
-
-    for (const line of lines) {
-      // Section headers (## or ###)
-      const sectionMatch = line.match(/^#{2,3}\s+(.+)/);
-      if (sectionMatch) {
-        currentSection = sectionMatch[1].trim();
-        continue;
-      }
-
-      // Task items (- [ ] or - [x])
-      const taskMatch = line.match(/^[-*]\s+\[([ xX])\]\s+(.+)/);
-      if (taskMatch) {
-        const completed = taskMatch[1].toLowerCase() === 'x';
-        const taskContent = taskMatch[2].trim();
-        
-        await prisma.agentTask.create({
-          data: {
-            section: currentSection,
-            content: taskContent,
-            completed: completed,
-            sortOrder: sortOrder++,
-            syncedAt: new Date(),
-          },
-        });
-        synced++;
-      }
-    }
-    
-    console.log(`  ✅ Synced ${synced} tasks`);
-    return synced;
-  } catch (error) {
-    console.error('  ❌ Error syncing tasks:', error.message);
-    return 0;
-  }
-}
+// ─── Memory ───────────────────────────────────────────────────────────────────
 
 async function syncMemory() {
   console.log('🧠 Syncing memory files...');
-  
+
   try {
     const memoryDir = path.join(CLAWD_DIR, 'memory');
     if (!fs.existsSync(memoryDir)) {
-      console.log('  ⚠️ memory/ directory not found, skipping');
+      console.log('  ⚠️ memory/ directory not found');
       return 0;
     }
 
@@ -143,49 +433,39 @@ async function syncMemory() {
     for (const filename of files) {
       const filePath = path.join(memoryDir, filename);
       const content = fs.readFileSync(filePath, 'utf8');
-      
-      // Extract date from filename (e.g., 2026-02-07.md)
       const dateMatch = filename.match(/(\d{4}-\d{2}-\d{2})/);
       const fileDate = dateMatch ? new Date(dateMatch[1]) : null;
-      
+
       await prisma.agentMemory.upsert({
         where: { filename },
         update: {
-          content: content.substring(0, 50000), // Limit content size
-          fileDate: fileDate,
+          content: content.substring(0, 50000),
+          fileDate,
           syncedAt: new Date(),
         },
         create: {
+          id: uuid(),
           filename,
           content: content.substring(0, 50000),
-          fileDate: fileDate,
+          fileDate,
           syncedAt: new Date(),
         },
       });
       synced++;
     }
-    
-    // Also sync MEMORY.md if it exists
+
+    // Also sync MEMORY.md
     const memoryMdPath = path.join(CLAWD_DIR, 'MEMORY.md');
     if (fs.existsSync(memoryMdPath)) {
       const content = fs.readFileSync(memoryMdPath, 'utf8');
       await prisma.agentMemory.upsert({
         where: { filename: 'MEMORY.md' },
-        update: {
-          content: content.substring(0, 50000),
-          fileDate: null,
-          syncedAt: new Date(),
-        },
-        create: {
-          filename: 'MEMORY.md',
-          content: content.substring(0, 50000),
-          fileDate: null,
-          syncedAt: new Date(),
-        },
+        update: { content: content.substring(0, 50000), fileDate: null, syncedAt: new Date() },
+        create: { id: uuid(), filename: 'MEMORY.md', content: content.substring(0, 50000), fileDate: null, syncedAt: new Date() },
       });
       synced++;
     }
-    
+
     console.log(`  ✅ Synced ${synced} memory files`);
     return synced;
   } catch (error) {
@@ -194,43 +474,38 @@ async function syncMemory() {
   }
 }
 
+// ─── Activity ─────────────────────────────────────────────────────────────────
+
 async function syncActivity() {
   console.log('⚡ Syncing activity...');
-  
-  try {
-    // Extract recent activity from memory files
-    const memoryDir = path.join(CLAWD_DIR, 'memory');
-    if (!fs.existsSync(memoryDir)) {
-      return 0;
-    }
 
-    // Get last 7 days of memory files
+  try {
+    const memoryDir = path.join(CLAWD_DIR, 'memory');
+    if (!fs.existsSync(memoryDir)) return 0;
+
     const files = fs.readdirSync(memoryDir)
       .filter(f => f.match(/\d{4}-\d{2}-\d{2}\.md$/))
       .sort()
       .slice(-7);
 
-    // Clear old activity and re-sync
     await prisma.agentActivity.deleteMany({});
-    
-    let synced = 0;
-    const activityItems = [];
 
+    const items = [];
     for (const filename of files) {
-      const filePath = path.join(memoryDir, filename);
-      const content = fs.readFileSync(filePath, 'utf8');
+      const content = fs.readFileSync(path.join(memoryDir, filename), 'utf8');
       const dateMatch = filename.match(/(\d{4}-\d{2}-\d{2})/);
       const fileDate = dateMatch ? new Date(dateMatch[1]) : new Date();
 
-      // Extract bullet points as activity items
-      const lines = content.split('\n');
-      for (const line of lines) {
-        const bulletMatch = line.match(/^[-*]\s+(.+)/);
-        if (bulletMatch && bulletMatch[1].length > 10 && bulletMatch[1].length < 500) {
-          activityItems.push({
-            action: 'note',
+      // Extract headings with timestamps as activity
+      const headingRegex = /^###?\s+(.+)/gm;
+      let match;
+      while ((match = headingRegex.exec(content)) !== null) {
+        const heading = match[1].trim();
+        if (heading.length > 5 && heading.length < 200) {
+          items.push({
+            action: 'update',
             category: 'memory',
-            details: bulletMatch[1].trim(),
+            details: heading,
             occurredAt: fileDate,
             syncedAt: new Date(),
           });
@@ -238,115 +513,46 @@ async function syncActivity() {
       }
     }
 
-    // Keep only most recent 50 items
-    const recentItems = activityItems.slice(-50);
-    
-    for (const item of recentItems) {
-      await prisma.agentActivity.create({ data: item });
-      synced++;
+    const recent = items.slice(-50);
+    for (const item of recent) {
+      await prisma.agentActivity.create({ data: { id: uuid(), ...item } });
     }
-    
-    console.log(`  ✅ Synced ${synced} activity items`);
-    return synced;
+
+    console.log(`  ✅ Synced ${recent.length} activity items`);
+    return recent.length;
   } catch (error) {
     console.error('  ❌ Error syncing activity:', error.message);
     return 0;
   }
 }
 
-async function processPendingTriggers() {
-  console.log('⚡ Processing pending triggers...');
-  
-  try {
-    const { execSync } = require('child_process');
-    
-    // Get pending triggers
-    const triggers = await prisma.agentCronTrigger.findMany({
-      where: { status: 'pending' },
-      orderBy: { createdAt: 'asc' },
-    });
-
-    if (triggers.length === 0) {
-      console.log('  ℹ️ No pending triggers');
-      return 0;
-    }
-
-    let processed = 0;
-    for (const trigger of triggers) {
-      console.log(`  ▶️ Running job: ${trigger.jobName}`);
-      
-      // Mark as running
-      await prisma.agentCronTrigger.update({
-        where: { id: trigger.id },
-        data: { status: 'running', startedAt: new Date() },
-      });
-
-      try {
-        // Execute the cron job
-        const output = execSync(`clawdbot cron run ${trigger.jobId} 2>&1`, {
-          encoding: 'utf8',
-          timeout: 300000, // 5 minute timeout
-        });
-
-        // Mark as completed
-        await prisma.agentCronTrigger.update({
-          where: { id: trigger.id },
-          data: { 
-            status: 'completed', 
-            completedAt: new Date(),
-            result: output.substring(0, 1000),
-          },
-        });
-        console.log(`  ✅ Completed: ${trigger.jobName}`);
-        processed++;
-      } catch (execError) {
-        // Mark as failed
-        await prisma.agentCronTrigger.update({
-          where: { id: trigger.id },
-          data: { 
-            status: 'failed', 
-            completedAt: new Date(),
-            result: execError.message?.substring(0, 1000) || 'Unknown error',
-          },
-        });
-        console.log(`  ❌ Failed: ${trigger.jobName} - ${execError.message}`);
-      }
-    }
-
-    console.log(`  ✅ Processed ${processed}/${triggers.length} triggers`);
-    return processed;
-  } catch (error) {
-    console.error('  ❌ Error processing triggers:', error.message);
-    return 0;
-  }
-}
+// ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
-  console.log('🎛️ Mission Control Sync Starting...');
+  console.log('🎛️ Mission Control Sync');
   console.log(`   Time: ${new Date().toISOString()}`);
-  console.log('');
-
-  // Process any pending triggers first
-  const triggersProcessed = await processPendingTriggers();
+  console.log(`   Plan dir: ${PLAN_DIR}`);
   console.log('');
 
   const results = {
-    triggersProcessed,
+    portfolio: await syncPortfolio(),
+    sprint: await syncSprint(),
+    backlog: await syncBacklog(),
     scheduledTasks: await syncScheduledTasks(),
-    tasks: await syncTasks(),
     memory: await syncMemory(),
     activity: await syncActivity(),
   };
 
   console.log('');
-  console.log('📊 Sync Summary:');
-  console.log(`   Triggers Processed: ${results.triggersProcessed}`);
-  console.log(`   Scheduled Tasks: ${results.scheduledTasks}`);
-  console.log(`   Tasks: ${results.tasks}`);
-  console.log(`   Memory Files: ${results.memory}`);
-  console.log(`   Activity Items: ${results.activity}`);
+  console.log('📊 Summary:');
+  console.log(`   Portfolio: ${results.portfolio} products`);
+  console.log(`   Sprint: ${results.sprint} tasks`);
+  console.log(`   Backlog: ${results.backlog} tasks`);
+  console.log(`   Cron Jobs: ${results.scheduledTasks}`);
+  console.log(`   Memory: ${results.memory} files`);
+  console.log(`   Activity: ${results.activity} items`);
   console.log('');
-  console.log('✅ Mission Control sync complete!');
+  console.log('✅ Sync complete!');
 
   await prisma.$disconnect();
 }
