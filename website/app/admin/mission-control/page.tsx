@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { PortfolioOverview } from './components/PortfolioOverview';
+import { SprintView } from './components/SprintView';
 import { ScheduledTasks } from './components/ScheduledTasks';
 import { TaskList } from './components/TaskList';
 import { MemoryBrowser } from './components/MemoryBrowser';
@@ -55,8 +57,18 @@ export default function MissionControlPage() {
           🎛️ Mission Control
         </h2>
         <p className="text-body text-text-secondary">
-          Unified dashboard for scheduled tasks, current work, and agent memory
+          Portfolio dashboard -- products, sprint, tasks, and agent activity
         </p>
+      </div>
+
+      {/* Portfolio Overview - Full Width */}
+      <div className="bg-bg-surface border border-border-default rounded-lg mb-6">
+        <PortfolioOverview />
+      </div>
+
+      {/* Current Sprint - Full Width */}
+      <div className="bg-bg-surface border border-border-default rounded-lg mb-6">
+        <SprintView />
       </div>
 
       {/* Dashboard Grid */}

@@ -68,6 +68,9 @@ export async function GET(req: NextRequest) {
         githubUrl: true,
         trackProgress: true,
         lastSynced: true,
+        customMetrics: true,
+        currentPhase: true,
+        projectType: true,
         createdAt: true,
         updatedAt: true,
         // NEVER return githubToken in API responses

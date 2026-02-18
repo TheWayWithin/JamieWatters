@@ -18,7 +18,7 @@ async function syncScheduledTasks() {
   try {
     // Read cron jobs from Clawdbot via CLI
     const { execSync } = require('child_process');
-    const cronOutput = execSync('clawdbot cron list --json 2>/dev/null || echo "[]"', { 
+    const cronOutput = execSync('openclaw cron list --json 2>/dev/null || echo "[]"', {
       encoding: 'utf8',
       timeout: 10000 
     });
@@ -72,53 +72,170 @@ async function syncScheduledTasks() {
   }
 }
 
+/**
+ * Parse SPRINT.md table format:
+ * | # | Task | Owner | Product | Status |
+ * Returns tasks with section "Active Sprint"
+ */
+function parseSprint(filePath) {
+  const content = fs.readFileSync(filePath, 'utf8');
+  const lines = content.split('\n');
+  const tasks = [];
+
+  for (const line of lines) {
+    // Match table rows: | N | content | owner | product | status |
+    const rowMatch = line.match(/^\|\s*\d+\s*\|\s*(.+?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|/);
+    if (!rowMatch) continue;
+
+    const taskContent = rowMatch[1].trim();
+    const status = rowMatch[4].trim().toLowerCase();
+
+    // Skip header row (contains "Task" literally)
+    if (taskContent.toLowerCase() === 'task') continue;
+
+    const completed = status === 'done' || status === 'complete' || status === 'completed';
+    tasks.push({ section: 'Active Sprint', content: taskContent, completed });
+  }
+
+  return tasks;
+}
+
+/**
+ * Parse PORTFOLIO.md format:
+ * ### N. PRODUCT-NAME headers with **Next actions:** numbered lists
+ * Returns tasks with section "Portfolio: {ProductName}"
+ */
+function parsePortfolio(filePath) {
+  const content = fs.readFileSync(filePath, 'utf8');
+  const lines = content.split('\n');
+  const tasks = [];
+
+  let currentProduct = null;
+  let inNextActions = false;
+
+  for (const line of lines) {
+    // Product header: ### N. PRODUCT-NAME
+    const productMatch = line.match(/^###\s+\d+\.\s+(.+)/);
+    if (productMatch) {
+      currentProduct = productMatch[1].trim();
+      inNextActions = false;
+      continue;
+    }
+
+    // Next actions marker
+    if (/\*\*Next actions:\*\*/i.test(line)) {
+      inNextActions = true;
+      continue;
+    }
+
+    // Another bold heading or section header ends the next-actions block
+    if (inNextActions && (/^\*\*[^*]+\*\*/.test(line) || /^#{2,3}\s+/.test(line))) {
+      inNextActions = false;
+    }
+
+    // Numbered list items under next actions
+    if (inNextActions && currentProduct) {
+      const itemMatch = line.match(/^\s*\d+\.\s+(.+)/);
+      if (itemMatch) {
+        tasks.push({
+          section: `Portfolio: ${currentProduct}`,
+          content: itemMatch[1].trim(),
+          completed: false,
+        });
+      }
+    }
+  }
+
+  return tasks;
+}
+
+/**
+ * Parse standard markdown task files (TASKS.md or BACKLOG.md)
+ * Handles - [ ] / - [x] checkbox format with ## section headers
+ */
+function parseMarkdownTasks(filePath) {
+  const content = fs.readFileSync(filePath, 'utf8');
+  const lines = content.split('\n');
+  const tasks = [];
+
+  let currentSection = 'Uncategorized';
+
+  for (const line of lines) {
+    const sectionMatch = line.match(/^#{2,3}\s+(.+)/);
+    if (sectionMatch) {
+      currentSection = sectionMatch[1].trim();
+      continue;
+    }
+
+    const taskMatch = line.match(/^[-*]\s+\[([ xX])\]\s+(.+)/);
+    if (taskMatch) {
+      const completed = taskMatch[1].toLowerCase() === 'x';
+      tasks.push({ section: currentSection, content: taskMatch[2].trim(), completed });
+    }
+  }
+
+  return tasks;
+}
+
 async function syncTasks() {
   console.log('📋 Syncing tasks...');
-  
+
   try {
+    const sprintPath = path.join(CLAWD_DIR, 'plan', 'SPRINT.md');
+    const portfolioPath = path.join(CLAWD_DIR, 'plan', 'PORTFOLIO.md');
+    const backlogPath = path.join(CLAWD_DIR, 'plan', 'BACKLOG.md');
     const tasksPath = path.join(CLAWD_DIR, 'TASKS.md');
-    if (!fs.existsSync(tasksPath)) {
-      console.log('  ⚠️ TASKS.md not found, skipping');
+
+    const hasPlanFiles = fs.existsSync(sprintPath) || fs.existsSync(backlogPath) || fs.existsSync(portfolioPath);
+
+    let allTasks = [];
+
+    if (hasPlanFiles) {
+      console.log('  📂 Using plan/ directory files');
+
+      if (fs.existsSync(sprintPath)) {
+        const sprintTasks = parseSprint(sprintPath);
+        console.log(`    SPRINT.md: ${sprintTasks.length} tasks`);
+        allTasks.push(...sprintTasks);
+      }
+
+      if (fs.existsSync(portfolioPath)) {
+        const portfolioTasks = parsePortfolio(portfolioPath);
+        console.log(`    PORTFOLIO.md: ${portfolioTasks.length} tasks`);
+        allTasks.push(...portfolioTasks);
+      }
+
+      if (fs.existsSync(backlogPath)) {
+        const backlogTasks = parseMarkdownTasks(backlogPath);
+        console.log(`    BACKLOG.md: ${backlogTasks.length} tasks`);
+        allTasks.push(...backlogTasks);
+      }
+    } else if (fs.existsSync(tasksPath)) {
+      console.log('  📄 Using TASKS.md (legacy)');
+      allTasks = parseMarkdownTasks(tasksPath);
+    } else {
+      console.log('  ⚠️ No task files found, skipping');
       return 0;
     }
 
-    const content = fs.readFileSync(tasksPath, 'utf8');
-    const lines = content.split('\n');
-    
     // Clear existing tasks and re-sync
     await prisma.agentTask.deleteMany({});
-    
-    let currentSection = 'Uncategorized';
-    let sortOrder = 0;
+
     let synced = 0;
-
-    for (const line of lines) {
-      // Section headers (## or ###)
-      const sectionMatch = line.match(/^#{2,3}\s+(.+)/);
-      if (sectionMatch) {
-        currentSection = sectionMatch[1].trim();
-        continue;
-      }
-
-      // Task items (- [ ] or - [x])
-      const taskMatch = line.match(/^[-*]\s+\[([ xX])\]\s+(.+)/);
-      if (taskMatch) {
-        const completed = taskMatch[1].toLowerCase() === 'x';
-        const taskContent = taskMatch[2].trim();
-        
-        await prisma.agentTask.create({
-          data: {
-            section: currentSection,
-            content: taskContent,
-            completed: completed,
-            sortOrder: sortOrder++,
-            syncedAt: new Date(),
-          },
-        });
-        synced++;
-      }
+    for (let i = 0; i < allTasks.length; i++) {
+      const task = allTasks[i];
+      await prisma.agentTask.create({
+        data: {
+          section: task.section,
+          content: task.content,
+          completed: task.completed,
+          sortOrder: i,
+          syncedAt: new Date(),
+        },
+      });
+      synced++;
     }
-    
+
     console.log(`  ✅ Synced ${synced} tasks`);
     return synced;
   } catch (error) {
@@ -283,7 +400,7 @@ async function processPendingTriggers() {
 
       try {
         // Execute the cron job
-        const output = execSync(`clawdbot cron run ${trigger.jobId} 2>&1`, {
+        const output = execSync(`openclaw cron run ${trigger.jobId} 2>&1`, {
           encoding: 'utf8',
           timeout: 300000, // 5 minute timeout
         });

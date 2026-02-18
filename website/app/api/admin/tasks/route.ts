@@ -112,26 +112,30 @@ export async function PATCH(req: NextRequest) {
       data: { completed, syncedAt: new Date() },
     });
 
-    // Update TASKS.md file
-    try {
-      const tasksPath = join(CLAWD_DIR, 'TASKS.md');
-      let tasksContent = readFileSync(tasksPath, 'utf8');
-      
-      // Escape special regex characters in content
-      const escapedContent = content.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      
-      // Find and replace the task line
-      const oldPattern = completed 
-        ? new RegExp(`^([-*]\\s+\\[)[ ](\\]\\s+${escapedContent})`, 'm')
-        : new RegExp(`^([-*]\\s+\\[)[xX](\\]\\s+${escapedContent})`, 'm');
-      
-      const newMark = completed ? 'x' : ' ';
-      tasksContent = tasksContent.replace(oldPattern, `$1${newMark}$2`);
-      
-      writeFileSync(tasksPath, tasksContent, 'utf8');
-    } catch (fileError) {
-      console.error('Error updating TASKS.md:', fileError);
-      // Don't fail the request - DB is updated, file sync can happen later
+    // Write back to source markdown file
+    // Skip file write-back for sprint items - table format is fragile,
+    // the next sync will re-read from SPRINT.md source
+    if (!/^Active Sprint$/i.test(section)) {
+      try {
+        const tasksPath = join(CLAWD_DIR, 'TASKS.md');
+        let tasksContent = readFileSync(tasksPath, 'utf8');
+
+        // Escape special regex characters in content
+        const escapedContent = content.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+        // Find and replace the task line
+        const oldPattern = completed
+          ? new RegExp(`^([-*]\\s+\\[)[ ](\\]\\s+${escapedContent})`, 'm')
+          : new RegExp(`^([-*]\\s+\\[)[xX](\\]\\s+${escapedContent})`, 'm');
+
+        const newMark = completed ? 'x' : ' ';
+        tasksContent = tasksContent.replace(oldPattern, `$1${newMark}$2`);
+
+        writeFileSync(tasksPath, tasksContent, 'utf8');
+      } catch (fileError) {
+        console.error('Error updating TASKS.md:', fileError);
+        // Don't fail the request - DB is updated, file sync can happen later
+      }
     }
 
     return NextResponse.json({ 
