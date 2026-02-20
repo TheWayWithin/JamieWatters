@@ -183,6 +183,7 @@ export async function PUT(
     if (slug !== existingPost.slug) {
       revalidatePath(`/journey/${slug}`);
     }
+    revalidatePath('/sitemap.xml');
 
     return NextResponse.json({
       success: true,
@@ -242,6 +243,7 @@ export async function DELETE(
     // Revalidate relevant pages
     revalidatePath('/journey');
     revalidatePath(`/journey/${existingPost.slug}`);
+    revalidatePath('/sitemap.xml');
 
     return NextResponse.json({
       success: true,

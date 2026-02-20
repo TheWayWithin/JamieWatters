@@ -121,6 +121,7 @@ export async function POST(req: NextRequest) {
     // Revalidate relevant pages
     revalidatePath('/journey');
     revalidatePath(`/journey/${slug}`);
+    revalidatePath('/sitemap.xml');
 
     return NextResponse.json({
       success: true,

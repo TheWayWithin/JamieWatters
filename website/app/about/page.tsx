@@ -1,7 +1,19 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Twitter, Linkedin, Github, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+
+export const metadata: Metadata = {
+  title: 'About Jamie Watters',
+  description:
+    'From 1980s BASIC to AI orchestration — a systems programmer turned solopreneur building AI-powered tools and sharing the journey publicly.',
+  openGraph: {
+    title: 'About Jamie Watters',
+    description:
+      'From 1980s BASIC to AI orchestration — a systems programmer turned solopreneur building AI-powered tools and sharing the journey publicly.',
+  },
+};
 
 export default function AboutPage() {
   return (

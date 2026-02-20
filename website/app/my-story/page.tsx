@@ -1,6 +1,18 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { Mail, Twitter, Linkedin, Github } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'My Story',
+  description:
+    'From playground to boardroom and back — how a systems programmer rediscovered the joy of building through AI after 20 years in corporate management.',
+  openGraph: {
+    title: 'My Story | Jamie Watters',
+    description:
+      'From playground to boardroom and back — how a systems programmer rediscovered the joy of building through AI after 20 years in corporate management.',
+  },
+};
 
 export default function MyStoryPage() {
   return (

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -16,6 +17,32 @@ import {
 } from '@/lib/structured-data';
 import { ProjectType } from '@prisma/client';
 import { METRIC_TEMPLATES, formatMetricValue, type MetricDefinition } from '@/lib/metrics';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const project = await getProjectWithPosts(slug);
+
+  if (!project) {
+    return { title: 'Project Not Found' };
+  }
+
+  const description = project.description.length > 160
+    ? project.description.slice(0, 157) + '...'
+    : project.description;
+
+  return {
+    title: project.name,
+    description,
+    openGraph: {
+      title: `${project.name} | Jamie Watters`,
+      description,
+    },
+  };
+}
 
 // Generate static params for all projects (SSG)
 export async function generateStaticParams() {

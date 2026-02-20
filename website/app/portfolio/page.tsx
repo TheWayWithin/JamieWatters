@@ -1,9 +1,21 @@
+import type { Metadata } from 'next';
 import { getAllProjects, getMetrics } from '@/lib/database';
 import { ProjectCard } from '@/components/portfolio/ProjectCard';
 import {
   getBreadcrumbSchema,
   renderStructuredData,
 } from '@/lib/structured-data';
+
+export const metadata: Metadata = {
+  title: 'Portfolio',
+  description:
+    'AI-powered products built as a solo operator. From idea to execution, all tracked in public with real metrics.',
+  openGraph: {
+    title: 'Portfolio | Jamie Watters',
+    description:
+      'AI-powered products built as a solo operator. From idea to execution, all tracked in public with real metrics.',
+  },
+};
 
 export const revalidate = 3600; // 1 hour ISR
 
