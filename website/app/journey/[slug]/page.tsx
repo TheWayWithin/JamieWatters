@@ -39,7 +39,7 @@ export async function generateMetadata({
   }
 
   const postUrl = `https://jamiewatters.work/journey/${slug}`;
-  const ogImage = 'https://jamiewatters.work/og-image.png';
+  const ogImage = `https://jamiewatters.work/api/og?type=post&title=${encodeURIComponent(post.title)}`;
 
   return {
     title: post.title,

@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     siteName: 'Jamie Watters',
     images: [
       {
-        url: 'https://jamiewatters.work/og-image.png',
+        url: 'https://jamiewatters.work/api/og',
         width: 1200,
         height: 630,
         alt: 'Jamie Watters - Side Gig to Financial Freedom — Built in Public',
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     description:
       'Real metrics, real failures. Follow the journey of a practitioner building AI-powered tools for solopreneurs.',
     creator: '@jamiewatters',
-    images: ['https://jamiewatters.work/og-image.png'],
+    images: ['https://jamiewatters.work/api/og'],
   },
   robots: {
     index: true,
