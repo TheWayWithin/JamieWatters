@@ -12,7 +12,7 @@ export interface SEOMetadata {
 
 export function getSEOMetadata(page: SEOMetadata) {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://jamiewatters.work';
-  const defaultImage = `${baseUrl}/api/og`;
+  const defaultImage = `${baseUrl}/og`;
 
   return {
     title: `${page.title} | Jamie Watters`,
