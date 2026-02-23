@@ -99,6 +99,10 @@ export interface OverviewMetrics {
   scheduledTaskCount: number;
   topPriorities: PriorityItem[];
   recentActivity: ActivityItem[];
+  openIssueCount?: number;
+  criticalIssueCount?: number;
+  criticalIssues?: { id: string; title: string; type: string }[];
+  issuesByType?: Record<string, number>;
 }
 
 /**
@@ -151,6 +155,46 @@ export interface ProjectItem {
   projectType: string;
   createdAt: string;
   updatedAt: string;
+}
+
+/**
+ * Issue Types
+ */
+export type IssueType = 'approval' | 'blocker' | 'error' | 'warning' | 'question';
+export type IssueSeverity = 'critical' | 'high' | 'medium' | 'low';
+export type IssueStatus = 'open' | 'in_progress' | 'resolved' | 'dismissed';
+
+/**
+ * Issue - Blocker, error, or approval request
+ */
+export interface Issue {
+  id: string;
+  type: IssueType;
+  title: string;
+  description: string | null;
+  severity: IssueSeverity;
+  status: IssueStatus;
+  source: string;
+  projectId: string | null;
+  project: { id: string; name: string; slug: string } | null;
+  assignedTo: string | null;
+  resolution: string | null;
+  resolvedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/**
+ * Issues API response shape
+ */
+export interface IssuesResponse {
+  issues: Issue[];
+  counts: {
+    byType: Record<string, number>;
+    bySeverity: Record<string, number>;
+    total: number;
+    open: number;
+  };
 }
 
 /**

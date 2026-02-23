@@ -560,6 +560,109 @@ async function syncGoals() {
   }
 }
 
+/**
+ * Auto-detect issues from workspace data and create Issue records.
+ * Conservative detection: only flags clear problems to avoid noise.
+ * Rules:
+ *   1. Tasks stuck in Active Sprint (not completed) for > 48 hours -> warning
+ *   2. ERROR/FAILED/BLOCKED keywords in progress.md -> error/blocker issue
+ *   3. All auto-created issues have source='sync'
+ *   4. Duplicate detection: skip if open issue with same title exists
+ */
+async function syncIssues() {
+  console.log('\u26A0\uFE0F  Syncing issues...');
+
+  let detected = 0;
+  let created = 0;
+  let skipped = 0;
+
+  try {
+    // Rule 1: Tasks stuck in Active Sprint > 48 hours
+    const fortyEightHoursAgo = new Date(Date.now() - 48 * 60 * 60 * 1000);
+    const stuckTasks = await prisma.agentTask.findMany({
+      where: {
+        section: 'Active Sprint',
+        completed: false,
+        syncedAt: { lt: fortyEightHoursAgo },
+      },
+      select: { id: true, content: true, syncedAt: true },
+    });
+
+    for (const task of stuckTasks) {
+      detected++;
+      const title = `Stuck task: ${task.content.substring(0, 80)}`;
+
+      // Check for duplicate
+      const existing = await prisma.issue.findFirst({
+        where: { title, status: { in: ['open', 'in_progress'] } },
+      });
+      if (existing) {
+        skipped++;
+        continue;
+      }
+
+      await prisma.issue.create({
+        data: {
+          type: 'warning',
+          title,
+          description: `Task has been in Active Sprint for >48 hours without completion. Last synced: ${task.syncedAt.toISOString()}`,
+          severity: 'medium',
+          source: 'sync',
+        },
+      });
+      created++;
+    }
+
+    // Rule 2: ERROR/FAILED/BLOCKED keywords in progress.md
+    const progressPath = path.join(CLAWD_DIR, 'plan', 'progress.md');
+    if (fs.existsSync(progressPath)) {
+      const content = fs.readFileSync(progressPath, 'utf8');
+      const lines = content.split('\n');
+
+      for (const line of lines) {
+        // Only match lines with strong error indicators (case-insensitive)
+        const errorMatch = line.match(/\b(ERROR|FAILED|BLOCKED)\b/i);
+        if (!errorMatch) continue;
+
+        // Skip lines that are about resolved items
+        if (/\b(resolved|fixed|completed|done)\b/i.test(line)) continue;
+
+        detected++;
+        const keyword = errorMatch[1].toUpperCase();
+        const cleanLine = line.replace(/^[-*#\s]+/, '').trim().substring(0, 100);
+        const title = `${keyword}: ${cleanLine}`;
+        const issueType = keyword === 'BLOCKED' ? 'blocker' : 'error';
+        const severity = keyword === 'BLOCKED' ? 'high' : 'medium';
+
+        // Check for duplicate
+        const existing = await prisma.issue.findFirst({
+          where: { title, status: { in: ['open', 'in_progress'] } },
+        });
+        if (existing) {
+          skipped++;
+          continue;
+        }
+
+        await prisma.issue.create({
+          data: {
+            type: issueType,
+            title,
+            severity,
+            source: 'sync',
+          },
+        });
+        created++;
+      }
+    }
+
+    console.log(`  \u2705 Issues synced (detected: ${detected}, created: ${created}, skipped duplicates: ${skipped})`);
+    return created;
+  } catch (error) {
+    console.error('  \u274C Error syncing issues:', error.message);
+    return 0;
+  }
+}
+
 async function main() {
   console.log('🎛️ Mission Control Sync Starting...');
   console.log(`   Time: ${new Date().toISOString()}`);
@@ -574,6 +677,7 @@ async function main() {
     scheduledTasks: await syncScheduledTasks(),
     tasks: await syncTasks(),
     goals: await syncGoals(),
+    issues: await syncIssues(),
     memory: await syncMemory(),
     activity: await syncActivity(),
   };
@@ -584,6 +688,7 @@ async function main() {
   console.log(`   Scheduled Tasks: ${results.scheduledTasks}`);
   console.log(`   Tasks: ${results.tasks}`);
   console.log(`   Goals: ${results.goals}`);
+  console.log(`   Issues: ${results.issues}`);
   console.log(`   Memory Files: ${results.memory}`);
   console.log(`   Activity Items: ${results.activity}`);
   console.log('');

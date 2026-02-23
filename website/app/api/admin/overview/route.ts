@@ -32,6 +32,9 @@ export async function GET(req: NextRequest) {
       scheduledTaskCount,
       topPriorities,
       recentActivity,
+      openIssueCount,
+      criticalIssues,
+      issuesByTypeRaw,
     ] = await Promise.all([
       // Total tasks
       prisma.agentTask.count(),
@@ -111,7 +114,36 @@ export async function GET(req: NextRequest) {
           occurredAt: true,
         },
       }),
+
+      // Open issues count
+      prisma.issue.count({
+        where: { status: { in: ['open', 'in_progress'] } },
+      }),
+
+      // Critical issues (open)
+      prisma.issue.findMany({
+        where: {
+          severity: 'critical',
+          status: { in: ['open', 'in_progress'] },
+        },
+        select: { id: true, title: true, type: true },
+        orderBy: { createdAt: 'desc' },
+        take: 5,
+      }),
+
+      // Issues by type (open only)
+      prisma.issue.groupBy({
+        by: ['type'],
+        where: { status: { in: ['open', 'in_progress'] } },
+        _count: true,
+      }),
     ]);
+
+    // Build issuesByType map
+    const issuesByType: Record<string, number> = {};
+    for (const row of issuesByTypeRaw) {
+      issuesByType[row.type] = row._count;
+    }
 
     return NextResponse.json({
       totalTasks,
@@ -131,6 +163,10 @@ export async function GET(req: NextRequest) {
         ...a,
         occurredAt: a.occurredAt.toISOString(),
       })),
+      openIssueCount,
+      criticalIssueCount: criticalIssues.length,
+      criticalIssues,
+      issuesByType,
     });
   } catch (error) {
     console.error('Failed to fetch overview:', error);

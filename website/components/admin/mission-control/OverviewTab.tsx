@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import MetricCard from './MetricCard';
 import PriorityList from './PriorityList';
 import type { OverviewMetrics, ActivityItem } from './types';
@@ -39,6 +40,9 @@ function formatRelativeTime(dateStr: string): string {
 }
 
 export default function OverviewTab() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
   const [metrics, setMetrics] = useState<OverviewMetrics | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -90,37 +94,76 @@ export default function OverviewTab() {
       metrics.tasksByStatus.done
     : 0;
 
+  const hasCritical = (metrics?.criticalIssueCount ?? 0) > 0;
+
+  function switchToIssuesTab() {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('tab', 'issues');
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }
+
   return (
     <div className="space-y-6 p-6">
+      {/* Critical issues alert */}
+      {hasCritical && (
+        <div className="flex items-start gap-3 rounded-lg border border-red-500/30 bg-red-500/10 p-4">
+          <span className="mt-0.5 text-lg">{'\uD83D\uDEA8'}</span>
+          <div className="min-w-0 flex-1">
+            <h4 className="text-body-sm font-semibold text-red-500">
+              {metrics!.criticalIssueCount} Critical Issue{metrics!.criticalIssueCount !== 1 ? 's' : ''}
+            </h4>
+            <ul className="mt-1 space-y-0.5">
+              {metrics!.criticalIssues?.map((issue) => (
+                <li key={issue.id} className="text-body-xs text-red-400">{issue.title}</li>
+              ))}
+            </ul>
+          </div>
+          <button
+            onClick={switchToIssuesTab}
+            className="shrink-0 rounded-md bg-red-500 px-3 py-1.5 text-body-xs font-medium text-white hover:bg-red-600"
+          >
+            View Issues
+          </button>
+        </div>
+      )}
+
       {/* Row 1: Metric Cards */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-5">
         <MetricCard
           title="Total Tasks"
           value={metrics?.totalTasks ?? 0}
-          icon={<span>\uD83D\uDCCB</span>}
+          icon={<span>{'\uD83D\uDCCB'}</span>}
           subtitle={`${metrics?.completedTasks ?? 0} completed`}
           loading={loading}
         />
         <MetricCard
           title="Active Projects"
           value={metrics?.activeProjects ?? 0}
-          icon={<span>\uD83D\uDCE6</span>}
+          icon={<span>{'\uD83D\uDCE6'}</span>}
           subtitle={`${metrics?.totalProjects ?? 0} total`}
           loading={loading}
         />
         <MetricCard
           title="Activity (24h)"
           value={metrics?.recentActivityCount ?? 0}
-          icon={<span>\u26A1</span>}
+          icon={<span>{'\u26A1'}</span>}
           subtitle="events"
           loading={loading}
         />
         <MetricCard
           title="Scheduled Jobs"
           value={metrics?.scheduledTaskCount ?? 0}
-          icon={<span>\u23F0</span>}
+          icon={<span>{'\u23F0'}</span>}
           subtitle="active"
           loading={loading}
+        />
+        <MetricCard
+          title="Open Issues"
+          value={metrics?.openIssueCount ?? 0}
+          icon={<span>{'\u26A0\uFE0F'}</span>}
+          subtitle={hasCritical ? `${metrics!.criticalIssueCount} critical` : 'none critical'}
+          loading={loading}
+          className={hasCritical ? 'border-red-500/30' : ''}
         />
       </div>
 

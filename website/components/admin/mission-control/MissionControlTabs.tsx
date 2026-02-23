@@ -7,6 +7,7 @@ import OverviewTab from './OverviewTab';
 import KanbanTab from './KanbanTab';
 import GoalsTab from './GoalsTab';
 import ProjectsTab from './ProjectsTab';
+import IssuesTab from './IssuesTab';
 
 interface TabConfig {
   id: string;
@@ -21,7 +22,7 @@ const TAB_CONFIG: TabConfig[] = [
   { id: 'goals', label: 'Goals', icon: '\uD83C\uDFAF', available: true },
   { id: 'kanban', label: 'Kanban', icon: '\uD83D\uDCCB', available: true },
   { id: 'projects', label: 'Projects', icon: '\uD83D\uDCE6', available: true },
-  { id: 'issues', label: 'Issues', icon: '\u26A0\uFE0F', available: false, comingSprint: 3 },
+  { id: 'issues', label: 'Issues', icon: '\u26A0\uFE0F', available: true },
   { id: 'agents', label: 'Agents', icon: '\uD83E\uDD16', available: false, comingSprint: 4 },
 ];
 
@@ -111,6 +112,7 @@ function MissionControlTabsInner() {
         {activeTab === 'goals' && <GoalsTab />}
         {activeTab === 'kanban' && <KanbanTab />}
         {activeTab === 'projects' && <ProjectsTab />}
+        {activeTab === 'issues' && <IssuesTab />}
         {!activeConfig.available && (
           <TabPlaceholder
             tabName={activeConfig.label}
