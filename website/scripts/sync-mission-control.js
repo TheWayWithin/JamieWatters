@@ -438,6 +438,128 @@ async function processPendingTriggers() {
   }
 }
 
+/**
+ * Parse goals from workspace files.
+ * Looks for structured goal definitions in goals.md, project-plan.md, or progress.md.
+ * Format: lines matching "Goal: NAME | Metric: METRIC | Current: N | Target: N | Unit: UNIT | Category: CAT"
+ * Or simpler: "- Goal: NAME (current/target unit) [category]"
+ */
+function parseGoals(filePath) {
+  const content = fs.readFileSync(filePath, 'utf8');
+  const lines = content.split('\n');
+  const goals = [];
+
+  for (const line of lines) {
+    // Full format: Goal: NAME | Metric: METRIC | Current: N | Target: N | Unit: UNIT | Category: CAT
+    const fullMatch = line.match(
+      /Goal:\s*(.+?)\s*\|\s*Metric:\s*(.+?)\s*\|\s*Current:\s*([\d.]+)\s*\|\s*Target:\s*([\d.]+)\s*\|\s*Unit:\s*(.+?)\s*\|\s*Category:\s*(.+)/i
+    );
+    if (fullMatch) {
+      goals.push({
+        name: fullMatch[1].trim(),
+        metric: fullMatch[2].trim(),
+        currentValue: parseFloat(fullMatch[3]),
+        targetValue: parseFloat(fullMatch[4]),
+        unit: fullMatch[5].trim(),
+        category: fullMatch[6].trim(),
+      });
+      continue;
+    }
+
+    // Simple format: - Goal: NAME (current/target unit) [category]
+    const simpleMatch = line.match(
+      /[-*]\s+Goal:\s*(.+?)\s*\(([\d.]+)\s*\/\s*([\d.]+)\s*(\S+)\)\s*\[(.+?)]/i
+    );
+    if (simpleMatch) {
+      goals.push({
+        name: simpleMatch[1].trim(),
+        metric: simpleMatch[1].trim(),
+        currentValue: parseFloat(simpleMatch[2]),
+        targetValue: parseFloat(simpleMatch[3]),
+        unit: simpleMatch[4].trim(),
+        category: simpleMatch[5].trim(),
+      });
+    }
+  }
+
+  return goals;
+}
+
+async function syncGoals() {
+  console.log('🎯 Syncing goals...');
+
+  try {
+    const goalsPath = path.join(CLAWD_DIR, 'plan', 'GOALS.md');
+    const planPath = path.join(CLAWD_DIR, 'plan', 'project-plan.md');
+    const progressPath = path.join(CLAWD_DIR, 'plan', 'progress.md');
+
+    let allGoals = [];
+
+    // Try each potential source file
+    for (const filePath of [goalsPath, planPath, progressPath]) {
+      if (fs.existsSync(filePath)) {
+        const parsed = parseGoals(filePath);
+        if (parsed.length > 0) {
+          console.log(`    ${path.basename(filePath)}: ${parsed.length} goals`);
+          allGoals.push(...parsed);
+        }
+      }
+    }
+
+    if (allGoals.length === 0) {
+      console.log('  ℹ️ No goal data found in workspace files, skipping');
+      return 0;
+    }
+
+    let created = 0;
+    let updated = 0;
+    let errors = 0;
+
+    for (const goal of allGoals) {
+      try {
+        // Upsert by name (unique enough for workspace goals)
+        const existing = await prisma.goal.findFirst({
+          where: { name: goal.name },
+        });
+
+        if (existing) {
+          await prisma.goal.update({
+            where: { id: existing.id },
+            data: {
+              currentValue: goal.currentValue,
+              targetValue: goal.targetValue,
+              status: goal.currentValue >= goal.targetValue ? 'achieved' : existing.status,
+            },
+          });
+          updated++;
+        } else {
+          await prisma.goal.create({
+            data: {
+              name: goal.name,
+              metric: goal.metric,
+              currentValue: goal.currentValue,
+              targetValue: goal.targetValue,
+              unit: goal.unit,
+              category: goal.category,
+              status: goal.currentValue >= goal.targetValue ? 'achieved' : 'on_track',
+            },
+          });
+          created++;
+        }
+      } catch (err) {
+        console.error(`    ⚠️ Error syncing goal "${goal.name}":`, err.message);
+        errors++;
+      }
+    }
+
+    console.log(`  ✅ Goals synced (created: ${created}, updated: ${updated}, errors: ${errors})`);
+    return created + updated;
+  } catch (error) {
+    console.error('  ❌ Error syncing goals:', error.message);
+    return 0;
+  }
+}
+
 async function main() {
   console.log('🎛️ Mission Control Sync Starting...');
   console.log(`   Time: ${new Date().toISOString()}`);
@@ -451,6 +573,7 @@ async function main() {
     triggersProcessed,
     scheduledTasks: await syncScheduledTasks(),
     tasks: await syncTasks(),
+    goals: await syncGoals(),
     memory: await syncMemory(),
     activity: await syncActivity(),
   };
@@ -460,6 +583,7 @@ async function main() {
   console.log(`   Triggers Processed: ${results.triggersProcessed}`);
   console.log(`   Scheduled Tasks: ${results.scheduledTasks}`);
   console.log(`   Tasks: ${results.tasks}`);
+  console.log(`   Goals: ${results.goals}`);
   console.log(`   Memory Files: ${results.memory}`);
   console.log(`   Activity Items: ${results.activity}`);
   console.log('');

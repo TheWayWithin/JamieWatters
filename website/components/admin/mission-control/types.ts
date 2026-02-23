@@ -102,6 +102,58 @@ export interface OverviewMetrics {
 }
 
 /**
+ * Goal Status
+ */
+export type GoalStatus = 'on_track' | 'at_risk' | 'behind' | 'achieved';
+
+/**
+ * Goal - Strategic target with progress tracking
+ */
+export interface Goal {
+  id: string;
+  name: string;
+  description: string | null;
+  metric: string;
+  currentValue: number;
+  targetValue: number;
+  unit: string;
+  category: string;
+  status: GoalStatus;
+  deadline: string | null;
+  startDate: string;
+  projectId: string | null;
+  project: { id: string; name: string; slug: string } | null;
+  progressPercent: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/**
+ * Project - From /api/admin/projects
+ */
+export interface ProjectItem {
+  id: string;
+  slug: string;
+  name: string;
+  description: string | null;
+  url: string;
+  techStack: string[];
+  category: string;
+  status: string;
+  featured: boolean;
+  mrr: number;
+  users: number;
+  githubUrl: string | null;
+  trackProgress: boolean;
+  lastSynced: string | null;
+  customMetrics: Record<string, unknown> | null;
+  currentPhase: string | null;
+  projectType: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/**
  * Metric Card Props
  */
 export interface MetricCardProps {

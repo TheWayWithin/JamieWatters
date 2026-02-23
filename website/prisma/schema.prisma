@@ -146,6 +146,7 @@ model Project {
   timelineEvents   Json?
   metricsHistory   MetricsHistory[]
   posts            Post[]
+  goals            Goal[]
 
   @@index([category])
   @@index([currentPhase])
@@ -216,4 +217,26 @@ enum TargetPersona {
   SERVICE_PROVIDER
   BUILDER
   ALL
+}
+
+model Goal {
+  id           String    @id @default(cuid())
+  name         String
+  description  String?
+  metric       String
+  currentValue Float
+  targetValue  Float
+  unit         String
+  category     String
+  status       String    @default("on_track")
+  deadline     DateTime?
+  startDate    DateTime  @default(now())
+  projectId    String?
+  project      Project?  @relation(fields: [projectId], references: [id])
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([category])
+  @@index([status])
+  @@index([projectId])
 }

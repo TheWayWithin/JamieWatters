@@ -5,6 +5,8 @@ import { useCallback, useEffect, useState, Suspense } from 'react';
 import TabPlaceholder from './TabPlaceholder';
 import OverviewTab from './OverviewTab';
 import KanbanTab from './KanbanTab';
+import GoalsTab from './GoalsTab';
+import ProjectsTab from './ProjectsTab';
 
 interface TabConfig {
   id: string;
@@ -16,9 +18,9 @@ interface TabConfig {
 
 const TAB_CONFIG: TabConfig[] = [
   { id: 'overview', label: 'Overview', icon: '\uD83C\uDFE0', available: true },
-  { id: 'goals', label: 'Goals', icon: '\uD83C\uDFAF', available: false, comingSprint: 2 },
+  { id: 'goals', label: 'Goals', icon: '\uD83C\uDFAF', available: true },
   { id: 'kanban', label: 'Kanban', icon: '\uD83D\uDCCB', available: true },
-  { id: 'projects', label: 'Projects', icon: '\uD83D\uDCE6', available: false, comingSprint: 2 },
+  { id: 'projects', label: 'Projects', icon: '\uD83D\uDCE6', available: true },
   { id: 'issues', label: 'Issues', icon: '\u26A0\uFE0F', available: false, comingSprint: 3 },
   { id: 'agents', label: 'Agents', icon: '\uD83E\uDD16', available: false, comingSprint: 4 },
 ];
@@ -106,7 +108,9 @@ function MissionControlTabsInner() {
       {/* Tab content */}
       <div>
         {activeTab === 'overview' && <OverviewTab />}
+        {activeTab === 'goals' && <GoalsTab />}
         {activeTab === 'kanban' && <KanbanTab />}
+        {activeTab === 'projects' && <ProjectsTab />}
         {!activeConfig.available && (
           <TabPlaceholder
             tabName={activeConfig.label}
