@@ -243,6 +243,25 @@ model Issue {
   @@index([projectId])
 }
 
+model AgentStatus {
+  id             String   @id @default(cuid())
+  agentId        String   @unique
+  name           String
+  machine        String   @default("unknown")
+  model          String   @default("sonnet")
+  status         String   @default("offline")
+  lastActiveAt   DateTime @default(now())
+  currentTask    String?
+  tasksCompleted Int      @default(0)
+  tasksThisWeek  Int      @default(0)
+  projectId      String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([status])
+  @@index([lastActiveAt])
+}
+
 model Goal {
   id           String    @id @default(cuid())
   name         String

@@ -5,6 +5,7 @@ import type { KanbanTask } from './types';
 
 interface KanbanCardProps {
   task: KanbanTask;
+  isDragging?: boolean;
 }
 
 function formatRelativeTime(dateStr: string): string {
@@ -21,14 +22,16 @@ function formatRelativeTime(dateStr: string): string {
   return `${diffDay}d ago`;
 }
 
-export default function KanbanCard({ task }: KanbanCardProps) {
+export default function KanbanCard({ task, isDragging }: KanbanCardProps) {
   const [expanded, setExpanded] = useState(false);
 
   return (
     <button
       type="button"
       onClick={() => setExpanded((prev) => !prev)}
-      className="w-full rounded-md border border-border-default bg-bg-primary p-3 text-left transition-shadow hover:shadow-sm"
+      className={`w-full rounded-md border border-border-default bg-bg-primary p-3 text-left transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary ${
+        isDragging ? 'shadow-lg ring-2 ring-brand-primary/30' : 'hover:shadow-sm'
+      }`}
     >
       <p
         className={`text-body-sm text-text-primary ${expanded ? '' : 'line-clamp-2'}`}

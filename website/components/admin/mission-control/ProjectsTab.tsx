@@ -1,9 +1,11 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import ProjectSummaryBar from './ProjectSummaryBar';
 import EnhancedProjectCard from './EnhancedProjectCard';
+import LiveIndicator from './LiveIndicator';
+import { usePolling } from './hooks/usePolling';
 import type { ProjectItem } from './types';
 
 const STATUS_FILTERS = ['All', 'Active', 'Paused', 'Completed'];
@@ -11,41 +13,34 @@ const ACTIVE_STATUSES = ['LIVE', 'ACTIVE', 'BUILD', 'MVP', 'BETA', 'DESIGN', 'PL
 const PAUSED_STATUSES = ['PAUSED'];
 const COMPLETED_STATUSES = ['ARCHIVED'];
 
+async function fetchProjects(): Promise<ProjectItem[]> {
+  const res = await fetch('/api/admin/projects', { credentials: 'include' });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const data = await res.json();
+  return data.data || [];
+}
+
 export default function ProjectsTab() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [projects, setProjects] = useState<ProjectItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState('All');
 
-  const fetchProjects = useCallback(async () => {
-    try {
-      const res = await fetch('/api/admin/projects', { credentials: 'include' });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      setProjects(data.data || []);
-      setError(null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const { data: projects, loading, error, lastUpdated, refresh, fetching } = usePolling<ProjectItem[]>({
+    fetchFn: fetchProjects,
+    interval: 120_000,
+  });
 
-  useEffect(() => {
-    fetchProjects();
-  }, [fetchProjects]);
+  const allProjects = projects ?? [];
 
   const filteredProjects = useMemo(() => {
-    if (statusFilter === 'All') return projects;
-    if (statusFilter === 'Active') return projects.filter((p) => ACTIVE_STATUSES.includes(p.status));
-    if (statusFilter === 'Paused') return projects.filter((p) => PAUSED_STATUSES.includes(p.status));
-    if (statusFilter === 'Completed') return projects.filter((p) => COMPLETED_STATUSES.includes(p.status));
-    return projects;
-  }, [projects, statusFilter]);
+    if (statusFilter === 'All') return allProjects;
+    if (statusFilter === 'Active') return allProjects.filter((p) => ACTIVE_STATUSES.includes(p.status));
+    if (statusFilter === 'Paused') return allProjects.filter((p) => PAUSED_STATUSES.includes(p.status));
+    if (statusFilter === 'Completed') return allProjects.filter((p) => COMPLETED_STATUSES.includes(p.status));
+    return allProjects;
+  }, [allProjects, statusFilter]);
 
   const handleViewTasks = useCallback(
     (projectId: string) => {
@@ -57,12 +52,12 @@ export default function ProjectsTab() {
     [router, pathname, searchParams]
   );
 
-  if (error && projects.length === 0) {
+  if (error && allProjects.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16">
         <p className="text-body text-error">Failed to load projects: {error}</p>
         <button
-          onClick={() => { setLoading(true); setError(null); fetchProjects(); }}
+          onClick={refresh}
           className="mt-3 rounded-md bg-brand-primary px-4 py-2 text-body-sm font-medium text-white hover:bg-brand-primary/90"
         >
           Retry
@@ -73,10 +68,12 @@ export default function ProjectsTab() {
 
   return (
     <div className="space-y-6 p-6">
-      {/* Summary Bar */}
-      <ProjectSummaryBar projects={projects} loading={loading} />
+      <div className="flex items-center justify-end">
+        <LiveIndicator lastUpdated={lastUpdated} fetching={fetching} onRefresh={refresh} />
+      </div>
 
-      {/* Status Filter */}
+      <ProjectSummaryBar projects={allProjects} loading={loading} />
+
       <div className="flex flex-wrap gap-2">
         {STATUS_FILTERS.map((filter) => (
           <button
@@ -93,7 +90,6 @@ export default function ProjectsTab() {
         ))}
       </div>
 
-      {/* Project Cards */}
       {loading ? (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {Array.from({ length: 4 }).map((_, i) => (
@@ -102,18 +98,12 @@ export default function ProjectsTab() {
         </div>
       ) : filteredProjects.length === 0 ? (
         <div className="py-16 text-center text-body-sm text-text-tertiary">
-          {projects.length === 0
-            ? 'No projects found.'
-            : 'No projects match this filter.'}
+          {allProjects.length === 0 ? 'No projects found.' : 'No projects match this filter.'}
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {filteredProjects.map((project) => (
-            <EnhancedProjectCard
-              key={project.id}
-              project={project}
-              onViewTasks={handleViewTasks}
-            />
+            <EnhancedProjectCard key={project.id} project={project} onViewTasks={handleViewTasks} />
           ))}
         </div>
       )}

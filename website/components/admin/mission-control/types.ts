@@ -103,6 +103,16 @@ export interface OverviewMetrics {
   criticalIssueCount?: number;
   criticalIssues?: { id: string; title: string; type: string }[];
   issuesByType?: Record<string, number>;
+  goalsSummary?: {
+    total: number;
+    onTrack: number;
+    atRisk: number;
+    achieved: number;
+  };
+  agentsSummary?: {
+    total: number;
+    active: number;
+  };
 }
 
 /**
@@ -194,6 +204,50 @@ export interface IssuesResponse {
     bySeverity: Record<string, number>;
     total: number;
     open: number;
+  };
+}
+
+/**
+ * Agent Status
+ */
+export type AgentStatusType = 'active' | 'idle' | 'offline' | 'error';
+
+export interface AgentInfo {
+  id: string;
+  agentId: string;
+  name: string;
+  machine: string;
+  model: string;
+  status: AgentStatusType;
+  lastActiveAt: string;
+  currentTask: string | null;
+  tasksCompleted: number;
+  tasksThisWeek: number;
+  projectId: string | null;
+  isOnline: boolean;
+  activityLevel: 'high' | 'medium' | 'low';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ScheduleEntry {
+  jobId: string;
+  name: string;
+  schedule: string;
+  timezone: string | null;
+  nextRunAt: string | null;
+  lastRunAt: string | null;
+  lastStatus: string | null;
+  enabled: boolean;
+}
+
+export interface AgentsResponse {
+  agents: AgentInfo[];
+  schedules: ScheduleEntry[];
+  stats: {
+    totalAgents: number;
+    activeAgents: number;
+    totalTasksThisWeek: number;
   };
 }
 

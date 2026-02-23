@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import MetricCard from './MetricCard';
 import IssueCard from './IssueCard';
 import IssueForm from './IssueForm';
+import LiveIndicator from './LiveIndicator';
+import { usePolling } from './hooks/usePolling';
 import type { Issue, IssuesResponse, IssueType } from './types';
-
-const REFRESH_INTERVAL_MS = 30_000;
 
 const TYPE_FILTERS: { value: IssueType | 'all'; label: string }[] = [
   { value: 'all', label: 'All' },
@@ -28,36 +28,29 @@ const TYPE_LABELS: Record<IssueType, string> = {
 };
 
 export default function IssuesTab() {
-  const [data, setData] = useState<IssuesResponse | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [activeType, setActiveType] = useState<IssueType | 'all'>('all');
   const [showAll, setShowAll] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
-  const fetchIssues = useCallback(async () => {
-    try {
-      const statusParam = showAll ? 'all' : 'open,in_progress';
-      const res = await fetch(`/api/admin/issues?status=${statusParam}`, {
-        credentials: 'include',
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json: IssuesResponse = await res.json();
-      setData(json);
-      setError(null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load');
-    } finally {
-      setLoading(false);
-    }
-  }, [showAll]);
+  const fetchIssues = async (): Promise<IssuesResponse> => {
+    const statusParam = showAll ? 'all' : 'open,in_progress';
+    const res = await fetch(`/api/admin/issues?status=${statusParam}`, { credentials: 'include' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  };
 
-  useEffect(() => {
-    setLoading(true);
-    fetchIssues();
-    const interval = setInterval(fetchIssues, REFRESH_INTERVAL_MS);
-    return () => clearInterval(interval);
-  }, [fetchIssues]);
+  const { data, loading, error, lastUpdated, refresh, fetching } = usePolling<IssuesResponse>({
+    fetchFn: fetchIssues,
+    interval: 30_000,
+  });
+
+  // Re-fetch when showAll changes
+  const handleShowAllToggle = (val: boolean) => {
+    setShowAll(val);
+    // The usePolling hook will pick up the new fetchFn on next interval,
+    // but we want an immediate refresh
+    setTimeout(refresh, 0);
+  };
 
   const filteredIssues = useMemo(() => {
     if (!data) return [];
@@ -65,7 +58,6 @@ export default function IssuesTab() {
     return data.issues.filter((i) => i.type === activeType);
   }, [data, activeType]);
 
-  // Group issues by type for "All" view
   const groupedIssues = useMemo(() => {
     if (activeType !== 'all') return null;
     const groups: Record<string, Issue[]> = {};
@@ -86,7 +78,7 @@ export default function IssuesTab() {
       <div className="flex flex-col items-center justify-center py-16">
         <p className="text-body text-error">Failed to load issues: {error}</p>
         <button
-          onClick={() => { setLoading(true); setError(null); fetchIssues(); }}
+          onClick={refresh}
           className="mt-3 rounded-md bg-brand-primary px-4 py-2 text-body-sm font-medium text-white hover:bg-brand-primary/90"
         >
           Retry
@@ -97,7 +89,10 @@ export default function IssuesTab() {
 
   return (
     <div className="space-y-6 p-6">
-      {/* Severity summary cards */}
+      <div className="flex items-center justify-end">
+        <LiveIndicator lastUpdated={lastUpdated} fetching={fetching} onRefresh={refresh} />
+      </div>
+
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <MetricCard
           title="Critical"
@@ -106,30 +101,13 @@ export default function IssuesTab() {
           loading={loading}
           className={criticalCount > 0 ? 'border-red-500/30' : ''}
         />
-        <MetricCard
-          title="High"
-          value={highCount}
-          icon={<span className="text-orange-500">{'\uD83D\uDFE0'}</span>}
-          loading={loading}
-        />
-        <MetricCard
-          title="Medium"
-          value={mediumCount}
-          icon={<span className="text-amber-500">{'\uD83D\uDFE1'}</span>}
-          loading={loading}
-        />
-        <MetricCard
-          title="Low"
-          value={lowCount}
-          icon={<span className="text-gray-400">{'\u26AA'}</span>}
-          loading={loading}
-        />
+        <MetricCard title="High" value={highCount} icon={<span className="text-orange-500">{'\uD83D\uDFE0'}</span>} loading={loading} />
+        <MetricCard title="Medium" value={mediumCount} icon={<span className="text-amber-500">{'\uD83D\uDFE1'}</span>} loading={loading} />
+        <MetricCard title="Low" value={lowCount} icon={<span className="text-gray-400">{'\u26AA'}</span>} loading={loading} />
       </div>
 
-      {/* Filter row */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2">
-          {/* Type filter chips */}
           {TYPE_FILTERS.map((f) => (
             <button
               key={f.value}
@@ -144,10 +122,9 @@ export default function IssuesTab() {
             </button>
           ))}
 
-          {/* Status toggle */}
           <div className="ml-2 flex items-center rounded-full border border-border-default">
             <button
-              onClick={() => setShowAll(false)}
+              onClick={() => handleShowAllToggle(false)}
               className={`rounded-l-full px-3 py-1 text-body-xs font-medium ${
                 !showAll ? 'bg-brand-primary text-white' : 'text-text-secondary hover:text-text-primary'
               }`}
@@ -155,7 +132,7 @@ export default function IssuesTab() {
               Open
             </button>
             <button
-              onClick={() => setShowAll(true)}
+              onClick={() => handleShowAllToggle(true)}
               className={`rounded-r-full px-3 py-1 text-body-xs font-medium ${
                 showAll ? 'bg-brand-primary text-white' : 'text-text-secondary hover:text-text-primary'
               }`}
@@ -173,19 +150,13 @@ export default function IssuesTab() {
         </button>
       </div>
 
-      {/* Issue Form */}
       {showForm && (
         <IssueForm
-          onSuccess={() => {
-            setShowForm(false);
-            setLoading(true);
-            fetchIssues();
-          }}
+          onSuccess={() => { setShowForm(false); refresh(); }}
           onCancel={() => setShowForm(false)}
         />
       )}
 
-      {/* Issue list */}
       {loading ? (
         <div className="space-y-3">
           {Array.from({ length: 4 }).map((_, i) => (
@@ -199,7 +170,6 @@ export default function IssuesTab() {
             : 'No issues match the current filters.'}
         </div>
       ) : groupedIssues ? (
-        // Grouped view (All types selected)
         <div className="space-y-6">
           {TYPE_ORDER.filter((t) => groupedIssues[t]?.length).map((type) => (
             <div key={type}>
@@ -208,17 +178,16 @@ export default function IssuesTab() {
               </h3>
               <div className="space-y-3">
                 {groupedIssues[type].map((issue) => (
-                  <IssueCard key={issue.id} issue={issue} onUpdate={fetchIssues} />
+                  <IssueCard key={issue.id} issue={issue} onUpdate={refresh} />
                 ))}
               </div>
             </div>
           ))}
         </div>
       ) : (
-        // Flat list (specific type selected)
         <div className="space-y-3">
           {filteredIssues.map((issue) => (
-            <IssueCard key={issue.id} issue={issue} onUpdate={fetchIssues} />
+            <IssueCard key={issue.id} issue={issue} onUpdate={refresh} />
           ))}
         </div>
       )}

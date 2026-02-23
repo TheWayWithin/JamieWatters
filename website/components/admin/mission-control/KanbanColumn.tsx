@@ -1,5 +1,6 @@
 'use client';
 
+import { Droppable, Draggable } from '@hello-pangea/dnd';
 import KanbanCard from './KanbanCard';
 import type { KanbanColumnConfig, KanbanColumnId } from './types';
 
@@ -28,18 +29,39 @@ export default function KanbanColumn({ column }: { column: KanbanColumnConfig })
         </span>
       </div>
 
-      {/* Scrollable card area */}
-      <div className="flex-1 space-y-2 overflow-y-auto px-2 pb-2" style={{ maxHeight: 'calc(100vh - 280px)' }}>
-        {column.tasks.length === 0 ? (
-          <p className="py-6 text-center text-body-xs italic text-text-tertiary">
-            No tasks
-          </p>
-        ) : (
-          column.tasks.map((task) => (
-            <KanbanCard key={task.id} task={task} />
-          ))
+      {/* Droppable card area */}
+      <Droppable droppableId={column.id}>
+        {(provided, snapshot) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className={`flex-1 space-y-2 overflow-y-auto px-2 pb-2 transition-colors ${
+              snapshot.isDraggingOver ? 'bg-brand-primary/5' : ''
+            }`}
+            style={{ minHeight: '80px', maxHeight: 'calc(100vh - 280px)' }}
+          >
+            {column.tasks.length === 0 && !snapshot.isDraggingOver ? (
+              <p className="py-6 text-center text-body-xs italic text-text-tertiary">
+                No tasks
+              </p>
+            ) : null}
+            {column.tasks.map((task, index) => (
+              <Draggable key={task.id} draggableId={task.id} index={index}>
+                {(dragProvided, dragSnapshot) => (
+                  <div
+                    ref={dragProvided.innerRef}
+                    {...dragProvided.draggableProps}
+                    {...dragProvided.dragHandleProps}
+                  >
+                    <KanbanCard task={task} isDragging={dragSnapshot.isDragging} />
+                  </div>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </div>
         )}
-      </div>
+      </Droppable>
     </div>
   );
 }

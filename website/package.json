@@ -20,6 +20,7 @@
   "license": "MIT",
   "description": "Jamie Watters personal brand website - Building $1B Solo by 2030",
   "dependencies": {
+    "@hello-pangea/dnd": "^18.0.1",
     "@prisma/client": "^6.17.0",
     "@types/node": "^24.7.0",
     "@types/react": "^19.2.2",

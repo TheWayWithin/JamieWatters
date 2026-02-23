@@ -3,11 +3,13 @@
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { useCallback, useEffect, useState, Suspense } from 'react';
 import TabPlaceholder from './TabPlaceholder';
+import TabErrorBoundary from './TabErrorBoundary';
 import OverviewTab from './OverviewTab';
 import KanbanTab from './KanbanTab';
 import GoalsTab from './GoalsTab';
 import ProjectsTab from './ProjectsTab';
 import IssuesTab from './IssuesTab';
+import AgentsTab from './AgentsTab';
 
 interface TabConfig {
   id: string;
@@ -23,7 +25,7 @@ const TAB_CONFIG: TabConfig[] = [
   { id: 'kanban', label: 'Kanban', icon: '\uD83D\uDCCB', available: true },
   { id: 'projects', label: 'Projects', icon: '\uD83D\uDCE6', available: true },
   { id: 'issues', label: 'Issues', icon: '\u26A0\uFE0F', available: true },
-  { id: 'agents', label: 'Agents', icon: '\uD83E\uDD16', available: false, comingSprint: 4 },
+  { id: 'agents', label: 'Agents', icon: '\uD83E\uDD16', available: true },
 ];
 
 const STORAGE_KEY = 'mc-active-tab';
@@ -76,49 +78,101 @@ function MissionControlTabsInner() {
 
   const activeConfig = TAB_CONFIG.find((t) => t.id === activeTab) || TAB_CONFIG[0];
 
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      const currentIndex = TAB_CONFIG.findIndex((t) => t.id === activeTab);
+      let nextIndex = -1;
+
+      if (e.key === 'ArrowRight') {
+        nextIndex = (currentIndex + 1) % TAB_CONFIG.length;
+      } else if (e.key === 'ArrowLeft') {
+        nextIndex = (currentIndex - 1 + TAB_CONFIG.length) % TAB_CONFIG.length;
+      } else if (e.key === 'Home') {
+        nextIndex = 0;
+      } else if (e.key === 'End') {
+        nextIndex = TAB_CONFIG.length - 1;
+      }
+
+      if (nextIndex >= 0) {
+        e.preventDefault();
+        handleTabChange(TAB_CONFIG[nextIndex].id);
+        // Focus the newly active tab button
+        const tabEl = document.getElementById(`mc-tab-${TAB_CONFIG[nextIndex].id}`);
+        tabEl?.focus();
+      }
+    },
+    [activeTab, handleTabChange]
+  );
+
+  const renderTabContent = () => {
+    const content = (() => {
+      switch (activeTab) {
+        case 'overview': return <OverviewTab />;
+        case 'goals': return <GoalsTab />;
+        case 'kanban': return <KanbanTab />;
+        case 'projects': return <ProjectsTab />;
+        case 'issues': return <IssuesTab />;
+        case 'agents': return <AgentsTab />;
+        default: return null;
+      }
+    })();
+
+    if (!activeConfig.available) {
+      return <TabPlaceholder tabName={activeConfig.label} comingSprint={activeConfig.comingSprint} />;
+    }
+
+    return (
+      <TabErrorBoundary tabName={activeConfig.label}>
+        {content}
+      </TabErrorBoundary>
+    );
+  };
+
   return (
     <div>
       {/* Sticky sub-tab bar */}
       <div className="sticky top-0 z-10 border-b border-border-default bg-bg-primary">
-        <nav
+        <div
           className="-mb-px flex overflow-x-auto"
+          role="tablist"
           aria-label="Mission Control tabs"
+          onKeyDown={handleKeyDown}
         >
           {TAB_CONFIG.map((tab) => (
             <button
               key={tab.id}
+              id={`mc-tab-${tab.id}`}
+              role="tab"
+              aria-selected={activeTab === tab.id}
+              aria-controls={`mc-panel-${tab.id}`}
+              tabIndex={activeTab === tab.id ? 0 : -1}
               onClick={() => handleTabChange(tab.id)}
               className={`
                 flex items-center gap-2 px-4 py-3 text-body-sm whitespace-nowrap
                 border-b-2 transition-colors duration-150
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-inset
                 ${
                   activeTab === tab.id
                     ? 'border-brand-primary text-text-primary font-medium'
                     : 'border-transparent text-text-secondary hover:text-text-primary hover:border-border-subtle'
                 }
               `}
-              aria-current={activeTab === tab.id ? 'page' : undefined}
             >
-              <span>{tab.icon}</span>
+              <span aria-hidden="true">{tab.icon}</span>
               <span>{tab.label}</span>
             </button>
           ))}
-        </nav>
+        </div>
       </div>
 
       {/* Tab content */}
-      <div>
-        {activeTab === 'overview' && <OverviewTab />}
-        {activeTab === 'goals' && <GoalsTab />}
-        {activeTab === 'kanban' && <KanbanTab />}
-        {activeTab === 'projects' && <ProjectsTab />}
-        {activeTab === 'issues' && <IssuesTab />}
-        {!activeConfig.available && (
-          <TabPlaceholder
-            tabName={activeConfig.label}
-            comingSprint={activeConfig.comingSprint}
-          />
-        )}
+      <div
+        role="tabpanel"
+        id={`mc-panel-${activeTab}`}
+        aria-labelledby={`mc-tab-${activeTab}`}
+        tabIndex={0}
+      >
+        {renderTabContent()}
       </div>
     </div>
   );

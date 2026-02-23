@@ -20,6 +20,8 @@ export async function GET(req: NextRequest) {
     // Run all aggregate queries in parallel for efficiency
     const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
+    const fifteenMinAgo = new Date(Date.now() - 15 * 60 * 1000);
+
     const [
       totalTasks,
       completedTasks,
@@ -35,6 +37,12 @@ export async function GET(req: NextRequest) {
       openIssueCount,
       criticalIssues,
       issuesByTypeRaw,
+      totalGoals,
+      goalsOnTrack,
+      goalsAtRisk,
+      goalsAchieved,
+      totalAgents,
+      activeAgents,
     ] = await Promise.all([
       // Total tasks
       prisma.agentTask.count(),
@@ -137,6 +145,32 @@ export async function GET(req: NextRequest) {
         where: { status: { in: ['open', 'in_progress'] } },
         _count: true,
       }),
+
+      // Goals: total
+      prisma.goal.count(),
+
+      // Goals: on track
+      prisma.goal.count({
+        where: { status: 'on_track' },
+      }),
+
+      // Goals: at risk or behind
+      prisma.goal.count({
+        where: { status: { in: ['at_risk', 'behind'] } },
+      }),
+
+      // Goals: achieved
+      prisma.goal.count({
+        where: { status: 'achieved' },
+      }),
+
+      // Agents: total registered
+      prisma.agentStatus.count(),
+
+      // Agents: active (seen in last 15 min)
+      prisma.agentStatus.count({
+        where: { lastActiveAt: { gte: fifteenMinAgo } },
+      }),
     ]);
 
     // Build issuesByType map
@@ -167,6 +201,16 @@ export async function GET(req: NextRequest) {
       criticalIssueCount: criticalIssues.length,
       criticalIssues,
       issuesByType,
+      goalsSummary: {
+        total: totalGoals,
+        onTrack: goalsOnTrack,
+        atRisk: goalsAtRisk,
+        achieved: goalsAchieved,
+      },
+      agentsSummary: {
+        total: totalAgents,
+        active: activeAgents,
+      },
     });
   } catch (error) {
     console.error('Failed to fetch overview:', error);

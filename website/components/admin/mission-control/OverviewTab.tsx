@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import MetricCard from './MetricCard';
 import PriorityList from './PriorityList';
+import LiveIndicator from './LiveIndicator';
+import { usePolling } from './hooks/usePolling';
 import type { OverviewMetrics, ActivityItem } from './types';
-
-const REFRESH_INTERVAL_MS = 60_000;
 
 const CATEGORY_ICONS: Record<string, string> = {
   task: '\uD83D\uDCCB',
@@ -39,46 +39,36 @@ function formatRelativeTime(dateStr: string): string {
   return `${diffDay}d ago`;
 }
 
+async function fetchOverview(): Promise<OverviewMetrics> {
+  const res = await fetch('/api/admin/overview', { credentials: 'include' });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
 export default function OverviewTab() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const [metrics, setMetrics] = useState<OverviewMetrics | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  const fetchMetrics = useCallback(async () => {
-    try {
-      const res = await fetch('/api/admin/overview', {
-        credentials: 'include',
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data: OverviewMetrics = await res.json();
-      setMetrics(data);
-      setError(null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const { data: metrics, loading, error, lastUpdated, refresh, fetching } = usePolling<OverviewMetrics>({
+    fetchFn: fetchOverview,
+    interval: 60_000,
+  });
 
-  useEffect(() => {
-    fetchMetrics();
-    const interval = setInterval(fetchMetrics, REFRESH_INTERVAL_MS);
-    return () => clearInterval(interval);
-  }, [fetchMetrics]);
+  const hasCritical = (metrics?.criticalIssueCount ?? 0) > 0;
+
+  const switchToIssuesTab = useCallback(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('tab', 'issues');
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }, [searchParams, router, pathname]);
 
   if (error && !metrics) {
     return (
       <div className="flex flex-col items-center justify-center py-16">
         <p className="text-body text-error">Failed to load overview: {error}</p>
         <button
-          onClick={() => {
-            setLoading(true);
-            setError(null);
-            fetchMetrics();
-          }}
+          onClick={refresh}
           className="mt-3 rounded-md bg-brand-primary px-4 py-2 text-body-sm font-medium text-white hover:bg-brand-primary/90"
         >
           Retry
@@ -94,16 +84,13 @@ export default function OverviewTab() {
       metrics.tasksByStatus.done
     : 0;
 
-  const hasCritical = (metrics?.criticalIssueCount ?? 0) > 0;
-
-  function switchToIssuesTab() {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('tab', 'issues');
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  }
-
   return (
     <div className="space-y-6 p-6">
+      {/* Header with live indicator */}
+      <div className="flex items-center justify-end">
+        <LiveIndicator lastUpdated={lastUpdated} fetching={fetching} onRefresh={refresh} />
+      </div>
+
       {/* Critical issues alert */}
       {hasCritical && (
         <div className="flex items-start gap-3 rounded-lg border border-red-500/30 bg-red-500/10 p-4">
@@ -128,7 +115,7 @@ export default function OverviewTab() {
       )}
 
       {/* Row 1: Metric Cards */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <MetricCard
           title="Total Tasks"
           value={metrics?.totalTasks ?? 0}
@@ -144,10 +131,44 @@ export default function OverviewTab() {
           loading={loading}
         />
         <MetricCard
+          title="Open Issues"
+          value={metrics?.openIssueCount ?? 0}
+          icon={<span>{'\u26A0\uFE0F'}</span>}
+          subtitle={hasCritical ? `${metrics!.criticalIssueCount} critical` : 'none critical'}
+          loading={loading}
+          className={hasCritical ? 'border-red-500/30' : ''}
+        />
+        <MetricCard
           title="Activity (24h)"
           value={metrics?.recentActivityCount ?? 0}
           icon={<span>{'\u26A1'}</span>}
           subtitle="events"
+          loading={loading}
+        />
+      </div>
+
+      {/* Row 1b: Secondary Metrics */}
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <MetricCard
+          title="Goals"
+          value={metrics?.goalsSummary?.total ?? 0}
+          icon={<span>{'\uD83C\uDFAF'}</span>}
+          subtitle={`${metrics?.goalsSummary?.onTrack ?? 0} on track`}
+          loading={loading}
+        />
+        <MetricCard
+          title="Goals At Risk"
+          value={metrics?.goalsSummary?.atRisk ?? 0}
+          icon={<span>{'\u26A0\uFE0F'}</span>}
+          subtitle={`${metrics?.goalsSummary?.achieved ?? 0} achieved`}
+          loading={loading}
+          className={(metrics?.goalsSummary?.atRisk ?? 0) > 0 ? 'border-orange-500/30' : ''}
+        />
+        <MetricCard
+          title="Agents"
+          value={metrics?.agentsSummary?.total ?? 0}
+          icon={<span>{'\uD83E\uDD16'}</span>}
+          subtitle={`${metrics?.agentsSummary?.active ?? 0} active now`}
           loading={loading}
         />
         <MetricCard
@@ -157,79 +178,51 @@ export default function OverviewTab() {
           subtitle="active"
           loading={loading}
         />
-        <MetricCard
-          title="Open Issues"
-          value={metrics?.openIssueCount ?? 0}
-          icon={<span>{'\u26A0\uFE0F'}</span>}
-          subtitle={hasCritical ? `${metrics!.criticalIssueCount} critical` : 'none critical'}
-          loading={loading}
-          className={hasCritical ? 'border-red-500/30' : ''}
-        />
       </div>
 
       {/* Row 2: Priority List + Status Distribution */}
       <div className="grid gap-4 lg:grid-cols-2">
-        {/* Priority List */}
         <div className="rounded-lg border border-border-default bg-bg-surface p-4">
-          <h3 className="text-title-sm font-semibold text-text-primary">
-            Top Priorities
-          </h3>
+          <h3 className="text-title-sm font-semibold text-text-primary">Top Priorities</h3>
           <div className="mt-3">
-            <PriorityList
-              items={metrics?.topPriorities ?? []}
-              loading={loading}
-            />
+            <PriorityList items={metrics?.topPriorities ?? []} loading={loading} />
           </div>
         </div>
 
-        {/* Status Distribution */}
         <div className="rounded-lg border border-border-default bg-bg-surface p-4">
-          <h3 className="text-title-sm font-semibold text-text-primary">
-            Task Distribution
-          </h3>
+          <h3 className="text-title-sm font-semibold text-text-primary">Task Distribution</h3>
           <div className="mt-4">
-            {/* Stacked bar */}
             {loading ? (
               <div className="h-6 w-full animate-pulse rounded-full bg-border-subtle" />
             ) : totalStatusTasks > 0 ? (
               <div className="flex h-6 overflow-hidden rounded-full">
-                {(Object.keys(STATUS_CONFIG) as Array<keyof typeof STATUS_CONFIG>).map(
-                  (key) => {
-                    const count = metrics?.tasksByStatus[key as keyof typeof metrics.tasksByStatus] ?? 0;
-                    const pct = (count / totalStatusTasks) * 100;
-                    if (pct === 0) return null;
-                    return (
-                      <div
-                        key={key}
-                        className={`${STATUS_CONFIG[key].color} transition-all duration-300`}
-                        style={{ width: `${pct}%` }}
-                        title={`${STATUS_CONFIG[key].label}: ${count}`}
-                      />
-                    );
-                  }
-                )}
+                {(Object.keys(STATUS_CONFIG) as Array<keyof typeof STATUS_CONFIG>).map((key) => {
+                  const count = metrics?.tasksByStatus[key as keyof typeof metrics.tasksByStatus] ?? 0;
+                  const pct = (count / totalStatusTasks) * 100;
+                  if (pct === 0) return null;
+                  return (
+                    <div
+                      key={key}
+                      className={`${STATUS_CONFIG[key].color} transition-all duration-300`}
+                      style={{ width: `${pct}%` }}
+                      title={`${STATUS_CONFIG[key].label}: ${count}`}
+                    />
+                  );
+                })}
               </div>
             ) : (
               <div className="h-6 w-full rounded-full bg-border-subtle" />
             )}
-
-            {/* Legend */}
             <div className="mt-3 flex flex-wrap gap-4">
-              {(Object.keys(STATUS_CONFIG) as Array<keyof typeof STATUS_CONFIG>).map(
-                (key) => (
-                  <div key={key} className="flex items-center gap-1.5">
-                    <span
-                      className={`inline-block h-3 w-3 rounded-full ${STATUS_CONFIG[key].color}`}
-                    />
-                    <span className="text-body-xs text-text-secondary">
-                      {STATUS_CONFIG[key].label}
-                    </span>
-                    <span className="text-body-xs font-medium text-text-primary">
-                      {metrics?.tasksByStatus[key as keyof typeof metrics.tasksByStatus] ?? 0}
-                    </span>
-                  </div>
-                )
-              )}
+              {(Object.keys(STATUS_CONFIG) as Array<keyof typeof STATUS_CONFIG>).map((key) => (
+                <div key={key} className="flex items-center gap-1.5">
+                  <span className={`inline-block h-3 w-3 rounded-full ${STATUS_CONFIG[key].color}`} />
+                  <span className="text-body-xs text-text-secondary">{STATUS_CONFIG[key].label}</span>
+                  <span className="text-body-xs font-medium text-text-primary">
+                    {metrics?.tasksByStatus[key as keyof typeof metrics.tasksByStatus] ?? 0}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -237,9 +230,7 @@ export default function OverviewTab() {
 
       {/* Row 3: Recent Activity */}
       <div className="rounded-lg border border-border-default bg-bg-surface p-4">
-        <h3 className="text-title-sm font-semibold text-text-primary">
-          Recent Activity
-        </h3>
+        <h3 className="text-title-sm font-semibold text-text-primary">Recent Activity</h3>
         <div className="mt-3">
           {loading ? (
             <div className="space-y-3">
@@ -251,27 +242,16 @@ export default function OverviewTab() {
               ))}
             </div>
           ) : (metrics?.recentActivity.length ?? 0) === 0 ? (
-            <p className="py-4 text-center text-body-sm text-text-tertiary">
-              No recent activity
-            </p>
+            <p className="py-4 text-center text-body-sm text-text-tertiary">No recent activity</p>
           ) : (
             <ul className="divide-y divide-border-subtle">
               {metrics?.recentActivity.map((activity: ActivityItem) => (
-                <li
-                  key={activity.id}
-                  className="flex items-start gap-3 py-2.5"
-                >
-                  <span className="mt-0.5 text-sm">
-                    {CATEGORY_ICONS[activity.category] ?? '\uD83D\uDD35'}
-                  </span>
+                <li key={activity.id} className="flex items-start gap-3 py-2.5">
+                  <span className="mt-0.5 text-sm">{CATEGORY_ICONS[activity.category] ?? '\uD83D\uDD35'}</span>
                   <div className="min-w-0 flex-1">
-                    <p className="text-body-sm text-text-primary">
-                      {activity.action}
-                    </p>
+                    <p className="text-body-sm text-text-primary">{activity.action}</p>
                     {activity.details && (
-                      <p className="mt-0.5 line-clamp-1 text-body-xs text-text-tertiary">
-                        {activity.details}
-                      </p>
+                      <p className="mt-0.5 line-clamp-1 text-body-xs text-text-tertiary">{activity.details}</p>
                     )}
                   </div>
                   <span className="shrink-0 text-body-xs text-text-tertiary">

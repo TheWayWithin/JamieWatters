@@ -663,8 +663,121 @@ async function syncIssues() {
   }
 }
 
+/**
+ * Derive agent statuses from AgentActivity data.
+ * Creates/updates AgentStatus records based on recent activity patterns.
+ * Agents are inferred from activity categories and action patterns.
+ */
+async function syncAgentStatuses() {
+  console.log('\uD83E\uDD16 Syncing agent statuses...');
+
+  try {
+    const fifteenMinAgo = new Date(Date.now() - 15 * 60 * 1000);
+    const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+
+    // Known agent roles that map to activity categories
+    const agentRoles = [
+      { agentId: 'coordinator', name: 'Coordinator', model: 'opus' },
+      { agentId: 'developer', name: 'Developer', model: 'sonnet' },
+      { agentId: 'tester', name: 'Tester', model: 'sonnet' },
+      { agentId: 'operator', name: 'Operator', model: 'sonnet' },
+      { agentId: 'strategist', name: 'Strategist', model: 'opus' },
+      { agentId: 'architect', name: 'Architect', model: 'opus' },
+      { agentId: 'designer', name: 'Designer', model: 'sonnet' },
+      { agentId: 'documenter', name: 'Documenter', model: 'haiku' },
+      { agentId: 'analyst', name: 'Analyst', model: 'sonnet' },
+      { agentId: 'marketer', name: 'Marketer', model: 'sonnet' },
+      { agentId: 'support', name: 'Support', model: 'haiku' },
+    ];
+
+    // Map activity categories to agent roles
+    const categoryToAgent = {
+      task: 'coordinator',
+      sync: 'operator',
+      deploy: 'operator',
+      build: 'developer',
+      error: 'tester',
+      schedule: 'operator',
+      system: 'operator',
+      memory: 'coordinator',
+    };
+
+    // Get recent activity to determine which agents are active
+    const recentActivity = await prisma.agentActivity.findMany({
+      where: { occurredAt: { gte: oneWeekAgo } },
+      select: { category: true, occurredAt: true },
+    });
+
+    // Count activity per agent
+    const agentActivity = {};
+    let latestByAgent = {};
+
+    for (const act of recentActivity) {
+      const agentId = categoryToAgent[act.category] || 'coordinator';
+      agentActivity[agentId] = (agentActivity[agentId] || 0) + 1;
+      if (!latestByAgent[agentId] || act.occurredAt > latestByAgent[agentId]) {
+        latestByAgent[agentId] = act.occurredAt;
+      }
+    }
+
+    // Get task counts for this week
+    const tasksThisWeek = await prisma.agentTask.count({
+      where: { syncedAt: { gte: oneWeekAgo } },
+    });
+
+    const completedThisWeek = await prisma.agentTask.count({
+      where: { syncedAt: { gte: oneWeekAgo }, completed: true },
+    });
+
+    let upserted = 0;
+
+    for (const role of agentRoles) {
+      const actCount = agentActivity[role.agentId] || 0;
+      const lastActive = latestByAgent[role.agentId] || null;
+
+      // Determine status
+      let status = 'offline';
+      if (lastActive && lastActive >= fifteenMinAgo) {
+        status = 'active';
+      } else if (actCount > 0) {
+        status = 'idle';
+      }
+
+      // Only upsert agents that have some activity or already exist
+      if (actCount > 0 || status !== 'offline') {
+        await prisma.agentStatus.upsert({
+          where: { agentId: role.agentId },
+          update: {
+            name: role.name,
+            model: role.model,
+            status,
+            lastActiveAt: lastActive || new Date(),
+            tasksThisWeek: role.agentId === 'coordinator' ? completedThisWeek : Math.floor(actCount / 3),
+          },
+          create: {
+            agentId: role.agentId,
+            name: role.name,
+            model: role.model,
+            status,
+            lastActiveAt: lastActive || new Date(),
+            tasksCompleted: 0,
+            tasksThisWeek: role.agentId === 'coordinator' ? completedThisWeek : Math.floor(actCount / 3),
+          },
+        });
+        upserted++;
+      }
+    }
+
+    console.log(`  \u2705 Agent statuses synced (${upserted} agents updated)`);
+    return upserted;
+  } catch (error) {
+    console.error('  \u274C Error syncing agent statuses:', error.message);
+    return 0;
+  }
+}
+
 async function main() {
-  console.log('🎛️ Mission Control Sync Starting...');
+  console.log('\uD83C\uDF9B\uFE0F Mission Control Sync Starting...');
   console.log(`   Time: ${new Date().toISOString()}`);
   console.log('');
 
@@ -678,21 +791,23 @@ async function main() {
     tasks: await syncTasks(),
     goals: await syncGoals(),
     issues: await syncIssues(),
+    agents: await syncAgentStatuses(),
     memory: await syncMemory(),
     activity: await syncActivity(),
   };
 
   console.log('');
-  console.log('📊 Sync Summary:');
+  console.log('\uD83D\uDCCA Sync Summary:');
   console.log(`   Triggers Processed: ${results.triggersProcessed}`);
   console.log(`   Scheduled Tasks: ${results.scheduledTasks}`);
   console.log(`   Tasks: ${results.tasks}`);
   console.log(`   Goals: ${results.goals}`);
   console.log(`   Issues: ${results.issues}`);
+  console.log(`   Agents: ${results.agents}`);
   console.log(`   Memory Files: ${results.memory}`);
   console.log(`   Activity Items: ${results.activity}`);
   console.log('');
-  console.log('✅ Mission Control sync complete!');
+  console.log('\u2705 Mission Control sync complete!');
 
   await prisma.$disconnect();
 }
