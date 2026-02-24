@@ -98,6 +98,22 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
         .map((url) => url.trim())
         .filter((url) => url.length > 0);
 
+      // Validate required fields with specific messages
+      const missingFields: string[] = [];
+      if (!name) missingFields.push('Project Name');
+      if (!slug) missingFields.push('Slug');
+      if (!description) missingFields.push('Description');
+      if (!url) missingFields.push('Project URL');
+      if (techStackArray.length === 0) missingFields.push('Tech Stack');
+
+      if (missingFields.length > 0) {
+        setError(`Missing required fields: ${missingFields.join(', ')}`);
+        setLoading(false);
+        // Scroll to top so error is visible
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
       // Prepare data
       const data = {
         name,
@@ -129,17 +145,11 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
         trackProgress,
       };
 
-      // Validate required fields
-      if (!name || !slug || !description || !url || techStackArray.length === 0) {
-        setError('Please fill in all required fields');
-        setLoading(false);
-        return;
-      }
-
       // Validate GitHub URL format if provided
       if (data.githubUrl && !data.githubUrl.match(/^https:\/\/github\.com\/[\w-]+\/[\w-]+\/?$/)) {
         setError('GitHub URL must be in format: https://github.com/username/repo');
         setLoading(false);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
       }
 
@@ -172,10 +182,12 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
           const detailsText = result.details.map((d: any) => `${d.field}: ${d.message}`).join(', ');
           setError(`${result.error}: ${detailsText}`);
         }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     } catch (err) {
       setError('Failed to save project. Please try again.');
       console.error('Project save error:', err);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } finally {
       setLoading(false);
     }
@@ -183,7 +195,20 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} noValidate className="space-y-6">
+        {/* Error/Success Messages - shown at top so they're always visible */}
+        {error && (
+          <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+            <p className="text-red-400 text-body-sm font-medium">{error}</p>
+          </div>
+        )}
+
+        {successMessage && (
+          <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4">
+            <p className="text-green-400 text-body-sm font-medium">{successMessage}</p>
+          </div>
+        )}
+
         {/* Basic Information */}
         <div className="bg-bg-surface border border-border-default rounded-lg p-6">
           <h2 className="text-display-sm font-semibold text-text-primary mb-6">
@@ -321,6 +346,7 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
                 <option value="BETA">Beta</option>
                 <option value="MVP">MVP</option>
                 <option value="LIVE">Live</option>
+                <option value="ACTIVE">Active</option>
                 <option value="ARCHIVED">Archived</option>
               </select>
             </div>
@@ -569,18 +595,6 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
           </Button>
         </div>
 
-        {/* Success/Error Messages */}
-        {successMessage && (
-          <div className="bg-green-50 border border-green-200 rounded-md p-4">
-            <p className="text-green-800 text-body-sm">{successMessage}</p>
-          </div>
-        )}
-
-        {error && (
-          <div className="bg-red-50 border border-red-200 rounded-md p-4">
-            <p className="text-red-800 text-body-sm">{error}</p>
-          </div>
-        )}
       </form>
     </div>
   );

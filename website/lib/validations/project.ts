@@ -70,7 +70,7 @@ export const createProjectSchema = z.object({
   problemStatement: z.string().max(5000, 'Problem statement too long').optional().nullable(),
   solutionApproach: z.string().max(5000, 'Solution approach too long').optional().nullable(),
   lessonsLearned: z.string().max(5000, 'Lessons learned too long').optional().nullable(),
-  screenshots: z.array(z.string().url('Must be valid URLs')).default([]),
+  screenshots: z.array(z.string().min(1, 'Screenshot path cannot be empty')).default([]),
   launchedAt: z.string().datetime().optional().nullable(),
 });
 
