@@ -211,6 +211,7 @@ enum ProjectType {
   CONTENT
   PERSONAL
   MARKETPLACE
+  BENCHMARK
 }
 
 enum TargetPersona {
@@ -256,7 +257,7 @@ model AgentStatus {
   tasksThisWeek  Int      @default(0)
   projectId      String?
   createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  updatedAt      DateTime @default(now()) @updatedAt
 
   @@index([status])
   @@index([lastActiveAt])

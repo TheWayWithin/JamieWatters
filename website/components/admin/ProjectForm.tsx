@@ -373,6 +373,7 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
                 <option value="CONTENT">Content Site</option>
                 <option value="PERSONAL">Personal Website</option>
                 <option value="MARKETPLACE">Marketplace</option>
+                <option value="BENCHMARK">Benchmark Site</option>
               </select>
             </div>
           </div>

@@ -21,6 +21,9 @@ import {
   ShoppingCart,
   Store,
   Percent,
+  Trophy,
+  UserPlus,
+  MousePointerClick,
 } from 'lucide-react';
 
 export type MetricFormat = 'currency' | 'number' | 'percent' | 'duration';
@@ -227,6 +230,37 @@ export const METRIC_TEMPLATES: Record<ProjectType, MetricDefinition[]> = {
       format: 'percent',
       icon: Percent,
       description: 'Platform commission rate',
+    },
+  ],
+
+  [ProjectType.BENCHMARK]: [
+    {
+      key: 'monthlyVisitors',
+      label: 'Monthly Visitors',
+      format: 'number',
+      icon: Eye,
+      description: 'Unique visitors per month',
+    },
+    {
+      key: 'signups',
+      label: 'Signups',
+      format: 'number',
+      icon: UserPlus,
+      description: 'Total registered users',
+    },
+    {
+      key: 'benchmarksRun',
+      label: 'Benchmarks Run',
+      format: 'number',
+      icon: Trophy,
+      description: 'Total benchmarks completed',
+    },
+    {
+      key: 'votesCollected',
+      label: 'Votes Collected',
+      format: 'number',
+      icon: MousePointerClick,
+      description: 'Total user votes or comparisons',
     },
   ],
 };

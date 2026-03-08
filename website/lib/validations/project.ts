@@ -13,7 +13,7 @@ const categoryEnum = z.enum(['AI_TOOLS', 'FRAMEWORKS', 'EDUCATION', 'MARKETPLACE
 const statusEnum = z.enum(['RESEARCH', 'DESIGN', 'PLANNING', 'BUILD', 'BETA', 'MVP', 'LIVE', 'ARCHIVED', 'ACTIVE']);
 
 // Valid project types (must match Prisma enum)
-const projectTypeEnum = z.enum(['SAAS', 'TRADING', 'OPEN_SOURCE', 'CONTENT', 'PERSONAL', 'MARKETPLACE']);
+const projectTypeEnum = z.enum(['SAAS', 'TRADING', 'OPEN_SOURCE', 'CONTENT', 'PERSONAL', 'MARKETPLACE', 'BENCHMARK']);
 
 /**
  * Schema for project metrics
