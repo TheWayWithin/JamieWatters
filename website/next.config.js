@@ -21,6 +21,20 @@ const nextConfig = {
           },
         ],
       },
+      // OG image headers for social media crawlers (Twitter, Facebook, LinkedIn)
+      {
+        source: '/og-image.png',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400, stale-while-revalidate=604800',
+          },
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          },
+        ],
+      },
     ];
   },
 };
