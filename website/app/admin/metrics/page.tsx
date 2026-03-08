@@ -1,41 +1,71 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getAllProjects } from '@/lib/placeholder-data';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 
+interface Project {
+  id: string;
+  name: string;
+  mrr: number;
+  users: number;
+  status: string;
+  projectType: string;
+  updatedAt: string;
+}
+
 export default function MetricsPage() {
   const [loading, setLoading] = useState(false);
-  const [selectedProjectId, setSelectedProjectId] = useState('1');
+  const [fetchingProjects, setFetchingProjects] = useState(true);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [selectedProjectId, setSelectedProjectId] = useState('');
   const [mrr, setMrr] = useState('0');
   const [users, setUsers] = useState('0');
   const [status, setStatus] = useState<'active' | 'beta' | 'planning' | 'archived'>('active');
   const [successMessage, setSuccessMessage] = useState('');
   const [updateError, setUpdateError] = useState('');
 
-  const projects = getAllProjects();
+  // Fetch projects from database
+  useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const res = await fetch('/api/admin/projects', { credentials: 'include' });
+        if (res.ok) {
+          const data = await res.json();
+          setProjects(data.data || []);
+          if (data.data?.length > 0) {
+            setSelectedProjectId(data.data[0].id);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch projects:', err);
+      } finally {
+        setFetchingProjects(false);
+      }
+    }
+    fetchProjects();
+  }, []);
+
   const selectedProject = projects.find((p) => p.id === selectedProjectId);
 
   // Initialize form with selected project data
   useEffect(() => {
     if (selectedProject) {
-      setMrr(selectedProject.metrics.mrr.toString());
-      setUsers(selectedProject.metrics.users.toString());
-      setStatus(selectedProject.status);
+      setMrr(selectedProject.mrr.toString());
+      setUsers(selectedProject.users.toString());
+      const projectStatus = selectedProject.status.toLowerCase();
+      if (['active', 'beta', 'planning', 'archived'].includes(projectStatus)) {
+        setStatus(projectStatus as typeof status);
+      } else {
+        setStatus('active');
+      }
     }
   }, [selectedProject]);
 
   // Handle project selection
   const handleProjectChange = (projectId: string) => {
     setSelectedProjectId(projectId);
-    const project = projects.find((p) => p.id === projectId);
-    if (project) {
-      setMrr(project.metrics.mrr.toString());
-      setUsers(project.metrics.users.toString());
-      setStatus(project.status);
-    }
     setSuccessMessage('');
     setUpdateError('');
   };
@@ -65,16 +95,15 @@ export default function MetricsPage() {
       if (res.ok) {
         setSuccessMessage('Metrics updated successfully!');
 
-        // Update the displayed metrics immediately
-        const project = projects.find((p) => p.id === selectedProjectId);
-        if (project) {
-          project.metrics.mrr = parseFloat(mrr);
-          project.metrics.users = parseInt(users);
-          project.status = status;
-          project.updatedAt = new Date();
-        }
+        // Update local state
+        setProjects((prev) =>
+          prev.map((p) =>
+            p.id === selectedProjectId
+              ? { ...p, mrr: parseFloat(mrr), users: parseInt(users), updatedAt: new Date().toISOString() }
+              : p
+          )
+        );
 
-        // Clear success message after 3 seconds
         setTimeout(() => setSuccessMessage(''), 3000);
       } else {
         setUpdateError('Failed to update metrics');
@@ -93,6 +122,14 @@ export default function MetricsPage() {
     planning: 'info',
     archived: 'error',
   };
+
+  if (fetchingProjects) {
+    return (
+      <section className="px-6 pt-8 pb-12 max-w-4xl mx-auto">
+        <p className="text-text-secondary">Loading projects...</p>
+      </section>
+    );
+  }
 
   return (
     <section className="px-6 pt-8 pb-12 max-w-4xl mx-auto">
@@ -137,21 +174,21 @@ export default function MetricsPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
             <div className="bg-bg-surface border border-border-default rounded-lg p-6">
               <div className="text-3xl font-bold text-brand-accent font-mono mb-2">
-                ${selectedProject.metrics.mrr.toLocaleString()}
+                ${selectedProject.mrr.toLocaleString()}
               </div>
               <div className="text-body-sm text-text-secondary">MRR</div>
             </div>
 
             <div className="bg-bg-surface border border-border-default rounded-lg p-6">
               <div className="text-3xl font-bold text-brand-accent font-mono mb-2">
-                {selectedProject.metrics.users.toLocaleString()}
+                {selectedProject.users.toLocaleString()}
               </div>
               <div className="text-body-sm text-text-secondary">Users</div>
             </div>
 
             <div className="bg-bg-surface border border-border-default rounded-lg p-6">
               <div className="mb-2">
-                <Badge variant={statusColors[selectedProject.status]} size="md">
+                <Badge variant={statusColors[status] || 'info'} size="md">
                   {selectedProject.status}
                 </Badge>
               </div>
@@ -161,7 +198,7 @@ export default function MetricsPage() {
 
           <p className="text-caption text-text-tertiary">
             Last updated:{' '}
-            {selectedProject.updatedAt.toLocaleDateString('en-US', {
+            {new Date(selectedProject.updatedAt).toLocaleDateString('en-US', {
               month: 'long',
               day: 'numeric',
               year: 'numeric',
