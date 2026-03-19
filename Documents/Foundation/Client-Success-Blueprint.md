@@ -1,20 +1,28 @@
 # Client Success Blueprint
 
 **Business Name:** Jamie Watters - AI-Powered Solopreneur Portfolio
-**Date:** December 14, 2025
-**Version:** 2.1 - Updated product focus to AI Search space first
+**Date:** March 15, 2026
+**Version:** 3.0 - Aligned with Vision & Mission v3.1: Truth-first, wave-agnostic, updated products and pricing
 **Purpose:** Understanding who we serve and how to genuinely help them succeed
 
 ---
 
 ## Core Philosophy
 
+> **"Truth is the Currency of the Future."**
+
 This blueprint defines who I focus on serving and how to genuinely help them achieve success. It drives all downstream business decisions: product design, marketing, sales, and support. The focus is on filtering IN the right people, filtering OUT the wrong people, and understanding how to create authentic value for those I serve.
 
-I'm not here to sell to anyone who'll buy. I'm here to serve three specific groups who are ready to build AI-powered independent businesses and want proof it works, not just theory from people who never built anything. My competitive advantage is that I'm the practitioner who builds first, solves my own problems, then shares the tools—creating a virtuous circle where my building generates the infrastructure that enables their success.
+I'm a wave rider. I ride whatever technology wave is coming—right now that's AI—solving real problems I encounter as a solopreneur, building tools that work, killing what doesn't, and sharing the truth about all of it. I'm not here to sell to anyone who'll buy. I'm here to serve solopreneurs who want battle-tested tools and honest guidance, not theory from people who stopped building years ago. Every product I offer either directly reveals truth or helps people make informed, unbiased decisions. Only winners stay in the stable.
 
-**Product Focus - AI Search Space First:**
-My initial product focus is on AI search optimization—helping solopreneurs ensure visibility in the emerging AI-driven discovery landscape. First revenue products are **AI Impact Scanner** (AI search visibility analysis) and **LLMtxt Mastery** (LLM optimization for discoverability). **Evolve-7** (rapid iteration framework) and **IsoTracker** (progress tracking) are fast builders for Q1 2026. **SoloMarket** remains a strategic cornerstone but with a longer development timeline, accelerating once the AI search tools establish the revenue base.
+**Current Wave Products (AI Search - Q2 2026):**
+- **AImpactMonitor** - Diagnose your AI search visibility—honest analysis, no vanity metrics
+- **AI Search Mastery** - The complete 3-step loop: Diagnose → Optimize → Monitor
+- **Evolve-7** - Rapid iteration framework
+- **IsoTracker** - Progress tracking and metrics
+- **SoloMarket** (cornerstone, slower build) - The marketplace where solopreneurs build, launch, and sell
+
+**Pricing (Per Product):** Free ($0) / Solo ($10/mo) / Growth ($20/mo) / Scale ($40/mo) — Average ~$30/month per customer across 1.5 tools
 
 ---
 
@@ -69,11 +77,11 @@ Mid-to-senior professionals (28-45 years old) earning $60-150K annually in 100-1
 - **Platform Lock-In:** VC-backed tools built for teams, not individuals
 
 **Tool Adoption Pattern:**
-- **Primary tool need:** AI search visibility tool (AI Impact Scanner) at Growth tier ($25/month) - needs to understand how AI surfaces their business/content
-- **Secondary tool need:** LLM optimization tool (LLMtxt Mastery) at Solo tier ($10/month) - wants their content discoverable by AI assistants
+- **Primary tool need:** AI search visibility tool (AImpactMonitor) at Growth tier ($20/month) - needs to understand how AI surfaces their business/content
+- **Secondary tool need:** LLM optimization tool (AI Search Mastery) at Solo tier ($10/month) - wants their content discoverable by AI assistants
 - **Cross-sell potential:** IsoTracker for progress tracking, Evolve-7 for rapid iteration, BOS-AI frameworks for systematic approach
-- **Typical tier:** Growth ($25) + Solo ($10) = $35/month average
-- **Growth trajectory:** Starts with 1 tool (AI Impact Scanner), adds 2nd tool within 60 days (LLMtxt Mastery or IsoTracker), reaches 1.5-2.0 tools by Month 6
+- **Typical tier:** Growth ($20) + Solo ($10) = $30/month average
+- **Growth trajectory:** Starts with 1 tool (AImpactMonitor), adds 2nd tool within 60 days (AI Search Mastery or IsoTracker), reaches 1.5-2.0 tools by Month 6
 - **Upgrade path:** Growth → Scale tier as business grows beyond $100K ARR
 
 **Build-in-Public Engagement:**
@@ -134,11 +142,11 @@ Solo freelancers or 1-3 person operations (32-50 years old) earning $40-120K ann
 - **Theory vs. Practice Gap:** Marketing advice from people who never ran service businesses
 
 **Tool Adoption Pattern:**
-- **Primary tool need:** AI search visibility tool (AI Impact Scanner) at Growth tier ($25/month) - needs to ensure AI assistants recommend their services
-- **Secondary tool need:** LLM optimization tool (LLMtxt Mastery) at Solo tier ($10/month) - wants their expertise discoverable by AI
+- **Primary tool need:** AI search visibility tool (AImpactMonitor) at Growth tier ($20/month) - needs to ensure AI assistants recommend their services
+- **Secondary tool need:** LLM optimization tool (AI Search Mastery) at Solo tier ($10/month) - wants their expertise discoverable by AI
 - **Cross-sell potential:** IsoTracker for client/project tracking, Evolve-7 for service iteration, SoloMarket for productized services (when launched)
-- **Typical tier:** Growth ($25) + Solo ($10) = $35/month average
-- **Growth trajectory:** Starts with 1 tool (AI Impact Scanner), adds 2nd tool within 30 days (high urgency), reaches 2.0 tools by Month 3 (fastest adopters)
+- **Typical tier:** Growth ($20) + Solo ($10) = $30/month average
+- **Growth trajectory:** Starts with 1 tool (AImpactMonitor), adds 2nd tool within 30 days (high urgency), reaches 2.0 tools by Month 3 (fastest adopters)
 - **Upgrade path:** Growth → Scale tier as they systematize and scale beyond $200K ARR
 
 **Build-in-Public Engagement:**
@@ -198,12 +206,12 @@ Solo or 2-3 person technical founding teams (25-40 years old) earning $30-200K+ 
 - **Theory vs. Practice Gap:** Advice from VCs and consultants who never built solo
 
 **Tool Adoption Pattern:**
-- **Primary tool need:** AI search visibility tool (AI Impact Scanner) at Growth tier ($25/month) - needs to understand how AI surfaces their products
-- **Secondary tool need:** LLM optimization tool (LLMtxt Mastery) at Growth tier ($25/month) - wants products discoverable in AI-first world
+- **Primary tool need:** AI search visibility tool (AImpactMonitor) at Growth tier ($20/month) - needs to understand how AI surfaces their products
+- **Secondary tool need:** LLM optimization tool (AI Search Mastery) at Growth tier ($20/month) - wants products discoverable in AI-first world
 - **Cross-sell potential:** IsoTracker for portfolio metrics, Evolve-7 for rapid iteration, SoloMarket for launches (when available)
-- **Typical tier:** Growth ($25) + Growth ($25) = $50/month average (higher ARPC)
-- **Growth trajectory:** Starts with 1 tool (AI Impact Scanner), adds 2nd tool within 45 days, reaches 2.0-2.5 tools by Month 6 (highest cross-sell potential)
-- **Upgrade path:** Multiple Growth tiers, some Scale tiers ($50) as products grow
+- **Typical tier:** Growth ($20) + Growth ($20) = $40/month average (higher ARPC)
+- **Growth trajectory:** Starts with 1 tool (AImpactMonitor), adds 2nd tool within 45 days, reaches 2.0-2.5 tools by Month 6 (highest cross-sell potential)
+- **Upgrade path:** Multiple Growth tiers, some Scale tiers ($40) as products grow
 
 **Build-in-Public Engagement:**
 - **Content they consume:** Twitter threads with metrics and learnings, GitHub repos with code examples, detailed blog posts with implementation details
@@ -249,17 +257,17 @@ Solo or 2-3 person technical founding teams (25-40 years old) earning $30-200K+ 
 
 | Problem | Tool Solution | Why This Tool | Tier | Cross-Sell Logic |
 |---------|---------------|---------------|------|------------------|
-| AI Visibility Gap | AI Impact Scanner | Understand how AI assistants surface your business/content | Growth ($25) | Primary purchase |
-| Content Discoverability | LLMtxt Mastery | Optimize content for AI discovery and recommendations | Solo ($10) | Add within 60 days |
+| AI Visibility Gap | AImpactMonitor | Understand how AI assistants surface your business/content | Growth ($20) | Primary purchase |
+| Content Discoverability | AI Search Mastery | Optimize content for AI discovery and recommendations | Solo ($10) | Add within 60 days |
 | Progress Tracking | IsoTracker | Track transition milestones, measure progress systematically | Solo ($10) | Add within 60 days |
 | Iteration Speed | Evolve-7 | Rapid iteration framework for testing business ideas | Solo ($10) | Add within 90 days |
-| Business Framework Gap | BOS-AI (when available) | Systematic business operating frameworks | Growth ($25) | Future add |
+| Business Framework Gap | BOS-AI (when available) | Systematic business operating frameworks | Growth ($20) | Future add |
 
 **Natural Cross-Selling Progression:**
-1. **Month 1:** Buy AI Impact Scanner (Growth, $25) to understand AI visibility
-2. **Month 2:** Add LLMtxt Mastery (Solo, $10) to optimize content for AI
+1. **Month 1:** Buy AImpactMonitor (Growth, $20) to understand AI visibility
+2. **Month 2:** Add AI Search Mastery (Solo, $10) to optimize content for AI
 3. **Month 3-6:** Add IsoTracker or Evolve-7 as business develops
-4. **Target:** 1.5-2.0 tools, $35-50/month average
+4. **Target:** 1.5-2.0 tools, $30-40/month average
 
 **Why My Solution Is Different (Practitioner-First):**
 - **I faced this exact problem:** Transitioned from 16 years in global banking (HSBC) to building portfolio while working full-time
@@ -303,17 +311,17 @@ Solo or 2-3 person technical founding teams (25-40 years old) earning $30-200K+ 
 
 | Problem | Tool Solution | Why This Tool | Tier | Cross-Sell Logic |
 |---------|---------------|---------------|------|------------------|
-| AI Discovery Problem | AI Impact Scanner | Ensure AI assistants recommend your services to potential clients | Growth ($25) | Primary purchase |
-| Content Not AI-Optimized | LLMtxt Mastery | Make your expertise discoverable when AI assists potential clients | Solo ($10) | Add within 30 days |
+| AI Discovery Problem | AImpactMonitor | Ensure AI assistants recommend your services to potential clients | Growth ($20) | Primary purchase |
+| Content Not AI-Optimized | AI Search Mastery | Make your expertise discoverable when AI assists potential clients | Solo ($10) | Add within 30 days |
 | Client/Project Tracking | IsoTracker | Track client projects, deliverables, and progress systematically | Solo ($10) | Add within 60 days |
 | Service Iteration | Evolve-7 | Rapidly iterate and improve service offerings | Solo ($10) | Add within 90 days |
-| Productized Services | SoloMarket (when launched) | Launch and sell productized services to ready buyers | Growth ($25) | Future add |
+| Productized Services | SoloMarket (when launched) | Launch and sell productized services to ready buyers | Growth ($20) | Future add |
 
 **Natural Cross-Selling Progression:**
-1. **Week 1:** Buy AI Impact Scanner (Growth, $25) to understand AI visibility for services
-2. **Week 3:** Add LLMtxt Mastery (Solo, $10) to optimize for AI discovery
+1. **Week 1:** Buy AImpactMonitor (Growth, $20) to understand AI visibility for services
+2. **Week 3:** Add AI Search Mastery (Solo, $10) to optimize for AI discovery
 3. **Month 2:** Add IsoTracker for systematic client/project tracking
-4. **Target:** 2.0 tools by Month 3, $35-50/month average (fastest adopters)
+4. **Target:** 2.0 tools by Month 3, $30-40/month average (fastest adopters)
 
 **Why My Solution Is Different (Practitioner-First):**
 - **I faced this exact problem:** Building multiple service-based products, encountered same non-billable time drain
@@ -357,17 +365,17 @@ Solo or 2-3 person technical founding teams (25-40 years old) earning $30-200K+ 
 
 | Problem | Tool Solution | Why This Tool | Tier | Cross-Sell Logic |
 |---------|---------------|---------------|------|------------------|
-| AI Product Discovery | AI Impact Scanner | Understand how AI surfaces and recommends your products | Growth ($25) | Primary purchase |
-| AI-First Positioning | LLMtxt Mastery | Optimize product presence for AI-driven discovery | Growth ($25) | Add within 45 days |
-| Portfolio Metrics | IsoTracker | Track metrics across multiple products, make data-driven decisions | Growth ($25) | Add within 60 days |
+| AI Product Discovery | AImpactMonitor | Understand how AI surfaces and recommends your products | Growth ($20) | Primary purchase |
+| AI-First Positioning | AI Search Mastery | Optimize product presence for AI-driven discovery | Growth ($20) | Add within 45 days |
+| Portfolio Metrics | IsoTracker | Track metrics across multiple products, make data-driven decisions | Growth ($20) | Add within 60 days |
 | Rapid Iteration | Evolve-7 | Fast iteration framework for product development and testing | Solo ($10) | Add within 30 days |
-| Product Launches | SoloMarket (when launched) | Launch products to engaged solopreneur community | Growth ($25) | Future add |
+| Product Launches | SoloMarket (when launched) | Launch products to engaged solopreneur community | Growth ($20) | Future add |
 
 **Natural Cross-Selling Progression:**
-1. **Month 1:** Buy AI Impact Scanner (Growth, $25) to understand AI visibility for products
-2. **Month 2:** Add Evolve-7 (Solo, $10) for rapid iteration + LLMtxt Mastery (Growth, $25)
-3. **Month 3:** Add IsoTracker (Growth, $25) for portfolio metrics
-4. **Target:** 2.0-2.5 tools by Month 6, $50-75/month average (highest ARPC)
+1. **Month 1:** Buy AImpactMonitor (Growth, $20) to understand AI visibility for products
+2. **Month 2:** Add Evolve-7 (Solo, $10) for rapid iteration + AI Search Mastery (Growth, $20)
+3. **Month 3:** Add IsoTracker (Growth, $20) for portfolio metrics
+4. **Target:** 2.0-2.5 tools by Month 6, $40-60/month average (highest ARPC)
 
 **Why My Solution Is Different (Practitioner-First):**
 - **I faced this exact problem:** Managing 10+ products in my portfolio, same operational complexity and positioning challenges
@@ -403,7 +411,7 @@ Solo or 2-3 person technical founding teams (25-40 years old) earning $30-200K+ 
 - Ask about my failures and challenges not just successes (seeking real learning)
 
 **SaaS Economics Fit (High-LTV Customers):**
-- **Willing to pay for value:** Sees $25-50/month as reasonable investment for tools that save 10+ hours/week or generate revenue
+- **Willing to pay for value:** Sees $20-40/month as reasonable investment for tools that save 10+ hours/week or generate revenue
 - **Multi-tool potential:** Has multiple problems that map to different tools (cross-sell opportunity)
 - **Growth trajectory:** Building business that will scale (upgrade path from Solo → Growth → Scale tiers)
 - **Long-term commitment:** Thinking in years not months (high retention potential)
@@ -490,17 +498,17 @@ Successfully transition from corporate employment to independent business owners
 
 | Timeline | Tool Usage | Success Indicator | Business Outcome |
 |----------|------------|-------------------|------------------|
-| **Week 1** | Sign up for AI Impact Scanner (Growth) | First AI visibility audit complete | Understanding of AI discovery landscape |
-| **Week 2** | Use AI Impact Scanner weekly | Identified key AI visibility gaps | Clear optimization roadmap |
+| **Week 1** | Sign up for AImpactMonitor (Growth) | First AI visibility audit complete | Understanding of AI discovery landscape |
+| **Week 2** | Use AImpactMonitor weekly | Identified key AI visibility gaps | Clear optimization roadmap |
 | **Month 1** | Active in 1 tool | Implemented AI visibility improvements | Content appearing in AI responses |
-| **Month 2** | Add LLMtxt Mastery (Solo) | Content optimized for LLM discovery | Improved AI discoverability |
+| **Month 2** | Add AI Search Mastery (Solo) | Content optimized for LLM discovery | Improved AI discoverability |
 | **Month 3** | Active in 1.5 tools | First $500-1K revenue from AI-driven leads | Tool investment paying for itself |
 | **Month 6** | Active in 2.0 tools | $5K/month revenue | Serious transition momentum |
 | **Month 12** | Upgraded to Scale tier | $10K+ month revenue | Corporate income replacement achieved |
 
 **Tool Success = Business Success Connection:**
-- **Using AI Impact Scanner** = Understanding how AI surfaces your business
-- **Using LLMtxt Mastery** = Content optimized for AI-first discovery
+- **Using AImpactMonitor** = Understanding how AI surfaces your business
+- **Using AI Search Mastery** = Content optimized for AI-first discovery
 - **Using IsoTracker** = Systematic progress tracking and decision-making
 - **Cross-selling to 2nd tool** = Solving multiple AI visibility bottlenecks
 - **Upgrading tiers** = Business growing, tools scaling with success
@@ -546,17 +554,17 @@ Transform from trading time for money to running systematized, scalable service 
 
 | Timeline | Tool Usage | Success Indicator | Business Outcome |
 |----------|------------|-------------------|------------------|
-| **Week 1** | Sign up for AI Impact Scanner (Growth) | First AI visibility audit for services | Understanding how AI recommends services |
-| **Week 2** | Use AI Impact Scanner weekly | Identified gaps in AI discovery | Clear optimization plan |
-| **Week 3** | Add LLMtxt Mastery (Solo) | Service content optimized for AI | AI assistants recommending your services |
+| **Week 1** | Sign up for AImpactMonitor (Growth) | First AI visibility audit for services | Understanding how AI recommends services |
+| **Week 2** | Use AImpactMonitor weekly | Identified gaps in AI discovery | Clear optimization plan |
+| **Week 3** | Add AI Search Mastery (Solo) | Service content optimized for AI | AI assistants recommending your services |
 | **Month 1** | Active in 1.5 tools | AI-driven inquiries starting | New lead source established |
 | **Month 2** | Add IsoTracker (Solo) | Client tracking systematized | Better project visibility |
 | **Month 3** | Active in 2.0 tools | AI visibility improved 30%+ | Tool ROI 5-10x, new client channel |
 | **Month 6** | Upgraded to Scale tiers | Consistent AI-driven leads | Working with better-fit clients |
 
 **Tool Success = Business Success Connection:**
-- **Using AI Impact Scanner** = Understanding AI-driven service discovery
-- **Using LLMtxt Mastery** = Services optimized for AI recommendations
+- **Using AImpactMonitor** = Understanding AI-driven service discovery
+- **Using AI Search Mastery** = Services optimized for AI recommendations
 - **Using IsoTracker** = Systematic client and project tracking
 - **Cross-selling to 2nd tool** = Solving discovery AND tracking problems
 - **Upgrading tiers** = Business scaling, AI visibility compounding
@@ -602,17 +610,17 @@ Build portfolio of products generating $1M+ ARR through systematic frameworks an
 
 | Timeline | Tool Usage | Success Indicator | Business Outcome |
 |----------|------------|-------------------|------------------|
-| **Week 1** | Sign up for AI Impact Scanner (Growth) | First AI visibility audit for products | Understanding how AI surfaces products |
-| **Week 2** | Use AI Impact Scanner weekly | Identified AI discovery opportunities | Clear positioning strategy |
+| **Week 1** | Sign up for AImpactMonitor (Growth) | First AI visibility audit for products | Understanding how AI surfaces products |
+| **Week 2** | Use AImpactMonitor weekly | Identified AI discovery opportunities | Clear positioning strategy |
 | **Month 1** | Active in 1 tool + Add Evolve-7 (Solo) | Products optimized for AI, iteration accelerated | Faster launch, better AI visibility |
-| **Month 2** | Add LLMtxt Mastery (Growth) | Product content AI-optimized | AI assistants recommending products |
+| **Month 2** | Add AI Search Mastery (Growth) | Product content AI-optimized | AI assistants recommending products |
 | **Month 3** | Add IsoTracker (Growth) | Portfolio metrics tracked systematically | Data-driven product decisions |
 | **Month 6** | Active in 2.5 tools | $10K+ MRR, AI visibility compounding | Portfolio approach validated |
 | **Month 12** | Multiple Scale tiers | $100K+ MRR, AI-driven growth | Systematic scaling proven |
 
 **Tool Success = Business Success Connection:**
-- **Using AI Impact Scanner** = Understanding how AI discovers your products
-- **Using LLMtxt Mastery** = Products optimized for AI-first discovery
+- **Using AImpactMonitor** = Understanding how AI discovers your products
+- **Using AI Search Mastery** = Products optimized for AI-first discovery
 - **Using IsoTracker** = Portfolio metrics and systematic decision-making
 - **Using Evolve-7** = Rapid iteration and product development
 - **Cross-selling to 2.5+ tools** = Solving multiple bottlenecks, highest LTV customers
@@ -627,11 +635,11 @@ Build portfolio of products generating $1M+ ARR through systematic frameworks an
 
 We provide exactly what all three groups need but can't find elsewhere: **proof it works through transparent execution + the exact infrastructure and frameworks being used to do it**.
 
-**For Corporate Escapists:** We demonstrate the corporate-to-solo transition with complete transparency. They get AI visibility tools (AI Impact Scanner, LLMtxt Mastery) to ensure their new business is discoverable in the AI-first world, progress tracking (IsoTracker), and the community (SoloMarket when launched). Most importantly, they get proof from someone actually building it, not teaching theory.
+**For Corporate Escapists:** We demonstrate the corporate-to-solo transition with complete transparency. They get AI visibility tools (AImpactMonitor, AI Search Mastery) to ensure their new business is discoverable in the AI-first world, progress tracking (IsoTracker), and the community (SoloMarket when launched). Most importantly, they get proof from someone actually building it, not teaching theory.
 
-**For Service Providers:** We provide AI discovery tools (AI Impact Scanner, LLMtxt Mastery) ensuring AI assistants recommend their services, project tracking (IsoTracker), and service iteration frameworks (Evolve-7). They see exactly how to be discoverable in an AI-first world because we're solving the same problem for ourselves.
+**For Service Providers:** We provide AI discovery tools (AImpactMonitor, AI Search Mastery) ensuring AI assistants recommend their services, project tracking (IsoTracker), and service iteration frameworks (Evolve-7). They see exactly how to be discoverable in an AI-first world because we're solving the same problem for ourselves.
 
-**For Ambitious Builders:** We provide AI visibility tools for products (AI Impact Scanner, LLMtxt Mastery), portfolio tracking (IsoTracker), rapid iteration (Evolve-7), and launch infrastructure (SoloMarket when available). They get both the AI discovery advantage AND the systematic approach to stand out in crowded markets.
+**For Ambitious Builders:** We provide AI visibility tools for products (AImpactMonitor, AI Search Mastery), portfolio tracking (IsoTracker), rapid iteration (Evolve-7), and launch infrastructure (SoloMarket when available). They get both the AI discovery advantage AND the systematic approach to stand out in crowded markets.
 
 **Unique Value Delivery:**
 
@@ -641,14 +649,14 @@ We provide exactly what all three groups need but can't find elsewhere: **proof 
 
 **AI-First Infrastructure:** Designed from scratch for zero-employee scale using AI. Not adapting old methods for AI era, building native infrastructure for how business works now.
 
-**Picks and Shovels Position:** Not competing for customers, providing infrastructure they all need. AI Impact Scanner and LLMtxt Mastery solve their AI visibility problems, IsoTracker enables systematic tracking, Evolve-7 accelerates iteration, and SoloMarket (when launched) provides launch infrastructure.
+**Picks and Shovels Position:** Not competing for customers, providing infrastructure they all need. AImpactMonitor and AI Search Mastery solve their AI visibility problems, IsoTracker enables systematic tracking, Evolve-7 accelerates iteration, and SoloMarket (when launched) provides launch infrastructure.
 
 **Success Probability Enhancement:**
 
 Our approach increases their success probability through:
 
 1. **Reducing Risk:** Watching someone execute the exact path they want to take provides risk validation before they commit fully
-2. **AI Visibility Advantage:** AI Impact Scanner and LLMtxt Mastery ensure they're discoverable as AI becomes the primary discovery mechanism
+2. **AI Visibility Advantage:** AImpactMonitor and AI Search Mastery ensure they're discoverable as AI becomes the primary discovery mechanism
 3. **Systematic Tracking:** IsoTracker enables data-driven decisions instead of gut feel
 4. **Rapid Iteration:** Evolve-7 accelerates the build-test-learn cycle
 5. **Thought Leadership:** Build-in-public approach creates distribution and credibility advantages
@@ -662,9 +670,9 @@ Our approach increases their success probability through:
 
 **Live Metrics Dashboard:** Public metrics showing exact progress - revenue, automation levels, customer counts, failures, learnings. Real-time proof versus hindsight success stories.
 
-**Framework Documentation:** Complete frameworks documented and available. AI Impact Scanner methodology, LLMtxt Mastery guides, and BOS-AI frameworks shared openly. Not locked behind courses - actual implementation guides we use ourselves.
+**Framework Documentation:** Complete frameworks documented and available. AImpactMonitor methodology, AI Search Mastery guides, and BOS-AI frameworks shared openly. Not locked behind courses - actual implementation guides we use ourselves.
 
-**Product Availability:** AI Impact Scanner and LLMtxt Mastery available first (Q1 2026), with IsoTracker and Evolve-7 following quickly. SoloMarket cornerstone product on longer timeline. Shipping functional products, not vaporware.
+**Product Availability:** AImpactMonitor and AI Search Mastery available first (Q1 2026), with IsoTracker and Evolve-7 following quickly. SoloMarket cornerstone product on longer timeline. Shipping functional products, not vaporware.
 
 **Transparent Failures:** Public sharing of what doesn't work, pivots made, money lost. Learning from failures as valuable as learning from successes.
 
@@ -672,18 +680,18 @@ Our approach increases their success probability through:
 
 **Success Stories and Examples:**
 
-**Corporate Escapist Journey:** Document specific case of professional leaving $120K corporate role, using AI Impact Scanner and LLMtxt Mastery to ensure AI visibility for their new business, reaching $150K revenue in 18 months. Show exact timeline, decisions, failures, successes.
+**Corporate Escapist Journey:** Document specific case of professional leaving $120K corporate role, using AImpactMonitor and AI Search Mastery to ensure AI visibility for their new business, reaching $150K revenue in 18 months. Show exact timeline, decisions, failures, successes.
 
 **Service Provider Transformation:** Document consultant using AI visibility tools to become the AI-recommended expert in their niche, going from $80K working 60 hours/week to $150K working 30 hours. Show specific tools and impact.
 
-**Builder Portfolio:** Document indie hacker using AI Impact Scanner to optimize product visibility, IsoTracker for portfolio metrics, and Evolve-7 for rapid iteration to scale from $5K MRR to $100K MRR across 3 products. Show tools enabling systematic scale.
+**Builder Portfolio:** Document indie hacker using AImpactMonitor to optimize product visibility, IsoTracker for portfolio metrics, and Evolve-7 for rapid iteration to scale from $5K MRR to $100K MRR across 3 products. Show tools enabling systematic scale.
 
 **Our Own Journey:** Most important proof point - our own progress building the AI search tool portfolio documented transparently. If we hit $10M ARR and enable someone to build $1B, proof is undeniable. If we don't, learnings are valuable.
 
 **Measurable Outcomes:**
 
-- **AI Visibility Improvement:** X% increase in AI discovery after implementing AI Impact Scanner recommendations
-- **Content Optimization:** Y% improvement in LLM discoverability after using LLMtxt Mastery
+- **AI Visibility Improvement:** X% increase in AI discovery after implementing AImpactMonitor recommendations
+- **Content Optimization:** Y% improvement in LLM discoverability after using AI Search Mastery
 - **Progress Tracking:** Z metrics tracked systematically using IsoTracker enabling data-driven decisions
 - **Iteration Speed:** Products shipped X% faster using Evolve-7 framework
 - **Community Impact:** Number of builders helping each other, successful collaborations, referrals generated
@@ -694,11 +702,11 @@ Our approach increases their success probability through:
 
 **Overt Benefit (From Their Perspective):**
 
-**Corporate Escapists:** "Use AI Impact Scanner and LLMtxt Mastery to ensure your new business is discoverable in the AI-first world - the exact same tools I'm using to build my portfolio with complete transparency on what works and what doesn't."
+**Corporate Escapists:** "Use AImpactMonitor and AI Search Mastery to ensure your new business is discoverable in the AI-first world - the exact same tools I'm using to build my portfolio with complete transparency on what works and what doesn't."
 
-**Service Providers:** "Use AI Impact Scanner to ensure AI assistants recommend your services, LLMtxt Mastery to optimize your expertise for AI discovery, and IsoTracker to systematically track your progress - without hiring anyone."
+**Service Providers:** "Use AImpactMonitor to ensure AI assistants recommend your services, AI Search Mastery to optimize your expertise for AI discovery, and IsoTracker to systematically track your progress - without hiring anyone."
 
-**Ambitious Builders:** "Use AI Impact Scanner to understand how AI surfaces your products, LLMtxt Mastery to optimize for AI-first discovery, IsoTracker for portfolio metrics, and Evolve-7 for rapid iteration - the exact same tools I'm using to build my portfolio."
+**Ambitious Builders:** "Use AImpactMonitor to understand how AI surfaces your products, AI Search Mastery to optimize for AI-first discovery, IsoTracker for portfolio metrics, and Evolve-7 for rapid iteration - the exact same tools I'm using to build my portfolio."
 
 **Dramatic Difference (That Serves Them):**
 
@@ -706,7 +714,7 @@ Our approach increases their success probability through:
 
 **Proof Over Promises:** Complete transparency with live metrics dashboard showing exact progress. Can't fake build-in-public execution - it's all verifiable in real-time.
 
-**AI Search Focus First:** Solving the most urgent problem for solopreneurs in 2025+: being discoverable when AI becomes the primary way people find products and services. AI Impact Scanner and LLMtxt Mastery address this directly.
+**AI Search Focus First:** Solving the most urgent problem for solopreneurs in 2025+: being discoverable when AI becomes the primary way people find products and services. AImpactMonitor and AI Search Mastery address this directly.
 
 **AI-First Native:** Not adapting old SEO methods for AI era. Built from ground up for AI-first discovery. Shows what's possible when you optimize for how AI surfaces businesses, not just traditional search.
 
@@ -718,7 +726,7 @@ Our approach increases their success probability through:
 
 **Track Record of Execution:** 16+ years building complex systems in global banking technology. Proven capability to build and ship at scale. Not first-time entrepreneur guessing.
 
-**Products Already Shipping:** AI Impact Scanner and LLMtxt Mastery launching Q1 2026, with IsoTracker and Evolve-7 following quickly. SoloMarket on longer timeline but actively in development. Not vaporware - actual functional products.
+**Products Already Shipping:** AImpactMonitor and AI Search Mastery launching Q1 2026, with IsoTracker and Evolve-7 following quickly. SoloMarket on longer timeline but actively in development. Not vaporware - actual functional products.
 
 **Complete Transparency Commitment:** Every metric, every failure, every win shared weekly. Can verify claims through public metrics. If it's not working, they'll see that too.
 
@@ -1224,8 +1232,8 @@ Mutual success looks like: they build successful independent businesses using ou
 **Solution Development:**
 
 **Build For Real Problems We've Validated:**
-- AI Impact Scanner addresses the urgent need for AI visibility analysis - how AI assistants surface businesses
-- LLMtxt Mastery solves content optimization for AI discovery - ensuring expertise is LLM-accessible
+- AImpactMonitor addresses the urgent need for AI visibility analysis - how AI assistants surface businesses
+- AI Search Mastery solves content optimization for AI discovery - ensuring expertise is LLM-accessible
 - IsoTracker addresses progress tracking and metrics - systematic decision-making for solopreneurs
 - Evolve-7 enables rapid iteration - accelerating the build-test-learn cycle
 - SoloMarket (future) will address Build → Launch → Sell journey as cornerstone community platform
@@ -1240,14 +1248,14 @@ Mutual success looks like: they build successful independent businesses using ou
 
 **Using 80/20 Rule:**
 1. **Must-Have (80% of value) - Q1 2026 Priority:**
-   - AI Impact Scanner: Core AI visibility analysis and recommendations
-   - LLMtxt Mastery: Content optimization for LLM discovery
+   - AImpactMonitor: Core AI visibility analysis and recommendations
+   - AI Search Mastery: Content optimization for LLM discovery
    - IsoTracker: Progress tracking and metrics dashboard
    - Evolve-7: Rapid iteration framework
 
 2. **Should-Have (15% of value) - 2026 Expansion:**
-   - AI Impact Scanner: Advanced competitive analysis
-   - LLMtxt Mastery: Automated optimization suggestions
+   - AImpactMonitor: Advanced competitive analysis
+   - AI Search Mastery: Automated optimization suggestions
    - IsoTracker: Advanced analytics and forecasting
    - BOS-AI: Core business frameworks
 
@@ -1287,27 +1295,27 @@ Mutual success looks like: they build successful independent businesses using ou
 **Message Development:**
 
 **Positioning Statement:**
-"Jamie Watters is the practitioner-infrastructure-builder creating battle-tested tools for AI-powered solopreneurs - starting with AI search visibility (AI Impact Scanner, LLMtxt Mastery) to ensure discoverability in an AI-first world, with progress tracking (IsoTracker), rapid iteration (Evolve-7), and community infrastructure (SoloMarket) following. Complete transparency on every step of the journey, with the goal of enabling at least one solopreneur to build a billion-dollar business by 2030."
+"Jamie Watters is the practitioner-infrastructure-builder creating battle-tested tools for AI-powered solopreneurs - starting with AI search visibility (AImpactMonitor, AI Search Mastery) to ensure discoverability in an AI-first world, with progress tracking (IsoTracker), rapid iteration (Evolve-7), and community infrastructure (SoloMarket) following. Complete transparency on every step of the journey, with the goal of enabling at least one solopreneur to build a billion-dollar business by 2030."
 
 **Core Messages By Persona:**
 
 **Corporate Escapists:**
-- Primary: "Ensure your new business is discoverable in the AI-first world with AI Impact Scanner"
+- Primary: "Ensure your new business is discoverable in the AI-first world with AImpactMonitor"
 - Supporting: "Use the exact same tools I'm using to build my portfolio with complete transparency"
 - Proof: "Live metrics dashboard shows exact AI visibility progress, failures, learnings"
-- CTA: "Follow the journey on LinkedIn and try AI Impact Scanner"
+- CTA: "Follow the journey on LinkedIn and try AImpactMonitor"
 
 **Service Providers:**
 - Primary: "Ensure AI assistants recommend YOUR services, not your competitors"
-- Supporting: "Use AI Impact Scanner to understand your AI visibility and LLMtxt Mastery to optimize it"
+- Supporting: "Use AImpactMonitor to understand your AI visibility and AI Search Mastery to optimize it"
 - Proof: "Case studies showing AI visibility improvement and new client acquisition"
-- CTA: "Get your first AI visibility audit with AI Impact Scanner"
+- CTA: "Get your first AI visibility audit with AImpactMonitor"
 
 **Ambitious Builders:**
 - Primary: "Understand how AI surfaces your products and optimize for AI-first discovery"
-- Supporting: "AI Impact Scanner + LLMtxt Mastery + IsoTracker + Evolve-7 = complete AI-era toolkit"
+- Supporting: "AImpactMonitor + AI Search Mastery + IsoTracker + Evolve-7 = complete AI-era toolkit"
 - Proof: "Open-source methodologies, live metrics, technical deep-dives"
-- CTA: "Start with AI Impact Scanner to audit your product visibility"
+- CTA: "Start with AImpactMonitor to audit your product visibility"
 
 **Channel Selection:**
 
@@ -1328,7 +1336,7 @@ Mutual success looks like: they build successful independent businesses using ou
 **Content Pillars:**
 1. **Journey Documentation (40%):** Weekly build-in-public updates, AI visibility metrics, learnings, failures
 2. **AI Search Education (30%):** Detailed guides on AI discovery, LLM optimization, AI-first positioning
-3. **Tool Demonstrations (20%):** How-to content for AI Impact Scanner, LLMtxt Mastery, IsoTracker, Evolve-7
+3. **Tool Demonstrations (20%):** How-to content for AImpactMonitor, AI Search Mastery, IsoTracker, Evolve-7
 4. **Community Spotlight (10%):** Member success stories, AI visibility case studies, community contributions
 
 **Content Calendar:**
@@ -1341,7 +1349,7 @@ Mutual success looks like: they build successful independent businesses using ou
 **SEO Strategy:**
 - Target keywords: "AI search optimization", "LLM optimization for business", "AI visibility for solopreneurs", "how AI recommends products", "AI-first marketing", "build in public"
 - Long-form guides targeting AI discovery for each persona
-- Technical SEO for AI Impact Scanner, LLMtxt Mastery product pages
+- Technical SEO for AImpactMonitor, AI Search Mastery product pages
 - Backlink building through partnerships and guest content on AI search topics
 
 ---

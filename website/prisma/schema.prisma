@@ -65,15 +65,26 @@ model AgentSchedule {
 }
 
 model AgentTask {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   section   String
   content   String
-  completed Boolean  @default(false)
-  sortOrder Int      @default(0)
-  syncedAt  DateTime @default(now())
+  completed Boolean   @default(false)
+  sortOrder Int       @default(0)
+  syncedAt  DateTime  @default(now())
+  tid       String?   @unique
+  project   String?
+  mode      String?   // build | growth | content | admin
+  size      String?   // S | M | L
+  taskStatus String?  // inbox | ready | in_progress | waiting_on_jamie | waiting_on_agent | waiting_external | blocked | done | archived
+  blockedBy String?
+  dueDate   DateTime?
+  owner     String?
 
   @@index([completed])
   @@index([section])
+  @@index([taskStatus])
+  @@index([owner])
+  @@index([project])
 }
 
 model MetricsHistory {
@@ -148,11 +159,22 @@ model Project {
   posts            Post[]
   goals            Goal[]
   issues           Issue[]
+  projectId        String?          @unique
+  program          String?
+  keyResult        String?
+  tier             String?          // NOW | NEXT | LATER
+  health           String?          // green | amber | red
+  killDate         DateTime?
+  nextProofPoint   String?
+  progress         String?
+  blocker          String?
 
   @@index([category])
   @@index([currentPhase])
   @@index([featured])
   @@index([trackProgress])
+  @@index([tier])
+  @@index([health])
 }
 
 enum Category {
@@ -258,6 +280,10 @@ model AgentStatus {
   projectId      String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @default(now()) @updatedAt
+  role           String?
+  queueSize      Int      @default(0)
+  exceptions     Int      @default(0)
+  mcDuties       String?
 
   @@index([status])
   @@index([lastActiveAt])
@@ -279,8 +305,120 @@ model Goal {
   project      Project?  @relation(fields: [projectId], references: [id])
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+  goalId       String?   @unique
+  parentId     String?
+  horizon      String?
+  confidence   String?
+  dueDate      DateTime?
 
   @@index([category])
   @@index([status])
   @@index([projectId])
+}
+
+// === Mission Control V2 Models ===
+
+model HitlItem {
+  id              String    @id @default(cuid())
+  tid             String?
+  description     String
+  type            String    // quick_yes_no | review_and_edit | decision | approve_with_conditions
+  priority        String    // P0 | P1 | P2
+  requestingAgent String?
+  project         String?
+  waitingSince    DateTime
+  blocks          String?
+  status          String    @default("open") // open | resolved
+  outcome         String?   // approved | approved_with_changes | rework_requested | deferred | rejected
+  resolvedAt      DateTime?
+  resolvedNotes   String?
+  syncedAt        DateTime  @default(now())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([status])
+  @@index([priority])
+  @@index([waitingSince])
+}
+
+model RecurringOp {
+  id            String    @id @default(cuid())
+  rid           String    @unique
+  operation     String
+  owner         String
+  machine       String?
+  cadence       String
+  lastCompleted DateTime?
+  nextDue       DateTime?
+  sla           String?
+  status        String    @default("active")
+  syncedAt      DateTime  @default(now())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([status])
+  @@index([nextDue])
+}
+
+model SystemHealth {
+  id               String    @id @default(cuid())
+  system           String    @unique
+  owner            String
+  machine          String?
+  checkMethod      String?
+  expectedInterval String?
+  lastSuccess      DateTime?
+  status           String    @default("unknown") // green | amber | red | unknown
+  alertThreshold   String?
+  syncedAt         DateTime  @default(now())
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([status])
+}
+
+model EventLog {
+  id        String   @id @default(cuid())
+  timestamp DateTime
+  actor     String
+  entity    String   // task | project | goal | hitl | decision
+  entityId  String
+  action    String   // status_change | created | resolved | completed
+  fromValue String?
+  toValue   String?
+  reason    String?
+  project   String?
+  createdAt DateTime @default(now())
+
+  @@index([timestamp])
+  @@index([entityId])
+  @@index([actor])
+  @@index([entity])
+}
+
+model Decision {
+  id         String    @id @default(cuid())
+  did        String    @unique
+  date       DateTime
+  title      String
+  owner      String
+  context    String?
+  chosen     String?
+  reviewDate DateTime?
+  syncedAt   DateTime  @default(now())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model McMetric {
+  id       String   @id @default(cuid())
+  group    String   // strategic | execution | agent_performance | product_business
+  name     String
+  current  String?
+  target   String?
+  status   String?  // ok | needs_attention | below | at_risk
+  syncedAt DateTime @default(now())
+
+  @@unique([group, name])
+  @@index([group])
 }

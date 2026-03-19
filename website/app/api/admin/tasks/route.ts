@@ -37,10 +37,29 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
     }
 
+    // Parse optional filters
+    const url = new URL(req.url);
+    const filterStatus = url.searchParams.get('taskStatus');
+    const filterOwner = url.searchParams.get('owner');
+    const filterProject = url.searchParams.get('project');
+    const flat = url.searchParams.get('flat') === 'true';
+
+    // Build where clause
+    const where: Record<string, unknown> = {};
+    if (filterStatus) where.taskStatus = filterStatus;
+    if (filterOwner) where.owner = filterOwner;
+    if (filterProject) where.project = filterProject;
+
     // Fetch from database (synced by agent)
     const tasks = await prisma.agentTask.findMany({
+      where,
       orderBy: [{ section: 'asc' }, { sortOrder: 'asc' }],
     });
+
+    // If flat=true, return raw task array (for Execution Board)
+    if (flat) {
+      return NextResponse.json(tasks);
+    }
 
     // Group by section
     const sections: { [key: string]: { content: string; completed: boolean }[] } = {};
@@ -92,8 +111,34 @@ export async function PATCH(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { section, content, completed } = body;
+    const { section, content, completed, taskId, taskStatus } = body;
 
+    // Support new status-transition mode (by taskId + taskStatus)
+    const VALID_STATUSES = ['ready', 'in_progress', 'waiting_on_jamie', 'waiting_on_agent', 'blocked', 'done', 'parked', 'cancelled', 'review'];
+
+    if (taskId && taskStatus) {
+      if (!VALID_STATUSES.includes(taskStatus)) {
+        return NextResponse.json({ error: `Invalid taskStatus. Must be one of: ${VALID_STATUSES.join(', ')}` }, { status: 400 });
+      }
+
+      const task = await prisma.agentTask.findUnique({ where: { id: taskId } });
+      if (!task) {
+        return NextResponse.json({ error: 'Task not found' }, { status: 404 });
+      }
+
+      const updated = await prisma.agentTask.update({
+        where: { id: taskId },
+        data: {
+          taskStatus,
+          completed: taskStatus === 'done',
+          syncedAt: new Date(),
+        },
+      });
+
+      return NextResponse.json({ success: true, task: updated });
+    }
+
+    // Legacy mode: toggle completed by section + content
     if (!section || !content || typeof completed !== 'boolean') {
       return NextResponse.json({ error: 'Missing section, content, or completed' }, { status: 400 });
     }
