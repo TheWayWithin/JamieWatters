@@ -16,6 +16,7 @@ export async function GET(req: NextRequest) {
     todayStart.setHours(0, 0, 0, 0);
 
     const [
+      yearlyObjectives,
       quarterlyKRs,
       todaysCompletions,
       hitlOpen,
@@ -25,6 +26,15 @@ export async function GET(req: NextRequest) {
       blockedTasks,
     ] = await Promise.all([
       prisma.goal.findMany({
+        where: { horizon: 'yearly' },
+        select: {
+          id: true, goalId: true, name: true, currentValue: true,
+          targetValue: true, unit: true, status: true, dueDate: true,
+          category: true, period: true, description: true,
+        },
+        orderBy: { category: 'asc' },
+      }),
+      prisma.goal.findMany({
         where: {
           OR: [
             { horizon: 'quarterly' },
@@ -33,7 +43,8 @@ export async function GET(req: NextRequest) {
         },
         select: {
           id: true, goalId: true, name: true, currentValue: true,
-          targetValue: true, unit: true, status: true, dueDate: true, category: true,
+          targetValue: true, unit: true, status: true, dueDate: true,
+          category: true, parentId: true,
         },
       }),
       prisma.agentTask.findMany({
@@ -92,6 +103,7 @@ export async function GET(req: NextRequest) {
     }));
 
     return NextResponse.json({
+      yearlyObjectives,
       quarterlyKRs,
       todaysCompletions,
       hitlCount: hitlOpen,

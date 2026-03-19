@@ -5,10 +5,17 @@ import { useState, useEffect, useCallback } from 'react';
 export const dynamic = 'force-dynamic';
 
 interface CommandData {
+  yearlyObjectives: Array<{
+    id: string; goalId: string | null; name: string;
+    currentValue: number; targetValue: number; unit: string;
+    status: string; dueDate: string | null; category: string;
+    period: string | null; description: string | null;
+  }>;
   quarterlyKRs: Array<{
     id: string; goalId: string | null; name: string;
     currentValue: number; targetValue: number; unit: string;
     status: string; dueDate: string | null; category: string;
+    parentId: string | null;
   }>;
   todaysCompletions: Array<{
     id: string; tid: string | null; content: string; owner: string | null;
@@ -126,9 +133,73 @@ export default function CommandPage() {
         </div>
       </section>
 
-      {/* Q2 Key Results */}
+      {/* 2026 Yearly Objectives */}
+      {data.yearlyObjectives.length > 0 && (
+        <section className="bg-bg-surface border border-border-default rounded-lg p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-body font-semibold text-text-primary">2026 Objectives</h2>
+            <a href="/admin/goals" className="text-[11px] text-brand-primary hover:underline">Manage goals</a>
+          </div>
+          <div className="space-y-3">
+            {data.yearlyObjectives.map((obj) => {
+              const pct = obj.targetValue > 0 ? Math.round((obj.currentValue / obj.targetValue) * 100) : 0;
+              // Count quarterly KRs linked to this objective
+              const childKRs = data.quarterlyKRs.filter((kr) => kr.parentId === obj.id);
+              return (
+                <div key={obj.id} className="bg-bg-primary rounded-md p-4 border border-border-subtle">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="text-body font-medium text-text-primary">{obj.name}</p>
+                      {obj.description && (
+                        <p className="text-[11px] text-text-secondary mt-0.5">{obj.description}</p>
+                      )}
+                    </div>
+                    <div className="text-right shrink-0">
+                      <p className={`text-body font-bold ${statusColor(obj.status)}`}>
+                        {obj.currentValue} / {obj.targetValue} {obj.unit}
+                      </p>
+                      <p className="text-[10px] text-text-secondary">{pct}%</p>
+                    </div>
+                  </div>
+                  <div className="mt-2 h-1.5 bg-bg-surface rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all ${
+                        obj.status === 'achieved' ? 'bg-green-500' :
+                        obj.status === 'on_track' ? 'bg-green-500' :
+                        obj.status === 'at_risk' ? 'bg-amber-500' : 'bg-red-500'
+                      }`}
+                      style={{ width: `${Math.min(pct, 100)}%` }}
+                    />
+                  </div>
+                  {childKRs.length > 0 && (
+                    <div className="mt-2 flex gap-2 flex-wrap">
+                      {childKRs.map((kr) => {
+                        const krPct = kr.targetValue > 0 ? Math.round((kr.currentValue / kr.targetValue) * 100) : 0;
+                        return (
+                          <span key={kr.id} className={`text-[10px] px-2 py-0.5 rounded-full border ${
+                            kr.status === 'on_track' || kr.status === 'achieved' ? 'border-green-500/30 text-green-400' :
+                            kr.status === 'at_risk' ? 'border-amber-500/30 text-amber-400' :
+                            'border-red-500/30 text-red-400'
+                          }`}>
+                            {kr.name} ({krPct}%)
+                          </span>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* Quarterly Key Results */}
       <section className="bg-bg-surface border border-border-default rounded-lg p-5">
-        <h2 className="text-body font-semibold text-text-primary mb-4">Q2 Key Results</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-body font-semibold text-text-primary">Quarterly Key Results</h2>
+          <a href="/admin/goals" className="text-[11px] text-brand-primary hover:underline">Manage goals</a>
+        </div>
         {data.quarterlyKRs.length === 0 ? (
           <p className="text-body-sm text-text-secondary">No quarterly key results found. Awaiting first sync.</p>
         ) : (

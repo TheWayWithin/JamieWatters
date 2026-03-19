@@ -307,13 +307,18 @@ model Goal {
   updatedAt    DateTime  @updatedAt
   goalId       String?   @unique
   parentId     String?
-  horizon      String?
+  horizon      String?   // 'yearly' | 'quarterly'
+  period       String?   // '2026', 'Q2-2026', 'Q3-2026'
   confidence   String?
   dueDate      DateTime?
+  reviewNotes  String?
+  reviewedAt   DateTime?
 
   @@index([category])
   @@index([status])
   @@index([projectId])
+  @@index([horizon])
+  @@index([period])
 }
 
 // === Mission Control V2 Models ===

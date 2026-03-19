@@ -65,6 +65,11 @@ export async function PATCH(
     if (body.category !== undefined) data.category = body.category;
     if (body.deadline !== undefined) data.deadline = body.deadline ? new Date(body.deadline) : null;
     if (body.projectId !== undefined) data.projectId = body.projectId || null;
+    if (body.horizon !== undefined) data.horizon = body.horizon || null;
+    if (body.period !== undefined) data.period = body.period || null;
+    if (body.parentId !== undefined) data.parentId = body.parentId || null;
+    if (body.reviewNotes !== undefined) data.reviewNotes = body.reviewNotes || null;
+    if (body.reviewedAt !== undefined) data.reviewedAt = body.reviewedAt ? new Date(body.reviewedAt) : null;
 
     // Auto-recalculate status if value fields changed
     const newCurrent = (data.currentValue as number) ?? existing.currentValue;

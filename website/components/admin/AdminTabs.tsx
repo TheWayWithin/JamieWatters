@@ -25,6 +25,7 @@ const TOP_TABS: Tab[] = [
 /* ---- Mission Control sub-tabs (V2) ---- */
 const MC_TABS: Tab[] = [
   { id: 'command',   label: 'Command',    href: '/admin',            icon: '📊' },
+  { id: 'goals',     label: 'Goals',      href: '/admin/goals',      icon: '🎯' },
   { id: 'hitl',      label: 'HITL Queue', href: '/admin/hitl',       icon: '🔴' },
   { id: 'execution', label: 'Execution',  href: '/admin/execution',  icon: '⚡' },
   { id: 'portfolio', label: 'Portfolio',   href: '/admin/portfolio',  icon: '💼' },
@@ -33,7 +34,7 @@ const MC_TABS: Tab[] = [
 ];
 
 /* ---- Which MC paths are considered "Mission Control" ---- */
-const MC_PATHS = ['/admin/hitl', '/admin/execution', '/admin/portfolio', '/admin/agents', '/admin/audit', '/admin/mission-control'];
+const MC_PATHS = ['/admin/goals', '/admin/hitl', '/admin/execution', '/admin/portfolio', '/admin/agents', '/admin/audit', '/admin/mission-control'];
 
 function resolveTopTab(path: string): string {
   if (path.startsWith('/admin/content')) return 'content';
@@ -44,6 +45,7 @@ function resolveTopTab(path: string): string {
 
 function resolveMcTab(path: string): string {
   if (path === '/admin' || path === '/admin/') return 'command';
+  if (path.startsWith('/admin/goals')) return 'goals';
   if (path.startsWith('/admin/hitl')) return 'hitl';
   if (path.startsWith('/admin/execution')) return 'execution';
   if (path.startsWith('/admin/portfolio')) return 'portfolio';

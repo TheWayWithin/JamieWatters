@@ -49,11 +49,17 @@ export async function GET(req: NextRequest) {
     const category = searchParams.get('category') || undefined;
     const status = searchParams.get('status') || undefined;
     const projectId = searchParams.get('projectId') || undefined;
+    const horizon = searchParams.get('horizon') || undefined;
+    const period = searchParams.get('period') || undefined;
+    const parentId = searchParams.get('parentId') || undefined;
 
     const where: Record<string, unknown> = {};
     if (category) where.category = category;
     if (status) where.status = status;
     if (projectId) where.projectId = projectId;
+    if (horizon) where.horizon = horizon;
+    if (period) where.period = period;
+    if (parentId) where.parentId = parentId;
 
     const goals = await prisma.goal.findMany({
       where,
@@ -106,7 +112,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
     }
 
-    const { name, metric, currentValue, targetValue, unit, category, description, deadline, projectId, status } = body;
+    const { name, metric, currentValue, targetValue, unit, category, description, deadline, projectId, status, horizon, period, parentId } = body;
 
     // Validate required fields
     const missing: string[] = [];
@@ -145,6 +151,9 @@ export async function POST(req: NextRequest) {
         status: resolvedStatus,
         deadline: deadlineDate,
         projectId: projectId || null,
+        horizon: horizon || null,
+        period: period || null,
+        parentId: parentId || null,
       },
       include: {
         project: { select: { id: true, name: true, slug: true } },
