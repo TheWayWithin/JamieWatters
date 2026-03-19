@@ -20,6 +20,23 @@ Marvin writes (EC2) → Syncthing ─────→ Mini parses → Neon (cloud
 
 The Mac Mini is the hub. The sync script runs there. Files from MacBook and EC2 arrive via Syncthing. The dashboard reads from Neon.
 
+## Six-layer hierarchy
+
+All work fits within this hierarchy. Every agent should understand where their tasks sit.
+
+| Layer | What | Example | Who owns it | Dashboard location |
+|-------|------|---------|-------------|-------------------|
+| **L1: Vision + BHAG** | North star, reviewed annually | $10M ARR by 2030, truth-first | Jamie | Command View (North Star card) |
+| **L2: Yearly Objectives** | 3-5 things true by Dec 31 | First $1 revenue, 4+ products above $1K MRR | Jamie sets, Marvin reviews | Command View + /admin/goals |
+| **L3: Quarterly KRs** | Measurable outcomes per quarter | Launch AImpactMonitor, first paying customer | Jamie sets, all agents execute | Command View + /admin/goals |
+| **L4: Programs + Projects** | Programs = ongoing, Projects = time-bound | AI Search Mastery (program), Project Lighthouse (project) | Jamie approves, Merlin tracks | /admin/portfolio (grouped by program) |
+| **L5: Tasks** | Atomic units of work with T-ids | T-005: Update DNS records | Owner agent | /admin/execution |
+| **L6: Audit Log** | Every status change timestamped | T-005 ready→in_progress by Ace | Auto-logged | /admin/audit |
+
+**Every task (L5) links to a project (L4), which belongs to a program (L4), which serves a quarterly KR (L3), which advances a yearly objective (L2), which moves toward the BHAG (L1).**
+
+When creating tasks, agents should note which project/KR it serves. If a task doesn't connect to any KR, question whether it should exist.
+
 ---
 
 ## The golden rule (updated)
@@ -40,7 +57,7 @@ All canonical files are in `~/shared/mission-control/`. Git-tracked. Synced via 
 
 | File | Purpose | Who updates it |
 |------|---------|----------------|
-| 00-DIRECTION.md | Yearly objectives, quarterly key results | Marvin (weekly review) |
+| 00-DIRECTION.md | Yearly objectives, quarterly key results (also managed via /admin/goals) | Marvin (weekly review) + Jamie (quarterly goal setting) |
 | 01-PORTFOLIO.md | Product health, stages, kill dates | Marvin (weekly review) |
 | 02-PROJECTS.md | Master project index | Any agent on status change |
 | 03-SPRINT.md | Current 2-week battle plan | Task owners on status change |
@@ -243,10 +260,12 @@ Examples:
 - Log engagement metrics in memory
 - Update pulse with social activity notes
 
-### Agent-11 (MacBook) — Development + Dashboard
-- Technical build tasks (Lighthouse code, schema markup)
-- Dashboard development for jamiewatters.work
+### Agent-11 (MacBook) — Development + Dashboard + Goals
+- Technical build tasks across all dev repos (AImpactMonitor, LLMTxtMastery, IsoTracker, Evolve-7, AISearchArena, AISearchMastery, SoloMarket, FreeCalcHub, AImpactScanner, BOS-AI, etc.)
+- Dashboard development for jamiewatters.work/admin (Mission Control V2)
+- Goals management: support Jamie during quarterly goal setting/review via /admin/goals
 - Update statuses with T-ids
+- Deployed on Jamie's MacBook via Claude Code — one instance across all repos
 
 ---
 
@@ -327,6 +346,23 @@ WIP limits: 7 Jamie, 5 per agent, 8 active projects
 **Day 5:** Full 9-status model. Merlin begins daily triage. All agents following this SOP.
 
 **Day 14:** Old plan/ symlinks retired. Overnight.md deleted. System fully operational.
+
+---
+
+## Quarterly goals cadence
+
+Every quarter has a review/setting cycle. This is Jamie's responsibility with Agent-11 support.
+
+| When | What | Who | Dashboard |
+|------|------|-----|-----------|
+| Last week of quarter | Review outgoing quarter's KRs | Jamie + Agent-11 | /admin/goals → Review |
+| Last week of quarter | Review yearly objectives, adjust if needed | Jamie + Agent-11 | /admin/goals → Review |
+| Last week of quarter | Set incoming quarter's KRs, link to yearly objectives | Jamie + Agent-11 | /admin/goals → + Quarterly KR |
+| Last week of Q4 | Set next year's yearly objectives + review BHAG | Jamie + Agent-11 | /admin/goals → + Yearly Objective |
+
+**Marvin's role:** After Jamie sets goals, Marvin updates 00-DIRECTION.md to match and incorporates into weekly reviews. Marvin should flag if KRs don't connect to yearly objectives or if yearly objectives drift from the BHAG.
+
+**All agents:** At sprint planning, check that sprint tasks connect to the current quarter's KRs. If a task doesn't serve any KR, question its priority.
 
 ---
 

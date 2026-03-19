@@ -45,9 +45,54 @@
 ## Weekly (Sundays, with Marvin, 30 min)
 
 - [ ] Review 07-METRICS.md scorecard
-- [ ] Check kill dates in 01-PORTFOLIO.md
+- [ ] Check kill dates in 01-PORTFOLIO.md (or /admin/portfolio)
 - [ ] Review 08-LEARNING.md auto-generated candidates
 - [ ] Approve next sprint items
+
+## Quarterly Goals Review (last week of quarter, 60 min)
+
+This is your strategic checkpoint. Do it with Agent-11 on your MacBook via the Goals page (/admin/goals).
+
+### End-of-quarter review (~30 min)
+
+1. **Review each yearly objective** — open /admin/goals, click "Review" on each 2026 objective
+   - Assess status: on track / at risk / behind / achieved
+   - Write review notes: what changed, what surprised you, what needs to adjust
+   - Save the review (timestamps automatically)
+
+2. **Review each quarterly KR** — same process for the outgoing quarter's key results
+   - Mark achieved KRs
+   - Note which ones missed and why
+   - Identify patterns (e.g., consistently behind on revenue goals → need to reprioritize)
+
+3. **Adjust yearly objectives if needed** — click "Edit" on any yearly objective
+   - Update targets if reality has shifted (market change, pivot, etc.)
+   - Add new objectives if a new strategic priority emerged
+   - Kill objectives that no longer serve the vision
+
+### New quarter goal setting (~30 min)
+
+4. **Create new quarterly KRs** — click "+ Quarterly KR" for each new quarter's key results
+   - Set period to the new quarter (e.g., Q3-2026)
+   - Link each KR to its parent yearly objective
+   - Set measurable targets with clear metrics
+   - Set deadline to last day of the quarter
+
+5. **Gut check** — for each new KR, ask:
+   - Does this move a yearly objective forward?
+   - Is the target achievable but stretchy?
+   - Can I measure progress weekly?
+   - Does it align with the guiding star ("Truth is the Currency of the Future")?
+
+### Quarter calendar
+
+| Quarter | Review period | Set goals for |
+|---------|--------------|---------------|
+| Q2 2026 | Last week of June | Q3 2026 |
+| Q3 2026 | Last week of September | Q4 2026 |
+| Q4 2026 | Last week of December | Q1 2027 + 2027 yearly objectives |
+
+**Q4 is special:** you also set the next year's yearly objectives. Review the BHAG, update the Vision & Mission if needed.
 
 ---
 
