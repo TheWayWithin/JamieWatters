@@ -154,6 +154,11 @@ export function getBlogPostSchema(post: Post, content?: string) {
     schema.keywords = post.tags.join(', ');
   }
 
+  // Add hero image if set (required for Google rich results)
+  if (post.image) {
+    schema.image = `${SITE_URL}${post.image}`;
+  }
+
   // Add article body excerpt (first 500 chars to avoid bloat)
   if (content) {
     const plainText = content.replace(/[#*_`\[\]()]/g, '').trim();

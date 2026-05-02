@@ -116,6 +116,9 @@ model Post {
   phase         ProjectPhase?
   postTypeEnum  PostTypeEnum?
   targetPersona TargetPersona?
+  image         String?
+  imageAlt      String?
+  imageCaption  String?
   project       Project?       @relation(fields: [projectId], references: [id])
 
   @@index([contentPillar])

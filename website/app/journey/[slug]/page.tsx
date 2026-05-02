@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Metadata } from 'next';
 import { getAllPosts, getPostBySlug, getPostSlugs } from '@/lib/database';
 import { renderMarkdown } from '@/lib/markdown';
@@ -39,7 +40,22 @@ export async function generateMetadata({
   }
 
   const postUrl = `https://jamiewatters.work/journey/${slug}`;
-  const ogImage = `https://jamiewatters.work/og?type=post&title=${encodeURIComponent(post.title)}`;
+  const heroImageUrl = post.image ? `https://jamiewatters.work${post.image}` : null;
+  const fallbackOg = `https://jamiewatters.work/og?type=post&title=${encodeURIComponent(post.title)}`;
+
+  const ogImage = heroImageUrl
+    ? {
+        url: heroImageUrl,
+        width: 1600,
+        height: 900,
+        alt: post.imageAlt || post.title,
+      }
+    : {
+        url: fallbackOg,
+        width: 1200,
+        height: 630,
+        alt: post.title,
+      };
 
   return {
     title: post.title,
@@ -51,20 +67,13 @@ export async function generateMetadata({
       type: 'article',
       publishedTime: (post.publishedAt || post.createdAt).toISOString(),
       authors: ['Jamie Watters'],
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: post.title,
-        },
-      ],
+      images: [ogImage],
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.excerpt,
-      images: [ogImage],
+      images: [ogImage.url],
     },
   };
 }
@@ -163,6 +172,27 @@ For now, this shows that the database integration is working correctly for post 
             </Badge>
           ))}
         </div>
+
+        {/* Hero Image */}
+        {post.image && (
+          <figure className="mb-12 -mx-6 sm:mx-0">
+            <div className="relative aspect-[16/9] w-full overflow-hidden sm:rounded-lg">
+              <Image
+                src={post.image}
+                alt={post.imageAlt || post.title}
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 768px"
+                className="object-cover"
+              />
+            </div>
+            {post.imageCaption && (
+              <figcaption className="text-caption text-text-tertiary italic text-center mt-3 px-6 sm:px-0">
+                {post.imageCaption}
+              </figcaption>
+            )}
+          </figure>
+        )}
 
         {/* Post Content - Rendered Markdown with Syntax Highlighting */}
         <div

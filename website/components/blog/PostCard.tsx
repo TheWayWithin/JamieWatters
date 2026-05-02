@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Card } from '../ui/Card';
 import { Calendar, Clock } from 'lucide-react';
 import type { PostWithMetadata } from '@/lib/database';
@@ -21,6 +22,18 @@ export function PostCard({ post }: PostCardProps) {
 
   return (
     <Card hover className="flex flex-col h-full">
+      {post.image && (
+        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-md mb-4 -mt-2">
+          <Image
+            src={post.image}
+            alt={post.imageAlt || post.title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover"
+          />
+        </div>
+      )}
+
       <h3 className="text-xl font-semibold text-text-primary mb-2">
         {post.title}
       </h3>
