@@ -156,7 +156,7 @@ export function getBlogPostSchema(post: Post, content?: string) {
 
   // Add hero image if set (required for Google rich results)
   if (post.image) {
-    schema.image = `${SITE_URL}${post.image}`;
+    schema.image = post.image.startsWith('http') ? post.image : `${SITE_URL}${post.image}`;
   }
 
   // Add article body excerpt (first 500 chars to avoid bloat)

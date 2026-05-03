@@ -4,12 +4,20 @@ Blog posts at `/journey/<slug>` support an optional hero image shown at the top 
 
 ## Workflow
 
-1. **Drop the image file** into `website/public/images/blog/` (one image per post). Name it after the slug, e.g. `contact-is-the-test.webp`.
-2. **Set three fields** on the post when publishing via `jpub`:
-   - `image` — path to the file, e.g. `/images/blog/contact-is-the-test.webp`
+1. **Drop the image file** into `~/shared/content/blog/images/` (one image per post). Name it after the slug, e.g. `2026-05-02-contact-is-the-test.webp`.
+2. **Set three fields** in the post frontmatter when publishing via `jpub`:
+   - `image` — served path, e.g. `/images/blog/2026-05-02-contact-is-the-test.webp`
    - `imageAlt` — short description for accessibility and SEO
    - `imageCaption` — optional caption shown below the image (italic, centred)
-3. **Commit the image file** to the repo. Netlify serves it from the `public/` folder.
+3. **Run `jpub` as normal.** It uploads the image to Cloudflare R2 (bucket `jamiewatters-work`, prefix `blog/`) and stores the absolute R2 URL in the database. No website rebuild needed — the image is live within seconds.
+
+## Backwards compatibility
+
+Older posts published before the R2 migration store relative paths (`/images/blog/foo.webp`) in the database and continue to render from `website/public/images/blog/`. Both paths are supported indefinitely.
+
+## R2 fallback
+
+If `R2_*` env vars are not set in jpub's `.env`, jpub falls back to the legacy behaviour (relative path in DB, file must exist in `website/public/images/blog/` and be committed). This keeps local development from being blocked by missing R2 credentials.
 
 ## Specs
 

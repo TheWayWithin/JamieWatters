@@ -8,6 +8,13 @@ const nextConfig = {
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'pub-4f2aa5e351b44f67ba6dd0bc32fe1bb2.r2.dev',
+        pathname: '/**',
+      },
+    ],
   },
   async headers() {
     return [

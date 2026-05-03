@@ -40,7 +40,9 @@ export async function generateMetadata({
   }
 
   const postUrl = `https://jamiewatters.work/journey/${slug}`;
-  const heroImageUrl = post.image ? `https://jamiewatters.work${post.image}` : null;
+  const heroImageUrl = post.image
+    ? (post.image.startsWith('http') ? post.image : `https://jamiewatters.work${post.image}`)
+    : null;
   const fallbackOg = `https://jamiewatters.work/og?type=post&title=${encodeURIComponent(post.title)}`;
 
   const ogImage = heroImageUrl
