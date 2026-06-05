@@ -171,93 +171,72 @@ export default async function ProjectPage({
         </div>
       </section>
 
-      {/* Metrics Display */}
-      <section className="px-6 pb-8 sm:pb-12 max-w-4xl mx-auto">
-        <h2 className="text-display-md font-semibold text-text-primary mb-6">
-          Current Metrics
-        </h2>
+      {/* Metrics Display — only render metrics that have real data */}
+      {(() => {
+        const projectType = (project.projectType as ProjectType) || ProjectType.SAAS;
+        const template = METRIC_TEMPLATES[projectType] || [];
+        const templateByKey: Record<string, MetricDefinition> = Object.fromEntries(
+          template.map((m) => [m.key, m])
+        );
+        const customMetrics =
+          (project.customMetrics as Record<string, number> | null) || {};
+        const entries = Object.entries(customMetrics).filter(
+          ([, v]) => v !== null && v !== undefined
+        );
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {(() => {
-            const projectType = (project.projectType as ProjectType) || ProjectType.SAAS;
-            const metrics = METRIC_TEMPLATES[projectType] || [];
-            const customMetrics = project.customMetrics as Record<string, number> | null;
+        // No real metric data yet -> show nothing (status lives in the header).
+        if (entries.length === 0) return null;
 
-            // For SAAS, use legacy mrr/users if no customMetrics
-            if (projectType === ProjectType.SAAS && (!customMetrics || Object.keys(customMetrics).length === 0)) {
-              return (
-                <>
-                  {/* MRR */}
-                  <div className="bg-bg-surface border border-border-default rounded-lg p-6">
-                    <div className="text-4xl font-bold text-brand-accent font-mono mb-2">
-                      {formatMetricValue(Number(project.mrr), 'currency')}
-                    </div>
-                    <div className="text-body-sm text-text-secondary">
-                      Monthly Recurring Revenue
-                    </div>
-                  </div>
+        const humanise = (key: string) =>
+          key
+            .replace(/([A-Z])/g, ' $1')
+            .replace(/^./, (c) => c.toUpperCase())
+            .trim();
 
-                  {/* Users */}
-                  <div className="bg-bg-surface border border-border-default rounded-lg p-6">
-                    <div className="text-4xl font-bold text-brand-accent font-mono mb-2">
-                      {formatMetricValue(project.users, 'number')}
-                    </div>
-                    <div className="text-body-sm text-text-secondary">
-                      Active Users
-                    </div>
-                  </div>
+        return (
+          <section className="px-6 pb-8 sm:pb-12 max-w-4xl mx-auto">
+            <h2 className="text-display-md font-semibold text-text-primary mb-6">
+              Current Metrics
+            </h2>
 
-                  {/* Status */}
-                  <div className="bg-bg-surface border border-border-default rounded-lg p-6">
-                    <div className="text-2xl font-semibold text-text-primary mb-2 capitalize">
-                      {project.status.charAt(0) + project.status.slice(1).toLowerCase()}
-                    </div>
-                    <div className="text-body-sm text-text-secondary">
-                      Status
-                    </div>
-                  </div>
-                </>
-              );
-            }
-
-            // For other project types, show all metrics from template
-            return (
-              <>
-                {metrics.map((metric: MetricDefinition) => {
-                  const value = customMetrics?.[metric.key] ?? 0;
-                  const Icon = metric.icon;
-                  return (
-                    <div key={metric.key} className="bg-bg-surface border border-border-default rounded-lg p-6">
-                      <div className="flex items-center gap-2 mb-2">
-                        {Icon && <Icon className="w-5 h-5 text-brand-accent" />}
-                        <div className="text-body-sm text-text-secondary">
-                          {metric.label}
-                        </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {entries.map(([key, value]) => {
+                const def = templateByKey[key];
+                const Icon = def?.icon;
+                return (
+                  <div
+                    key={key}
+                    className="bg-bg-surface border border-border-default rounded-lg p-6"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      {Icon && <Icon className="w-5 h-5 text-brand-accent" />}
+                      <div className="text-body-sm text-text-secondary">
+                        {def?.label || humanise(key)}
                       </div>
-                      <div className="text-4xl font-bold text-brand-accent font-mono">
-                        {formatMetricValue(value, metric.format)}
-                      </div>
-                      {metric.description && (
-                        <div className="text-caption text-text-tertiary mt-2">
-                          {metric.description}
-                        </div>
-                      )}
                     </div>
-                  );
-                })}
-              </>
-            );
-          })()}
-        </div>
+                    <div className="text-4xl font-bold text-brand-accent font-mono">
+                      {formatMetricValue(value, def?.format || 'number')}
+                    </div>
+                    {def?.description && (
+                      <div className="text-caption text-text-tertiary mt-2">
+                        {def.description}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
 
-        <p className="text-caption text-text-tertiary mt-4">
-          Last updated: {new Date(project.updatedAt).toLocaleDateString('en-US', {
-            month: 'long',
-            day: 'numeric',
-            year: 'numeric'
-          })}
-        </p>
-      </section>
+            <p className="text-caption text-text-tertiary mt-4">
+              Last updated: {new Date(project.updatedAt).toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+              })}
+            </p>
+          </section>
+        );
+      })()}
 
       {/* Tech Stack */}
       <section className="px-6 pb-8 sm:pb-12 max-w-4xl mx-auto">
