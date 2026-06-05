@@ -26,7 +26,7 @@ export function getPersonSchema() {
     name: 'Jamie Watters',
     url: SITE_URL,
     jobTitle: 'Solopreneur',
-    description: 'AI-powered solopreneur building a $1B portfolio by 2030. Building 10+ products simultaneously using AI orchestration.',
+    description: 'Systems programmer of 38 years, now building with AI in public. Open code, real numbers, and honest reports on what actually holds up.',
     image: `${SITE_URL}/images/jamie-profile.jpg`,
     sameAs: [
       'https://twitter.com/jamiewatters',
@@ -35,9 +35,9 @@ export function getPersonSchema() {
     ],
     knowsAbout: [
       'Artificial Intelligence',
-      'Solopreneurship',
-      'SaaS Development',
-      'AI Orchestration',
+      'Cognitive Sovereignty',
+      'Business Continuity',
+      'Open Source',
       'Build in Public',
     ],
   };
@@ -55,7 +55,7 @@ export function getWebsiteSchema() {
     '@type': 'WebSite',
     name: SITE_NAME,
     url: SITE_URL,
-    description: 'AI-powered solopreneur building 10+ products simultaneously. Follow the journey from zero to billion in public—real metrics, real challenges, real lessons.',
+    description: 'Building with AI in public: open code, real numbers, and honest field reports on what actually holds up.',
     author: {
       '@type': 'Person',
       name: 'Jamie Watters',

@@ -29,17 +29,17 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Jamie Watters | Side Gig to Financial Freedom — Built in Public',
+    default: 'Jamie Watters | Building in public at the AI frontier',
     template: '%s | Jamie Watters',
   },
   description:
-    'Real metrics, real failures. Follow the journey of a practitioner building AI-powered tools for solopreneurs.',
+    "I build with AI, test what's real, kill what isn't, and share the lot in public. Open code, real numbers, the failures before the wins.",
   keywords: [
-    'solopreneur',
     'AI',
     'build in public',
-    'portfolio',
-    'entrepreneurship',
+    'cognitive sovereignty',
+    'open source',
+    'field report',
   ],
   authors: [{ name: 'Jamie Watters' }],
   creator: 'Jamie Watters',
@@ -47,24 +47,24 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://jamiewatters.work/',
-    title: 'Jamie Watters | Side Gig to Financial Freedom — Built in Public',
+    title: 'Jamie Watters | Building in public at the AI frontier',
     description:
-      'Real metrics, real failures. Follow the journey of a practitioner building AI-powered tools for solopreneurs.',
+      "I build with AI, test what's real, kill what isn't, and share the lot in public. Open code, real numbers, the failures before the wins.",
     siteName: 'Jamie Watters',
     images: [
       {
         url: 'https://jamiewatters.work/og',
         width: 1200,
         height: 630,
-        alt: 'Jamie Watters - Side Gig to Financial Freedom — Built in Public',
+        alt: 'Jamie Watters - Building in public at the AI frontier',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Jamie Watters | Side Gig to Financial Freedom — Built in Public',
+    title: 'Jamie Watters | Building in public at the AI frontier',
     description:
-      'Real metrics, real failures. Follow the journey of a practitioner building AI-powered tools for solopreneurs.',
+      "I build with AI, test what's real, kill what isn't, and share the lot in public. Open code, real numbers, the failures before the wins.",
     creator: '@jamiewatters',
     images: ['https://jamiewatters.work/og'],
   },

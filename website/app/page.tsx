@@ -1,15 +1,8 @@
 import Link from 'next/link';
 import { ProjectCard } from '@/components/portfolio/ProjectCard';
 import { PostCard } from '@/components/blog/PostCard';
-import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { TrendingUp, Users, Briefcase, DollarSign } from 'lucide-react';
-import {
-  getFeaturedProjects,
-  getRecentPosts,
-  getMetrics,
-} from '@/lib/database';
-import { ACHIEVEMENTS, NEXT_MILESTONE } from '@/lib/achievements';
+import { getFeaturedProjects, getRecentPosts } from '@/lib/database';
 import { getSEOMetadata } from '@/lib/seo';
 import {
   getPersonSchema,
@@ -17,22 +10,21 @@ import {
   renderStructuredData,
 } from '@/lib/structured-data';
 
-// ISR: Revalidate every 60 seconds (temporarily reduced to refresh OG tags)
+// ISR: Revalidate every 60 seconds
 export const revalidate = 60;
 
 // SEO Metadata
 export const metadata = getSEOMetadata({
-  title: 'Side Gig to Financial Freedom — Built in Public',
-  description: 'Real metrics, real failures. Follow the journey of a practitioner building AI-powered tools for solopreneurs.',
-  type: 'website'
+  title: 'Become More Valuable, Not Less, as AI Accelerates',
+  description:
+    "I build with AI, test what's real, kill what isn't, and share the whole lot in public. Open code, real numbers, the failures before the wins.",
+  type: 'website',
 });
 
 export default async function Home() {
   const featuredProjects = await getFeaturedProjects();
   const recentPosts = await getRecentPosts(3);
-  const metrics = await getMetrics();
 
-  // Generate structured data for SEO
   const personSchema = getPersonSchema();
   const websiteSchema = getWebsiteSchema();
 
@@ -43,350 +35,232 @@ export default async function Home() {
       {renderStructuredData(websiteSchema)}
 
       <main id="main-content" className="min-h-screen">
-      {/* Hero Section */}
-      <section className="min-h-[60vh] flex items-center justify-center bg-bg-primary px-6 py-12 lg:py-16">
-        <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-display-xl lg:text-display-2xl font-bold text-brand-primary mb-6 leading-tight">
-            Follow the Journey — From $0 to FU Money
-          </h1>
-          <p className="text-body-lg lg:text-body-xl text-text-secondary max-w-2xl mx-auto mb-8 leading-relaxed">
-            Just me and AI. No team, no employees—building a portfolio of businesses in public.
-            I encounter real problems, create tools to solve them, and share everything:
-            real metrics, real challenges, real lessons. A blueprint so you can build
-            your own path to financial freedom too.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg">
-              <Link href="/portfolio">View Portfolio</Link>
-            </Button>
-            <Button asChild variant="secondary" size="lg">
-              <Link href="/journey">Follow Journey</Link>
-            </Button>
+        {/* Hero */}
+        <section className="min-h-[60vh] flex items-center justify-center bg-bg-primary px-6 py-12 lg:py-16">
+          <div className="text-center max-w-4xl mx-auto">
+            <h1 className="text-display-xl lg:text-display-2xl font-bold text-brand-primary mb-6 leading-tight">
+              Become more valuable, not less, as AI accelerates.
+            </h1>
+            <p className="text-body-lg lg:text-body-xl text-text-secondary max-w-2xl mx-auto mb-8 leading-relaxed">
+              I build with AI, test what's real, kill what isn't, and share the whole lot in
+              public. Open code, real numbers, the failures before the wins.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild size="lg">
+                <Link href="/journey">Subscribe</Link>
+              </Button>
+              <Button asChild variant="secondary" size="lg">
+                <Link href="/about">Read the story</Link>
+              </Button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Metrics Dashboard */}
-      <section className="py-16 lg:py-24 px-6 bg-bg-surface">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-display-lg font-bold text-text-primary mb-4">
-              Current Progress
+        {/* Who this is for */}
+        <section className="py-16 lg:py-24 px-6 bg-bg-surface">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-display-lg font-bold text-text-primary mb-6">
+              Who this is for
             </h2>
-            <p className="text-body-base text-text-secondary max-w-2xl mx-auto">
-              Real-time metrics from my portfolio of AI-powered products. Updated
-              weekly with transparent reporting.
-            </p>
+            <div className="space-y-6 text-body-lg text-text-secondary leading-relaxed">
+              <p>
+                For builders and founders trying to make sense of AI change without drowning in
+                hype.
+              </p>
+              <p>
+                I'm not an AI guru selling a course of recycled ideas, and I'm not a consultant
+                who's never shipped anything. I'm the bloke in the water: building things with
+                these tools, finding out what actually holds up, and telling you the truth about it
+                before you spend your own time finding out.
+              </p>
+            </div>
           </div>
+        </section>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Total MRR */}
-            <Card className="text-center">
-              <div className="flex justify-center mb-3">
-                <div className="p-3 bg-brand-accent/15 rounded-lg">
-                  <DollarSign className="w-6 h-6 text-brand-accent" />
-                </div>
-              </div>
-              <div className="text-xs text-text-tertiary uppercase tracking-wide mb-2">
-                Total MRR
-              </div>
-              <div className="text-display-md font-bold text-brand-accent mb-1">
-                ${metrics.totalMRR.toFixed(2)}
-              </div>
-              <div className="text-xs text-green-400 flex items-center justify-center gap-1">
-                <TrendingUp className="w-3 h-3" />
-                <span>+0% vs last month</span>
-              </div>
-            </Card>
-
-            {/* Total Users */}
-            <Card className="text-center">
-              <div className="flex justify-center mb-3">
-                <div className="p-3 bg-brand-primary/15 rounded-lg">
-                  <Users className="w-6 h-6 text-brand-primary" />
-                </div>
-              </div>
-              <div className="text-xs text-text-tertiary uppercase tracking-wide mb-2">
-                Total Users
-              </div>
-              <div className="text-display-md font-bold text-brand-accent mb-1">
-                {metrics.totalUsers.toLocaleString()}
-              </div>
-              <div className="text-xs text-green-400 flex items-center justify-center gap-1">
-                <TrendingUp className="w-3 h-3" />
-                <span>+0% vs last month</span>
-              </div>
-            </Card>
-
-            {/* Active Projects */}
-            <Card className="text-center">
-              <div className="flex justify-center mb-3">
-                <div className="p-3 bg-brand-secondary/15 rounded-lg">
-                  <Briefcase className="w-6 h-6 text-brand-secondary" />
-                </div>
-              </div>
-              <div className="text-xs text-text-tertiary uppercase tracking-wide mb-2">
-                Active Projects
-              </div>
-              <div className="text-display-md font-bold text-brand-accent mb-1">
-                {metrics.activeProjects}
-              </div>
-              <div className="text-xs text-text-tertiary">
-                Building simultaneously
-              </div>
-            </Card>
-
-            {/* Portfolio Value */}
-            <Card className="text-center">
-              <div className="flex justify-center mb-3">
-                <div className="p-3 bg-green-500/15 rounded-lg">
-                  <DollarSign className="w-6 h-6 text-green-400" />
-                </div>
-              </div>
-              <div className="text-xs text-text-tertiary uppercase tracking-wide mb-2">
-                Portfolio Value
-              </div>
-              <div className="text-display-md font-bold text-brand-accent mb-1">
-                ${metrics.portfolioValue.toLocaleString()}
-              </div>
-              <div className="text-xs text-text-tertiary">
-                3-year revenue multiple
-              </div>
-            </Card>
-          </div>
-
-          <div className="text-center mt-8">
-            <p className="text-xs text-text-tertiary">
-              Last updated: {new Date().toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* My Philosophy */}
-      <section className="py-16 lg:py-24 px-6 bg-bg-primary">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-display-lg font-bold text-text-primary mb-4">
-              My Philosophy
+        {/* What I do */}
+        <section className="py-16 lg:py-24 px-6 bg-bg-primary">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-display-lg font-bold text-text-primary mb-6">
+              I build to learn, not to sell.
             </h2>
-            <p className="text-body-base text-text-secondary max-w-2xl mx-auto">
-              I'm not hoping to stumble into success. I'm building systematically with principles designed to compound results—and help others do the same.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* The Virtuous Circle */}
-            <div className="bg-bg-surface border border-border-default rounded-lg p-6">
-              <div className="text-3xl mb-4">🔄</div>
-              <h3 className="text-body-lg font-semibold text-text-primary mb-3">
-                The Virtuous Circle
-              </h3>
-              <p className="text-body-base text-text-secondary leading-relaxed">
-                I build businesses, encounter real problems, create tools to solve them, then share everything. Each cycle makes the next product better—and gives you battle-tested tools.
+            <div className="space-y-6 text-body-lg text-text-secondary leading-relaxed">
+              <p>
+                Every product is a test of what's real at the frontier. I run the test in the open,
+                give the code away, and write up what worked, what didn't, and why. When something
+                stops earning its place, I kill it in public and tell you what it cost me.
               </p>
-            </div>
-
-            {/* VC Portfolio Approach */}
-            <div className="bg-bg-surface border border-border-default rounded-lg p-6">
-              <div className="text-3xl mb-4">🎯</div>
-              <h3 className="text-body-lg font-semibold text-text-primary mb-3">
-                VC Portfolio Approach
-              </h3>
-              <p className="text-body-base text-text-secondary leading-relaxed">
-                Why 10+ products instead of one big bet? Like a VC portfolio, I spread risk across multiple ventures. Each product teaches lessons that make the next more likely to succeed. Ruthless pruning kills what's not working.
-              </p>
-            </div>
-
-            {/* Practitioner-First */}
-            <div className="bg-bg-surface border border-border-default rounded-lg p-6">
-              <div className="text-3xl mb-4">🛠️</div>
-              <h3 className="text-body-lg font-semibold text-text-primary mb-3">
-                Practitioner-First
-              </h3>
-              <p className="text-body-base text-text-secondary leading-relaxed">
-                I'm not a guru selling courses. I'm a systems programmer turned indie hacker who builds tools to solve my own problems first. Every tool is battle-tested in my portfolio before I share it.
-              </p>
-            </div>
-
-            {/* Enabling Others */}
-            <div className="bg-bg-surface border border-border-default rounded-lg p-6">
-              <div className="text-3xl mb-4">🚀</div>
-              <h3 className="text-body-lg font-semibold text-text-primary mb-3">
-                Enabling Others
-              </h3>
-              <p className="text-body-base text-text-secondary leading-relaxed">
-                My goal isn't just to reach financial freedom myself. It's to prove this is possible—so at least one person can use the same tools and know-how to escape the 9-to-5 and build something of their own. Your success is the real goal.
+              <p>
+                The value was never the software. It's the judgement and the trust, and those only
+                compound if I show my working.
               </p>
             </div>
           </div>
+        </section>
 
-          <div className="text-center mt-12">
-            <Button asChild variant="secondary" size="lg">
-              <Link href="/about#philosophy">Learn More About My Philosophy →</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Journey So Far */}
-      <section className="py-16 lg:py-24 px-6 bg-bg-surface">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-display-lg font-bold text-text-primary mb-4">
-              Journey So Far
+        {/* Why it matters */}
+        <section className="py-16 lg:py-24 px-6 bg-bg-surface">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-display-lg font-bold text-text-primary mb-6">
+              Why it matters
             </h2>
-            <p className="text-body-base text-text-secondary max-w-2xl mx-auto">
-              Honest milestones from 6 months of building. From zero coding experience to 10+ shipped projects. Zero revenue, but massive momentum.
-            </p>
+            <div className="space-y-6 text-body-lg text-text-secondary leading-relaxed">
+              <p>
+                Hundreds of millions of people now get their understanding of the world from a
+                handful of similarly-trained AI models. The answers come back confident, reasonable,
+                and identical for everyone. When the machine hands the whole crowd the same play,
+                the play stops paying.
+              </p>
+              <p>
+                So the scarce thing, the only defensible thing, is the ability to keep your own
+                mind: real judgement, grounded in real depth, from someone actually doing the work.
+                That's what I'm building here. Not another feed of AI takes. A field report you can
+                verify.
+              </p>
+            </div>
           </div>
+        </section>
 
-          <div className="space-y-6">
-            {ACHIEVEMENTS.map((achievement, index) => (
-              <div
-                key={achievement.date}
-                className="flex items-start gap-4 p-6 bg-bg-primary rounded-lg border border-border-default hover:border-brand-primary transition-colors"
-              >
-                <div className="flex-shrink-0 text-4xl">{achievement.icon}</div>
-                <div className="flex-grow">
-                  <div className="flex items-start justify-between gap-4 mb-2">
-                    <h3 className="text-body-lg font-semibold text-text-primary">
-                      {achievement.title}
-                    </h3>
-                    <span className="text-xs text-green-400 font-mono whitespace-nowrap">
-                      ✓ Done
-                    </span>
-                  </div>
-                  <p className="text-body-base text-text-secondary mb-2">
-                    {achievement.description}
-                  </p>
-                  <time className="text-xs text-text-tertiary">
-                    {new Date(achievement.date).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })}
-                  </time>
-                </div>
-              </div>
-            ))}
+        {/* Receipts */}
+        <section className="py-16 lg:py-24 px-6 bg-bg-primary">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-display-lg font-bold text-text-primary mb-8">
+              Why you might believe me
+            </h2>
+            <ul className="space-y-4 text-body-lg text-text-secondary leading-relaxed">
+              <li className="flex gap-3">
+                <span className="text-brand-accent flex-shrink-0">▹</span>
+                <span>
+                  4 published books, including the best-selling book on business continuity in the
+                  world for its first few years
+                </span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-brand-accent flex-shrink-0">▹</span>
+                <span>Top 1% of GitHub contributors</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-brand-accent flex-shrink-0">▹</span>
+                <span>
+                  19 products built with AI, across search, trading, monitoring, and benchmarking
+                </span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-brand-accent flex-shrink-0">▹</span>
+                <span>
+                  38 years in technology, including complex systems in global banking
+                </span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-brand-accent flex-shrink-0">▹</span>
+                <span>Creator of Efformism, and innovations on The Headless Way</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-brand-accent flex-shrink-0">▹</span>
+                <span>
+                  Code open for anyone to inspect; products killed in public when they don't work
+                </span>
+              </li>
+            </ul>
+          </div>
+        </section>
 
-            {/* Next Milestone */}
-            <div className="flex items-start gap-4 p-6 bg-bg-primary rounded-lg border border-brand-primary/30">
-              <div className="flex-shrink-0 text-4xl opacity-60">🎯</div>
-              <div className="flex-grow">
-                <div className="flex items-start justify-between gap-4 mb-2">
-                  <h3 className="text-body-lg font-semibold text-text-primary">
-                    {NEXT_MILESTONE.title}
-                  </h3>
-                  <span className="text-xs text-brand-accent font-mono whitespace-nowrap">
-                    → Next
-                  </span>
-                </div>
-                <p className="text-body-base text-text-secondary">
-                  {NEXT_MILESTONE.description}
+        {/* Recent writing */}
+        <section className="py-16 lg:py-24 px-6 bg-bg-surface">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-end justify-between mb-12">
+              <div>
+                <h2 className="text-display-lg font-bold text-text-primary mb-4">
+                  The field report
+                </h2>
+                <p className="text-body-base text-text-secondary max-w-2xl">
+                  What's working, what isn't, and what it cost me. Open numbers, written as I go.
                 </p>
               </div>
+              <Button asChild variant="ghost" className="hidden sm:inline-flex">
+                <Link href="/journey">Read all →</Link>
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {recentPosts.map((post) => (
+                <PostCard key={post.id} post={post} />
+              ))}
+            </div>
+
+            <div className="text-center mt-8 sm:hidden">
+              <Button asChild variant="ghost">
+                <Link href="/journey">Read all posts →</Link>
+              </Button>
             </div>
           </div>
+        </section>
 
-          <div className="text-center mt-12">
-            <Button asChild variant="secondary" size="lg">
-              <Link href="/journey">Read Weekly Updates →</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Projects */}
-      <section className="py-16 lg:py-24 px-6 bg-bg-primary">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-end justify-between mb-12">
-            <div>
-              <h2 className="text-display-lg font-bold text-text-primary mb-4">
-                Featured Projects
-              </h2>
-              <p className="text-body-base text-text-secondary max-w-2xl">
-                Highlighted products from my portfolio of AI-powered tools and
-                frameworks.
-              </p>
+        {/* Featured projects */}
+        <section className="py-16 lg:py-24 px-6 bg-bg-primary">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-end justify-between mb-12">
+              <div>
+                <h2 className="text-display-lg font-bold text-text-primary mb-4">
+                  The products
+                </h2>
+                <p className="text-body-base text-text-secondary max-w-2xl">
+                  Built with AI, open to inspect, and killed in public when they stop earning their
+                  place.
+                </p>
+              </div>
+              <Button asChild variant="ghost" className="hidden sm:inline-flex">
+                <Link href="/portfolio">View all →</Link>
+              </Button>
             </div>
-            <Button asChild variant="ghost" className="hidden sm:inline-flex">
-              <Link href="/portfolio">View All →</Link>
-            </Button>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          </div>
-
-          <div className="text-center mt-8 sm:hidden">
-            <Button asChild variant="ghost">
-              <Link href="/portfolio">View All Projects →</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Recent Blog Posts */}
-      <section className="py-16 lg:py-24 px-6 bg-bg-surface">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-end justify-between mb-12">
-            <div>
-              <h2 className="text-display-lg font-bold text-text-primary mb-4">
-                The Journey
-              </h2>
-              <p className="text-body-base text-text-secondary max-w-2xl">
-                Weekly updates documenting the path from side gig to financial
-                freedom. Real challenges, lessons learned, and transparent
-                metrics.
-              </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredProjects.map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))}
             </div>
-            <Button asChild variant="ghost" className="hidden sm:inline-flex">
-              <Link href="/journey">Read All →</Link>
+
+            <div className="text-center mt-8 sm:hidden">
+              <Button asChild variant="ghost">
+                <Link href="/portfolio">View all projects →</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* The deal */}
+        <section className="py-16 lg:py-24 px-6 bg-bg-surface">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-display-lg font-bold text-text-primary mb-8">
+              The deal
+            </h2>
+            <div className="space-y-3 text-body-lg text-text-primary font-medium mb-8">
+              <p>If I recommend it, I'm using it.</p>
+              <p>If it failed, you'll hear about the failure before the win.</p>
+              <p>My code is open for you to check.</p>
+              <p>Every product I kill gets a public post-mortem.</p>
+            </div>
+            <p className="text-body-lg text-text-secondary leading-relaxed">
+              That's the whole deal. No funnel, no secret sauce, no "DM me to scale."
+            </p>
+          </div>
+        </section>
+
+        {/* Closing CTA */}
+        <section className="py-16 lg:py-24 px-6 bg-bg-primary">
+          <div className="max-w-3xl mx-auto text-center">
+            <p className="text-body-lg lg:text-body-xl text-text-primary mb-4 leading-relaxed">
+              I'm in the water, riding this wave in real time, in code and in writing.
+            </p>
+            <p className="text-body-lg text-text-secondary mb-8 leading-relaxed">
+              If you'd rather learn from someone actually doing the work than someone selling theory
+              from the beach, stay a while. I'll tell you what's working before you waste the time
+              finding out yourself.
+            </p>
+            <Button asChild size="lg">
+              <Link href="/journey">Subscribe</Link>
             </Button>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {recentPosts.map((post) => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </div>
-
-          <div className="text-center mt-8 sm:hidden">
-            <Button asChild variant="ghost">
-              <Link href="/journey">Read All Posts →</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* About Preview */}
-      <section className="py-16 lg:py-24 px-6 bg-bg-primary">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-display-lg font-bold text-text-primary mb-6">
-            About Jamie Watters
-          </h2>
-          <p className="text-body-lg text-text-secondary mb-6 leading-relaxed">
-            Systems programmer turned indie hacker, now building 10+ AI-powered
-            products simultaneously. I build tools to solve my own problems first,
-            then share them with other solopreneurs.
-          </p>
-          <p className="text-body-base text-text-secondary mb-8 leading-relaxed">
-            Mission: Prove this is possible so others can do it too. My success
-            is the proof-of-concept. Your billion-dollar solo business is the real goal.
-          </p>
-          <Button asChild size="lg">
-            <Link href="/about">Learn More About Me →</Link>
-          </Button>
-        </div>
-      </section>
+        </section>
       </main>
     </>
   );

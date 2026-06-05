@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getAllProjects, getMetrics } from '@/lib/database';
+import { getAllProjects } from '@/lib/database';
 import { ProjectCard } from '@/components/portfolio/ProjectCard';
 import {
   getBreadcrumbSchema,
@@ -9,11 +9,11 @@ import {
 export const metadata: Metadata = {
   title: 'Portfolio',
   description:
-    'AI-powered products built as a solo operator. From idea to execution, all tracked in public with real metrics.',
+    "Products I've built with AI, in public. What's live, what's in build, and what I've retired.",
   openGraph: {
     title: 'Portfolio | Jamie Watters',
     description:
-      'AI-powered products built as a solo operator. From idea to execution, all tracked in public with real metrics.',
+      "Products I've built with AI, in public. What's live, what's in build, and what I've retired.",
   },
 };
 
@@ -21,7 +21,11 @@ export const revalidate = 3600; // 1 hour ISR
 
 export default async function PortfolioPage() {
   const projects = await getAllProjects();
-  const metrics = await getMetrics();
+
+  const liveCount = projects.filter((p) => p.status === 'LIVE').length;
+  const inBuildCount = projects.filter(
+    (p) => p.status !== 'LIVE' && p.status !== 'ARCHIVED'
+  ).length;
 
   // Get the most recent update date from all projects
   const mostRecentUpdate = projects.reduce((latest, project) => {
@@ -46,40 +50,40 @@ export default async function PortfolioPage() {
           Portfolio
         </h1>
         <p className="text-body-lg sm:text-body-lg text-text-secondary max-w-2xl">
-          10 AI-powered products built as a solo operator. From idea to execution, all tracked in public.
+          {projects.length} products built with AI, in public. What's live, what's in build, and what I've retired.
         </p>
       </section>
 
       {/* Aggregate Metrics Bar */}
       <section className="px-6 pb-8 sm:pb-12 max-w-7xl mx-auto">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {/* Total MRR */}
+          {/* Products built */}
           <div className="bg-bg-surface border border-border-default rounded-lg p-4 sm:p-6">
             <div className="text-3xl sm:text-4xl font-bold text-brand-accent font-mono mb-1">
-              ${metrics.totalMRR.toFixed(2)}
+              {projects.length}
             </div>
             <div className="text-body-sm text-text-secondary">
-              Total MRR
+              Built
             </div>
           </div>
 
-          {/* Total Users */}
+          {/* Live */}
           <div className="bg-bg-surface border border-border-default rounded-lg p-4 sm:p-6">
             <div className="text-3xl sm:text-4xl font-bold text-brand-accent font-mono mb-1">
-              {metrics.totalUsers.toLocaleString()}
+              {liveCount}
             </div>
             <div className="text-body-sm text-text-secondary">
-              Users
+              Live
             </div>
           </div>
 
-          {/* Active Projects */}
+          {/* In build */}
           <div className="bg-bg-surface border border-border-default rounded-lg p-4 sm:p-6">
             <div className="text-3xl sm:text-4xl font-bold text-brand-accent font-mono mb-1">
-              {metrics.activeProjects}
+              {inBuildCount}
             </div>
             <div className="text-body-sm text-text-secondary">
-              Projects
+              In build
             </div>
           </div>
 

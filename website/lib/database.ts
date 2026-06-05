@@ -33,6 +33,13 @@ export interface PostWithMetadata extends Post {
 export async function getAllProjects(): Promise<ProjectWithMetrics[]> {
   try {
     const projects = await prisma.project.findMany({
+      // Public portfolio = real, shipped products only.
+      // Mission Control sync writes planning items (empty url) into this table;
+      // requiring a real product URL and excluding ARCHIVED keeps those out.
+      where: {
+        url: { startsWith: 'http' },
+        status: { not: ProjectStatus.ARCHIVED },
+      },
       orderBy: [
         { featured: 'desc' },
         { createdAt: 'desc' }
@@ -58,7 +65,11 @@ export async function getAllProjects(): Promise<ProjectWithMetrics[]> {
 export async function getFeaturedProjects(): Promise<ProjectWithMetrics[]> {
   try {
     const projects = await prisma.project.findMany({
-      where: { featured: true },
+      where: {
+        featured: true,
+        url: { startsWith: 'http' },
+        status: { not: ProjectStatus.ARCHIVED },
+      },
       orderBy: { createdAt: 'desc' },
       take: 3,
     });

@@ -50,7 +50,7 @@ export default function Footer() {
               Jamie Watters
             </Link>
             <p className="text-body-sm text-text-secondary">
-              Building $1B Solo by 2030
+              Open code, real numbers, the failures before the wins.
             </p>
           </div>
 

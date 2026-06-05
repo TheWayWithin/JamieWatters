@@ -7,11 +7,11 @@ import { Button } from '@/components/ui/Button';
 export const metadata: Metadata = {
   title: 'About Jamie Watters',
   description:
-    'From 1980s BASIC to AI orchestration — a systems programmer turned solopreneur building AI-powered tools and sharing the journey publicly.',
+    'A systems programmer who learned to code at the metal, lost the thread in management, and got his first love handed back by AI. Building in public and betting on cognitive sovereignty.',
   openGraph: {
     title: 'About Jamie Watters',
     description:
-      'From 1980s BASIC to AI orchestration — a systems programmer turned solopreneur building AI-powered tools and sharing the journey publicly.',
+      'A systems programmer who learned to code at the metal, lost the thread in management, and got his first love handed back by AI. Building in public and betting on cognitive sovereignty.',
   },
 };
 
@@ -38,257 +38,103 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Content Sections */}
+      {/* Content */}
       <section className="px-6 pb-12 sm:pb-16 max-w-3xl mx-auto">
-        {/* Background */}
-        <div className="mb-16">
-          <h2 className="text-display-md font-semibold text-text-primary mb-6">
-            Background
-          </h2>
-          <div className="space-y-6 text-body-lg text-text-primary leading-relaxed">
-            <p>
-              I'm Jamie Watters, a solopreneur primarily focused on building SaaS and tools that solve real 
-              solopreneur problems. My journey began in the 1980s writing BASIC on a <a 
-              href="https://en.wikipedia.org/wiki/Research_Machines_380Z" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="text-brand-secondary hover:text-brand-secondary-hover underline"
-              >Research Machines 380Z</a> during lunch breaks. Starting from the ground up at <a 
-              href="https://en.wikipedia.org/wiki/Sperry_Corporation" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="text-brand-secondary hover:text-brand-secondary-hover underline"
-              >Sperry Univac</a>, I became a systems programmer, living through the great technology 
-              transitions—assembler to C to C++, hierarchical to relational databases.
-            </p>
-            <p>
-              Fearing my aging brain wouldn't keep up with the accelerating pace of change, I 
-              retreated to management, spending the next 20 years climbing the corporate ladder. 
-              But corporate life slowly drained the joy from work. I was successful but empty.
-            </p>
-            <p>
-              Then AI changed everything. It removed the cognitive barriers I feared while 
-              amplifying my decades of strategic experience. Now, while bootstrapping alongside 
-              my day job, I've rediscovered the joy of building. In just 5 months, I've created 
-              <a 
-              href="https://jamiewatters.work/portfolio" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="text-brand-secondary hover:text-brand-secondary-hover underline"
-              >5 apps, 4 websites, and 4 agent suites</a>—all while working full-time. I'm orchestrating 
-              AI agents to build multiple businesses simultaneously, proving that experience plus 
-              AI equals unprecedented leverage.
-            </p>
-          </div>
-          
-          {/* Link to detailed story */}
-          <div className="mt-8">
-            <Link 
-              href="/my-story" 
-              className="text-brand-secondary hover:text-brand-secondary-hover font-semibold inline-flex items-center gap-2 transition-colors"
-            >
-              Read the full story of my journey from the 1980s to AI orchestration →
-            </Link>
-          </div>
+        <div className="space-y-6 text-body-lg text-text-primary leading-relaxed">
+          <p>
+            There was one computer in my school. A Research Machines 380Z, kept in its own room
+            like a holy relic. I talked my way in front of it and wrote BASIC games, and the thing
+            that hooked me wasn't the games. It was the loop. Type a line, run it, watch it do
+            exactly what I told it or fail in a way that was entirely my fault. Honest feedback.
+            I have been chasing that loop ever since.
+          </p>
+          <p>
+            I got a VIC-20 and the obsession set hard. When I left school I took a job in the
+            computer room at Sperry Univac, mostly because it was the closest I could get to the
+            machines. I talked my way into a trainee operator role, then into systems programming:
+            writing operating systems, file handlers, real-time transaction systems for banks, all
+            in assembler. I earned a computing degree along the way. It was pure joy.
+          </p>
+          <p>
+            This was before the abstractions arrived. No relational databases. No debuggers. No
+            full-screen editors, so we wrote our own, because there wasn't one to buy. You worked
+            close to the metal because there was nowhere else to stand.
+          </p>
+          <p>
+            I rode the changes as they came. I sat next to programmers who had written assembler
+            for twenty-five-year careers, and I watched the ground shift under all of us: assembler
+            to C to C++, hierarchical database handlers to relational. I kept up fine.
+          </p>
+          <p>
+            Then I got scared. I was in my thirties and keeping up, but only just. I had watched
+            languages turn over faster than the people using them, and I could see where it ended:
+            well before fifty I'd be cooked, no longer writing the real thing, just dragging and
+            dropping other people's components. The joy would be gone. So I retreated into
+            management, on the theory that people change more slowly than syntax. Twenty years of the
+            conventional kind of success followed. Good title, good money, and something quiet died
+            in the middle of it. The loop was gone. I had stopped living in the gap between effort
+            and outcome and started managing it from a distance.
+          </p>
+          <p>Then AI handed my first love back.</p>
+          <p>
+            It carries the cognitive load I was afraid of, and I supply what it can't: vision,
+            discipline, the judgement of what's worth building in the first place. The thing I had
+            written off as obsolete, my old-school engineering discipline and the strategic thinking
+            the management years gave me, turned out to be the missing piece. I am more creative now,
+            past fifty, than I was in my twenties. One person, a studio, building in public.
+          </p>
         </div>
 
-        {/* Vision */}
-        <div className="mb-16">
-          <h2 className="text-display-md font-semibold text-text-primary mb-6">
-            Vision
-          </h2>
-          <div className="space-y-6 text-body-lg text-text-primary leading-relaxed">
-            <p>
-              I'm building a portfolio of AI-powered businesses through systematic iteration—just
-              me and AI, no team, no employees. I track real metrics, celebrate small wins, learn
-              publicly from failures, and compound insights across multiple products. Each business
-              teaches me something that makes the next one more likely to succeed.
-            </p>
-            <p>
-              My goal? Build my way to financial freedom while documenting every step of the journey.
-              I'm creating a blueprint—real metrics, real challenges, real lessons—so others
-              can follow the same path from side gig to full independence.
-            </p>
-            <p>
-              This isn't just about my success. It's about proving a new model of entrepreneurship
-              is possible. We're at the dawn of the AI era, and I believe the future belongs to
-              solo operators who can orchestrate intelligent systems to build at unprecedented
-              scale. If I can do it, so can you.
-            </p>
-            <p>
-              Sam Altman has predicted that in the next year or so we'll see the world's first
-              solo $1B company. I think it would be amazing if one of these new billionaires
-              learned something from my site—or even better, is using one of my tools. When that
-              happens, I'll have truly been a success beyond my dreams.
-            </p>
-          </div>
-        </div>
+        <hr className="my-12 border-border-default" />
 
-        {/* Current Focus */}
-        <div className="mb-16">
-          <h2 className="text-display-md font-semibold text-text-primary mb-6">
-            Current Focus
-          </h2>
-          <div className="space-y-6 text-body-lg text-text-primary leading-relaxed">
-            <p>
-              Right now, I'm actively building and operating 12 projects across five categories:
-            </p>
-            <ul className="list-disc list-inside space-y-3 ml-4">
-              <li>
-                <strong className="text-text-primary">SaaS & Solopreneur Tools:</strong> Automated workflows and
-                productivity solutions for solo entrepreneurs and small businesses
-              </li>
-              <li>
-                <strong className="text-text-primary">Frameworks:</strong> Developer tools and
-                open-source libraries for AI integration
-              </li>
-              <li>
-                <strong className="text-text-primary">Education:</strong> Courses and content
-                teaching AI-powered entrepreneurship
-              </li>
-              <li>
-                <strong className="text-text-primary">Marketplaces:</strong> Platforms connecting
-                buyers and sellers in emerging niches
-              </li>
-              <li>
-                <strong className="text-text-primary">Trading & Investment Tools:</strong> AI-powered
-                trading bots for crypto, fund arbitrage, and equities. These are purely for my own
-                prop trading—I'm not managing other people's money or selling the bots, mainly to
-                avoid the legal complexities
-              </li>
-            </ul>
-            <p>
-              Each project is instrumented with real-time metrics, and I share progress
-              transparently through daily updates. Every win, every failure, every lesson
-              learned—all documented publicly.
-            </p>
-          </div>
-        </div>
-
-        {/* Why Build in Public */}
-        <div className="mb-16">
-          <h2 className="text-display-md font-semibold text-text-primary mb-6">
-            Why Build in Public?
-          </h2>
-          <div className="space-y-6 text-body-lg text-text-primary leading-relaxed">
-            <p>
-              Building in public holds me accountable and creates a feedback loop with the
-              community. Transparency isn't just a marketing strategy—it's core to how I learn
-              and improve. Sharing both successes and struggles attracts the right people and
-              opportunities.
-            </p>
-            <p>
-              Plus, I want to inspire other builders. If I can show the playbook—the tools,
-              strategies, and mindset required to build at scale as a solo operator—then others
-              can replicate and surpass what I'm doing. That's the real goal.
-            </p>
-          </div>
-        </div>
-
-        {/* My Philosophy */}
-        <div id="philosophy" className="mb-16 scroll-mt-24">
-          <h2 className="text-display-md font-semibold text-text-primary mb-6">
-            My Philosophy
-          </h2>
-          <div className="space-y-10">
-            {/* The Virtuous Circle */}
-            <div className="bg-bg-surface border border-border-default rounded-lg p-6">
-              <h3 className="text-body-lg font-semibold text-brand-primary mb-4 flex items-center gap-3">
-                <span className="text-2xl">🔄</span> The Virtuous Circle
-              </h3>
-              <div className="space-y-4 text-body-base text-text-primary leading-relaxed">
-                <p>
-                  Everything I build follows a flywheel that compounds over time:
-                </p>
-                <ol className="list-decimal list-inside space-y-2 ml-4">
-                  <li><strong>Build businesses</strong> in my portfolio</li>
-                  <li><strong>Encounter real operational problems</strong> that every solopreneur faces</li>
-                  <li><strong>Create tools</strong> to solve those problems for myself</li>
-                  <li><strong>Share the journey</strong> publicly with complete transparency</li>
-                  <li><strong>Tools become available</strong> for other solopreneurs to use</li>
-                  <li><strong>Revenue funds more building</strong> → cycle repeats</li>
-                </ol>
-                <p>
-                  This means every tool I share has been battle-tested in my own portfolio first.
-                  I'm not guessing what solopreneurs need—I'm solving problems I actually face.
-                </p>
-              </div>
-            </div>
-
-            {/* VC Portfolio Approach */}
-            <div className="bg-bg-surface border border-border-default rounded-lg p-6">
-              <h3 className="text-body-lg font-semibold text-brand-primary mb-4 flex items-center gap-3">
-                <span className="text-2xl">🎯</span> VC Portfolio Approach
-              </h3>
-              <div className="space-y-4 text-body-base text-text-primary leading-relaxed">
-                <p>
-                  Why am I building 10+ products instead of focusing on one big idea?
-                  Because I'm applying venture capital portfolio logic to solopreneurship.
-                </p>
-                <ul className="list-disc list-inside space-y-2 ml-4">
-                  <li><strong>Spread risk</strong> across multiple ventures instead of betting everything on one</li>
-                  <li><strong>Each product teaches lessons</strong> that make the next more likely to succeed</li>
-                  <li><strong>Ruthless pruning</strong>—if a product doesn't hit $1K MRR by Month 3, it gets parked or sunset</li>
-                  <li><strong>Double down on winners</strong> once they show traction</li>
-                  <li><strong>Failures are valuable data</strong>, not wasted effort</li>
-                </ul>
-                <p>
-                  VCs know that most bets fail, but the winners more than compensate.
-                  I'm applying that same logic, but as a solo operator with AI leverage.
-                </p>
-              </div>
-            </div>
-
-            {/* Practitioner-First */}
-            <div className="bg-bg-surface border border-border-default rounded-lg p-6">
-              <h3 className="text-body-lg font-semibold text-brand-primary mb-4 flex items-center gap-3">
-                <span className="text-2xl">🛠️</span> Practitioner-First
-              </h3>
-              <div className="space-y-4 text-body-base text-text-primary leading-relaxed">
-                <p>
-                  I'm not a guru selling courses based on what worked 10 years ago.
-                  I'm a systems programmer turned indie hacker who builds tools to solve my own problems first.
-                </p>
-                <ul className="list-disc list-inside space-y-2 ml-4">
-                  <li><strong>I solve my own problems first</strong>, then share the solutions</li>
-                  <li><strong>Every tool is battle-tested</strong> in my portfolio before I offer it to others</li>
-                  <li><strong>My success depends on these tools working</strong>—I use them daily to run my business</li>
-                  <li><strong>No fake screenshots or fabricated results</strong>—real metrics, wins AND failures</li>
-                  <li><strong>Skin in the game</strong>—if these tools don't work for me, they don't work for you</li>
-                </ul>
-                <p>
-                  This is what separates me from the guru economy. I'm not teaching theory—I'm
-                  building, proving it works, and sharing the infrastructure.
-                </p>
-              </div>
-            </div>
-
-            {/* Enabling Others */}
-            <div className="bg-bg-surface border border-border-default rounded-lg p-6">
-              <h3 className="text-body-lg font-semibold text-brand-primary mb-4 flex items-center gap-3">
-                <span className="text-2xl">🚀</span> Enabling Others
-              </h3>
-              <div className="space-y-4 text-body-base text-text-primary leading-relaxed">
-                <p>
-                  My goal isn't just to build a successful portfolio for myself. It's bigger than that.
-                </p>
-                <p>
-                  <strong>I want to enable others to build multi-million-dollar solo businesses
-                  using the tools, tactics, and know-how I'm creating.</strong>
-                </p>
-                <p>
-                  My financial freedom goal? That's the proof-of-concept—demonstrating the foundation works.
-                  But when someone else takes these same tools and builds something even bigger,
-                  that's the real success.
-                </p>
-                <p>
-                  I'm not just building for myself. I'm building infrastructure that makes
-                  solo success possible for others. Your success validates the model and proves
-                  it's repeatable.
-                </p>
-              </div>
-            </div>
-          </div>
+        <div className="space-y-6 text-body-lg text-text-primary leading-relaxed">
+          <p>
+            This is the part of the page that used to promise you a billion-pound portfolio and a
+            stack of AI businesses by 2030. I have killed that goal. Not because it was too
+            ambitious. Because it was the wrong shape.
+          </p>
+          <p>
+            Here is what changed my mind. Hundreds of millions of people now get their understanding
+            of the world from a handful of similarly-trained models. The advice comes back confident,
+            reasonable, and identical for everyone. When the machine hands the whole crowd the same
+            play, the play stops paying. The range of what people think is narrowing toward one
+            moderate, conviction-free answer, and in that world the scarce thing, the only defensible
+            thing, is the ability to keep your own mind. Sovereign first-person judgement, grounded
+            in real depth. I call it cognitive sovereignty, and I think it is the bet worth making.
+          </p>
+          <p>
+            I am an odd fit to make it, which is exactly the point. I learned to code at the metal
+            while the rest of the world abstracted upward into vibe-coded slop, and I kept the
+            discipline. I wrote the best-selling book on business continuity in the world, so I know
+            precisely how a monoculture fails: quietly, then all at once, everyone together. And I
+            teach mindfulness and I coach, so the inner half of "keep your own mind" isn't a metaphor
+            to me. Three different lives, one pattern underneath them: the depth that each new
+            abstraction layer quietly erased, and that I happened to hang on to.
+          </p>
+          <p>
+            So I am not building an empire. I am building a body of work, in the open. I build things
+            to learn, not to sell, and I give the code away. I share what worked, what didn't, and
+            why, including the products I have killed off in full public view. The value was never
+            the software. It is the judgement and the trust, and those only compound if I show my
+            working.
+          </p>
+          <p>
+            If you want a number, here is the audacious one: a million people who trust me as their
+            primary source for making sense of AI. Not followers. Not vanity metrics. People who have
+            checked my numbers, used my tools, and decided the signal was worth the subscription. I
+            am starting from roughly none of those, with a full-time bank job, which is either bold
+            or daft. Probably both. The target points me in a direction. The practice is what makes
+            it durable: ride the wave, learn what's real, share it honestly.
+          </p>
+          <p>
+            If I recommend it, I am using it. If it failed, you will hear about the failure before
+            you hear about the win. My code is open for you to check. That is the whole offer.
+          </p>
+          <p>
+            I am in the water. If you would rather learn from someone actually riding the wave than
+            someone selling theory from the beach, stay a while. I will tell you what's working
+            before you waste the time finding out yourself.
+          </p>
         </div>
       </section>
 

@@ -158,7 +158,7 @@ export async function GET(req: NextRequest) {
 
   if (type === 'default') {
     // ===== HOMEPAGE / DEFAULT VARIANT =====
-    const mainSubtitle = subtitle || 'Side Gig to Financial Freedom';
+    const mainSubtitle = subtitle || 'Building in public at the AI frontier';
     content = (
       <div
         style={{
