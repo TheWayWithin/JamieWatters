@@ -136,10 +136,6 @@ export default async function Home() {
               </li>
               <li className="flex gap-3">
                 <span className="text-brand-accent flex-shrink-0">▹</span>
-                <span>Top 1% of GitHub contributors</span>
-              </li>
-              <li className="flex gap-3">
-                <span className="text-brand-accent flex-shrink-0">▹</span>
                 <span>
                   19 products built with AI, across search, trading, monitoring, and benchmarking
                 </span>

@@ -105,8 +105,8 @@ export default function AboutPage() {
           <p>
             I am an odd fit to make it, which is exactly the point. I learned to code at the metal
             while the rest of the world abstracted upward into vibe-coded slop, and I kept the
-            discipline. I wrote the best-selling book on business continuity in the world, so I know
-            precisely how a monoculture fails: quietly, then all at once, everyone together. And I
+            discipline. I wrote what was, for its first few years, the best-selling book on business
+            continuity in the world, so I know precisely how a monoculture fails: quietly, then all at once, everyone together. And I
             teach mindfulness and I coach, so the inner half of "keep your own mind" isn't a metaphor
             to me. Three different lives, one pattern underneath them: the depth that each new
             abstraction layer quietly erased, and that I happened to hang on to.
