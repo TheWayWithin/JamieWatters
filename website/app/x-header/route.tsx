@@ -214,5 +214,12 @@ export async function GET(req: NextRequest) {
     </div>
   );
 
-  return new ImageResponse(content, { width: W, height: H, fonts });
+  return new ImageResponse(content, {
+    width: W,
+    height: H,
+    fonts,
+    headers: {
+      'Cache-Control': 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800',
+    },
+  });
 }

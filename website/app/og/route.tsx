@@ -589,5 +589,10 @@ export async function GET(req: NextRequest) {
     width: 1200,
     height: 630,
     fonts,
+    headers: {
+      // Cache the rendered card at the CDN so crawlers (X/LinkedIn) never hit a
+      // slow cold render. Revalidates daily; serves stale while revalidating.
+      'Cache-Control': 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800',
+    },
   });
 }

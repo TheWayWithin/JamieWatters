@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     title: 'Jamie Watters | Building in public at the AI frontier',
     description:
       "I build with AI, test what's real, kill what isn't, and share the lot in public. Open code, real numbers, the failures before the wins.",
-    creator: '@jamiewatters',
+    creator: '@Jamie_within',
     images: ['https://jamiewatters.work/og'],
   },
   robots: {
