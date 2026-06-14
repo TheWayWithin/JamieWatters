@@ -158,7 +158,7 @@ export async function GET(req: NextRequest) {
 
   if (type === 'default') {
     // ===== HOMEPAGE / DEFAULT VARIANT =====
-    const mainSubtitle = subtitle || 'Building in public at the AI frontier';
+    const mainSubtitle = subtitle || 'The honest AI lab';
     content = (
       <div
         style={{
@@ -236,7 +236,7 @@ export async function GET(req: NextRequest) {
               maxWidth: '520px',
             }}
           >
-            Real Metrics. Real Failures. Practitioner-First Tools for Solopreneurs.
+            Open code. Real numbers. The failures before the wins.
           </div>
 
           {/* Built in Public badge */}
