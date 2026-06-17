@@ -132,8 +132,7 @@ export default async function BlogPostPage({
 
       <footer className="mt-12 pt-8 border-t border-border-default">
         <p className="text-body text-text-secondary italic">
-          I&apos;m Jamie, building 50 AI-powered micro-businesses by 2030 with my AI co-founder Marvin.
-          We&apos;re documenting everything — the wins, the failures, and the weird parts about being a human-AI team.
+          I&apos;m Jamie. I build with AI in the open and give it away, then write up what actually held and what didn&apos;t — real numbers, the failures louder than the wins. Systems programmer since &apos;85, four books published, more creative at 57 than at 25. The man in the water finding out what holds up, not selling theory from the beach.
           Follow along at{' '}
           <Link href="/" className="text-brand-primary hover:text-brand-primary-hover transition-base">
             jamiewatters.work
