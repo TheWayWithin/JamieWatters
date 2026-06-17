@@ -1,23 +1,17 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Metadata } from 'next';
+import { getAllBlogPosts } from '@/lib/blog';
+import { formatReadTime } from '@/lib/read-time-calculator';
 
 export const metadata: Metadata = {
   title: 'Blog',
   description: 'Thoughts on AI, solopreneurship, and building in public.',
 };
 
-const posts = [
-  {
-    slug: 'ai-cofounder',
-    title: "The Best Co-Founder I've Ever Had Isn't Human",
-    excerpt: "Someone left a comment on one of my LinkedIn posts last week that stopped me cold: 'You two are behaving like perfect co-founders.' They weren't talking about me and a business partner. They were talking about me and my AI agent.",
-    date: '2025-02-07',
-    readTime: '8 min read',
-    tags: ['AI', 'co-founders', 'solopreneurs', 'build-in-public'],
-  },
-];
-
 export default function BlogPage() {
+  const posts = getAllBlogPosts();
+
   return (
     <section className="px-6 py-16 lg:py-24 max-w-4xl mx-auto">
       <div className="mb-12">
@@ -36,6 +30,17 @@ export default function BlogPage() {
             className="bg-bg-surface border border-border-default rounded-lg p-6 hover:border-brand-primary/50 transition-base"
           >
             <Link href={`/blog/${post.slug}`} className="block group">
+              {post.image && (
+                <div className="relative aspect-[16/9] w-full overflow-hidden rounded-md mb-5">
+                  <Image
+                    src={post.image}
+                    alt={post.imageAlt || post.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 768px"
+                    className="object-cover"
+                  />
+                </div>
+              )}
               <div className="flex items-center gap-3 text-body-sm text-text-tertiary mb-3">
                 <time dateTime={post.date}>
                   {new Date(post.date).toLocaleDateString('en-US', {
@@ -45,7 +50,7 @@ export default function BlogPage() {
                   })}
                 </time>
                 <span>•</span>
-                <span>{post.readTime}</span>
+                <span>{formatReadTime(post.readTime)}</span>
               </div>
               <h2 className="text-display-sm font-bold text-text-primary group-hover:text-brand-primary transition-base mb-3">
                 {post.title}
