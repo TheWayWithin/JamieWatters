@@ -13,8 +13,8 @@ export default function Footer() {
 
   const socialLinks = [
     {
-      href: 'https://twitter.com/jamiewatters',
-      label: 'Twitter',
+      href: 'https://x.com/Jamie_within',
+      label: 'X',
       icon: Twitter,
     },
     {

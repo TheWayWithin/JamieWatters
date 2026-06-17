@@ -26,10 +26,10 @@ export function getPersonSchema() {
     name: 'Jamie Watters',
     url: SITE_URL,
     jobTitle: 'Solopreneur',
-    description: 'Systems programmer of 38 years, now building with AI in public. Open code, real numbers, and honest reports on what actually holds up.',
+    description: 'Mainframe systems programmer since 1985, now building with AI in public. Open code, real numbers, and honest reports on what actually holds up.',
     image: `${SITE_URL}/images/jamie-profile.jpg`,
     sameAs: [
-      'https://twitter.com/jamiewatters',
+      'https://x.com/Jamie_within',
       'https://www.linkedin.com/in/jamie-watters-solo',
       'https://github.com/TheWayWithin',
     ],
