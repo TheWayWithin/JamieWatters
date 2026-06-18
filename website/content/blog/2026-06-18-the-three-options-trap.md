@@ -4,7 +4,7 @@ slug: "the-three-options-trap"
 date: 2026-06-18
 excerpt: "Claude has a habit of collapsing an open conversation into three multiple-choice options, and once you see why it does it, you can stop it doing it to you."
 tags: [ai, claude, thinking, adhd, building-in-public]
-image: /images/blog/the-three-options-trap.png
+image: /images/blog/the-three-options-trap.webp
 imageAlt: "A wide-open landscape funnelled into three identical numbered doors, the rest of the terrain greyed out behind them."
 readTime: 7
 draft: false
