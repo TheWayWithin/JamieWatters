@@ -88,6 +88,7 @@ export default function Header() {
           </button>
         </div>
       </div>
+      </header>
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
@@ -127,7 +128,6 @@ export default function Header() {
           </div>
         </>
       )}
-      </header>
     </>
   );
 }
