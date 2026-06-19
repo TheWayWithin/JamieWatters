@@ -98,7 +98,7 @@ export function ProjectFilters({
                 px-3 py-1.5 text-sm font-medium rounded-full transition-all
                 ${
                   isActive
-                    ? 'bg-brand-primary text-white'
+                    ? 'bg-brand-primary text-bg-primary'
                     : 'bg-bg-surface border border-border-default text-text-secondary hover:border-border-emphasis hover:text-text-primary'
                 }
               `}

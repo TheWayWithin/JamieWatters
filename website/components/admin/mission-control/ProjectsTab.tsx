@@ -81,7 +81,7 @@ export default function ProjectsTab() {
             onClick={() => setStatusFilter(filter)}
             className={`rounded-full px-3 py-1 text-body-xs font-medium transition-colors ${
               statusFilter === filter
-                ? 'bg-brand-primary text-white'
+                ? 'bg-brand-primary text-bg-primary'
                 : 'bg-bg-tertiary text-text-secondary hover:text-text-primary'
             }`}
           >

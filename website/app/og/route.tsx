@@ -23,7 +23,7 @@ const BRAND = {
   textPrimary: '#F8FAFC',
   textSecondary: '#CBD5E1',
   textTertiary: '#64748B',
-  purple: '#7C3AED',
+  purple: '#F59E0B',
   blue: '#2563EB',
   amber: '#F59E0B',
 } as const;

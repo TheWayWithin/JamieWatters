@@ -23,9 +23,9 @@ export function Button({
   // Variant styles
   const variantStyles = {
     primary:
-      'bg-brand-primary text-white hover:bg-brand-primary-hover active:transform active:translate-y-px disabled:opacity-40 disabled:cursor-not-allowed',
+      'bg-brand-primary text-bg-primary hover:bg-brand-primary-hover active:transform active:translate-y-px disabled:opacity-40 disabled:cursor-not-allowed',
     secondary:
-      'border border-brand-primary text-brand-primary bg-transparent hover:bg-brand-primary hover:bg-opacity-10 disabled:opacity-40 disabled:cursor-not-allowed',
+      'border border-border-default text-text-primary bg-transparent hover:border-brand-primary hover:text-brand-primary disabled:opacity-40 disabled:cursor-not-allowed',
     ghost:
       'text-brand-secondary bg-transparent hover:underline disabled:opacity-40 disabled:cursor-not-allowed',
   };

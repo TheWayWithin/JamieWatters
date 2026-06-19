@@ -117,7 +117,7 @@ export default async function ProjectPage({
       <main className="min-h-screen bg-bg-primary">
       {/* Project Header */}
       <section className="px-6 pt-12 pb-8 sm:pt-16 sm:pb-12 max-w-4xl mx-auto">
-        <h1 className="text-display-xl sm:text-display-xl font-bold text-brand-primary mb-4">
+        <h1 className="text-display-xl sm:text-display-xl font-bold text-text-primary mb-4">
           {project.name}
         </h1>
 

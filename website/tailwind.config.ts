@@ -19,8 +19,8 @@ const config: Config = {
         'text-tertiary': '#64748B',
 
         // Brand
-        'brand-primary': '#7C3AED',
-        'brand-primary-hover': '#6D28D9',
+        'brand-primary': '#F59E0B',
+        'brand-primary-hover': '#D97706',
         'brand-secondary': '#2563EB',
         'brand-accent': '#F59E0B',
 
@@ -64,7 +64,7 @@ const config: Config = {
         'md': '0 2px 4px rgba(0, 0, 0, 0.4)',
         'lg': '0 4px 8px rgba(0, 0, 0, 0.5)',
         'hover': '0 6px 12px rgba(0, 0, 0, 0.6)',
-        'brand': '0 0 0 3px rgba(124, 58, 237, 0.3)',
+        'brand': '0 0 0 3px rgba(245, 158, 11, 0.3)',
       },
       transitionDuration: {
         'fast': '150ms',

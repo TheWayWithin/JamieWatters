@@ -36,7 +36,7 @@ export function PostsFilter({
             onClick={() => onFilterChange(filter.value)}
             className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
               currentFilter === filter.value
-                ? 'bg-brand-primary text-white'
+                ? 'bg-brand-primary text-bg-primary'
                 : 'bg-bg-surface text-text-secondary hover:bg-bg-hover border border-border-default'
             }`}
           >
