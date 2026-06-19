@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { getBlogPostBySlug, getBlogSlugs } from '@/lib/blog';
 import { renderMarkdown } from '@/lib/markdown';
 import { formatReadTime } from '@/lib/read-time-calculator';
+import { NewsletterSignup } from '@/components/newsletter/NewsletterSignup';
 
 const SITE_URL = 'https://jamiewatters.work';
 
@@ -129,6 +130,14 @@ export default async function BlogPostPage({
         className="prose prose-invert prose-lg max-w-none prose-headings:text-text-primary prose-p:text-text-secondary prose-a:text-brand-secondary prose-a:hover:text-brand-primary prose-strong:text-text-primary prose-code:text-brand-accent prose-code:bg-bg-surface prose-code:px-2 prose-code:py-1 prose-code:rounded prose-pre:bg-bg-surface prose-pre:border prose-pre:border-white/10 prose-pre:rounded-lg prose-pre:p-4 prose-ul:text-text-primary prose-ol:text-text-primary prose-li:text-text-secondary"
         dangerouslySetInnerHTML={{ __html: contentHtml }}
       />
+
+      {/* TEMP(preview): `true` ungates for the deploy preview. Re-gate to
+          `process.env.BUTTONDOWN_API_KEY` before merging to main. */}
+      {true && (
+        <div className="mt-12">
+          <NewsletterSignup variant="inline" />
+        </div>
+      )}
 
       <footer className="mt-12 pt-8 border-t border-border-default">
         <p className="text-body text-text-secondary italic">

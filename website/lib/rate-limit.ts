@@ -17,6 +17,7 @@ const store = new Map<string, RateLimitEntry>();
 const RATE_LIMITS = {
   auth: { requests: 5, windowMs: 15 * 60 * 1000 }, // 5 attempts per 15 minutes
   metrics: { requests: 100, windowMs: 60 * 60 * 1000 }, // 100 requests per hour
+  newsletter: { requests: 5, windowMs: 10 * 60 * 1000 }, // 5 signups per 10 minutes per IP
 } as const;
 
 /**
