@@ -155,7 +155,7 @@ For now, this shows that the database integration is working correctly for post 
       <main className="min-h-screen bg-bg-primary">
       {/* Post Header */}
       <article className="px-6 pt-12 pb-8 sm:pt-16 sm:pb-12 max-w-3xl mx-auto">
-        <h1 className="text-display-xl sm:text-display-xl font-bold text-brand-primary mb-6">
+        <h1 className="text-display-xl sm:text-display-xl font-bold text-text-primary mb-6">
           {post.title}
         </h1>
 
