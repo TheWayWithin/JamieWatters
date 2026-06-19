@@ -134,7 +134,7 @@ export default function PortfolioPage() {
           {['', 'NOW', 'NEXT', 'LATER'].map((t) => (
             <button key={t} onClick={() => setFilterTier(t)}
               className={`px-3 py-1.5 text-body-sm rounded-md ${
-                filterTier === t ? 'bg-brand-primary text-white' : 'bg-bg-surface text-text-secondary hover:text-text-primary'
+                filterTier === t ? 'bg-brand-primary text-bg-primary' : 'bg-bg-surface text-text-secondary hover:text-text-primary'
               }`}>
               {t || 'All'}
             </button>

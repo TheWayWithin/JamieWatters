@@ -351,7 +351,7 @@ export default function GoalsPage() {
           </div>
 
           <button onClick={handleSave} disabled={saving || !formName || !formMetric || !formUnit}
-            className="w-full py-3 bg-brand-primary text-white text-body-sm font-medium rounded-md hover:opacity-90 disabled:opacity-50"
+            className="w-full py-3 bg-brand-primary text-bg-primary text-body-sm font-medium rounded-md hover:opacity-90 disabled:opacity-50"
             style={{ minHeight: '44px' }}>
             {saving ? 'Saving...' : editingGoal ? 'Update Goal' : 'Create Goal'}
           </button>
@@ -372,7 +372,7 @@ export default function GoalsPage() {
             + Yearly Objective
           </button>
           <button onClick={() => { resetForm(); setView('create'); }}
-            className="px-4 py-2 bg-brand-primary text-white text-body-sm font-medium rounded-md hover:opacity-90"
+            className="px-4 py-2 bg-brand-primary text-bg-primary text-body-sm font-medium rounded-md hover:opacity-90"
             style={{ minHeight: '44px' }}>
             + Quarterly KR
           </button>
@@ -471,7 +471,7 @@ export default function GoalsPage() {
                           Cancel
                         </button>
                         <button onClick={() => handleReview(goal.id)} disabled={saving}
-                          className="px-3 py-1.5 text-body-sm text-white bg-brand-primary rounded-md hover:opacity-90 disabled:opacity-50">
+                          className="px-3 py-1.5 text-body-sm text-bg-primary bg-brand-primary rounded-md hover:opacity-90 disabled:opacity-50">
                           {saving ? 'Saving...' : 'Save Review'}
                         </button>
                       </div>
@@ -578,7 +578,7 @@ export default function GoalsPage() {
                       <div className="flex gap-2">
                         <button onClick={() => setReviewGoalId(null)} className="flex-1 px-2 py-1.5 text-body-sm text-text-secondary border border-border-default rounded-md">Cancel</button>
                         <button onClick={() => handleReview(kr.id)} disabled={saving}
-                          className="flex-1 px-2 py-1.5 text-body-sm text-white bg-brand-primary rounded-md disabled:opacity-50">
+                          className="flex-1 px-2 py-1.5 text-body-sm text-bg-primary bg-brand-primary rounded-md disabled:opacity-50">
                           {saving ? '...' : 'Save'}
                         </button>
                       </div>

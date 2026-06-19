@@ -165,7 +165,7 @@ export default function HITLQueuePage() {
                 </div>
                 <button
                   onClick={() => { setResolveId(item.id); setResolveOutcome('approved'); setResolveNotes(''); }}
-                  className="shrink-0 px-4 py-2 bg-brand-primary text-white text-body-sm font-medium rounded-md hover:opacity-90 transition-opacity"
+                  className="shrink-0 px-4 py-2 bg-brand-primary text-bg-primary text-body-sm font-medium rounded-md hover:opacity-90 transition-opacity"
                 >
                   Resolve
                 </button>
@@ -190,7 +190,7 @@ export default function HITLQueuePage() {
                 </div>
                 <button
                   onClick={() => { setResolveId(item.id); setResolveOutcome('approved'); setResolveNotes(''); }}
-                  className="w-full py-3 bg-brand-primary text-white text-body-sm font-medium rounded-md hover:opacity-90"
+                  className="w-full py-3 bg-brand-primary text-bg-primary text-body-sm font-medium rounded-md hover:opacity-90"
                   style={{ minHeight: '44px' }}
                 >
                   Resolve
@@ -239,7 +239,7 @@ export default function HITLQueuePage() {
                 <button
                   onClick={handleResolve}
                   disabled={resolving}
-                  className="flex-1 py-2 text-body-sm text-white bg-brand-primary rounded-md hover:opacity-90 disabled:opacity-50"
+                  className="flex-1 py-2 text-body-sm text-bg-primary bg-brand-primary rounded-md hover:opacity-90 disabled:opacity-50"
                   style={{ minHeight: '44px' }}
                 >
                   {resolving ? 'Resolving...' : 'Submit'}

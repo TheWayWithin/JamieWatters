@@ -46,7 +46,7 @@ export default async function PortfolioPage() {
       <main className="min-h-screen bg-bg-primary">
       {/* Page Header */}
       <section className="px-6 pt-12 pb-8 sm:pt-16 sm:pb-12 max-w-7xl mx-auto">
-        <h1 className="text-display-xl sm:text-display-xl font-bold text-brand-primary mb-4">
+        <h1 className="text-display-xl sm:text-display-xl font-bold text-text-primary mb-4">
           Portfolio
         </h1>
         <p className="text-body-lg sm:text-body-lg text-text-secondary max-w-2xl">

@@ -1,11 +1,9 @@
 # Brand Style Guide
 
-**Business Name:** Jamie Watters - Zero-Employee Business Portfolio
-**Date:** October 8, 2025
-**Version:** 1.0
-**Purpose:** Visual identity standards and design guidelines for consistent brand expression across all
-
- touchpoints
+**Business Name:** Jamie Watters - Trusted Practitioner Voice for Navigating AI Change
+**Date:** 19 June 2026
+**Version:** 2.1 (Vision & Mission v4.2 alignment, plus a finalised colour system: Visionary Purple retired, Proof Gold as the single signature accent on a neutral dark base, with a distribution rule. Typography and logo still carried from v1.0 pending a video-first design review.)
+**Purpose:** Visual identity and brand expression standards for consistent presentation across all touchpoints
 
 ---
 
@@ -14,20 +12,20 @@
 ### Brand Personality
 
 **Primary Personality Traits:**
-- **Authentic & Transparent:** No corporate BS, no guru hype—just real execution shared openly
-- **Visionary & Pioneering:** At the vanguard of AI-powered solopreneurship, creating the future not following trends
-- **Bold & Confident:** Audacious $1B goal stated publicly with complete transparency on progress
-- **Technical & Systematic:** Deep operational rigor meets AI-first methodology
-- **Builder-First:** Executing not theorizing—building actual products while teaching the playbook
+- **Authentic & Transparent:** No corporate BS, no guru hype, just real work shared openly, failures included
+- **Honest & Practitioner-Led:** The honest AI lab. Builds, tests, and tells the truth, on camera, in code, and in writing
+- **Trusted, Not Hyped:** A 1,000,000 subscribed-viewer goal stated publicly, with trust earned by showing the work, not by claiming it
+- **Technical & Verifiable:** Real building at the frontier, with open code anyone can inspect
+- **Practitioner, Not Theorist:** Building real things and sharing what was learned, never selling advice untested
 
 **Visual Expression:**
-The brand personality translates into clean, modern design with technical precision. Strong typography communicates confidence. Transparent data visualization shows real metrics. Bold color choices reflect audacious vision. Systematic layouts demonstrate operational rigor. Build-in-public aesthetic shows works-in-progress alongside finished products.
+The brand personality translates into clean, modern design with technical precision. Strong typography communicates confidence. Transparent data visualisation shows real, verifiable metrics. Systematic layouts signal competence and care. A build-in-public aesthetic shows works-in-progress alongside finished work. Because the primary medium is video, the same principles carry on camera: real screens, real numbers, the actual work over polished production.
 
 **Emotional Tone:**
-The brand evokes **inspired confidence**—viewers feel both motivated by the audacious vision AND reassured by the systematic approach. It's aspirational without being unrealistic, transparent without being unprofessional, technical without being intimidating.
+The brand evokes **earned trust**: viewers feel clarity in a noisy landscape because they can verify the work for themselves. It is honest without being amateur, transparent without being unprofessional, and technical without being intimidating.
 
 **Brand Voice Visual:**
-- Headlines: Bold, direct, no hedging (e.g., "Building $1B Solo by 2030")
+- Headlines: Bold, direct, honest (e.g., "I tested it so you don't have to")
 - Data: Always visible, never hidden—charts, metrics, progress bars throughout
 - Typography: Clean and strong like code—systematic and precise
 - Imagery: Real screenshots, actual work, transparent process over polished marketing
@@ -39,7 +37,7 @@ The brand evokes **inspired confidence**—viewers feel both motivated by the au
 Every visual element reinforces complete openness. Data dashboards are prominent. Progress metrics are always visible. Works-in-progress are shown alongside finished products. No hiding behind polished corporate facades—the journey IS the brand. This builds trust and thought leadership through honest execution.
 
 **Principle 2: Systematic Precision**
-Visual design reflects extreme systemization core value. Grid-based layouts. Consistent spacing. Technical typography. Modular components. Everything feels intentionally structured, not haphazard. This communicates operational rigor that enables one person to build billion-dollar businesses.
+Visual design reflects care and competence. Grid-based layouts. Consistent spacing. Technical typography. Modular components. Everything feels intentionally structured, not haphazard. This signals that the person behind the work is rigorous and can be trusted.
 
 **Principle 3: Proof Over Polish**
 Real execution trumps marketing perfection. Screenshots of actual products being built. Metrics from real businesses. Technical depth visible in design choices. Build-in-public aesthetic over corporate brochure styling. This differentiates from gurus selling courses—we're showing actual work.
@@ -53,30 +51,21 @@ Design elements suggest intelligent automation. Data visualization prominent. Te
 
 ### Primary Color Palette
 
-**Primary Brand Color: Visionary Purple**
-- **Color Name:** Visionary Purple
-- **Hex:** #7C3AED
-- **RGB:** R124 G58 B237
-- **CMYK:** C48 M75 Y0 K7
-- **Usage:** Primary brand color for logos, CTAs, headlines, key UI elements, data visualization accents
-- **Psychology:** Purple conveys innovation, visionary thinking, and premium positioning. It's associated with AI/tech (not overused like blue) while maintaining professional credibility. Suggests forward-thinking and transformation.
-- **Accessibility:** Passes WCAG AA for large text on white (#FFFFFF). Use darker shade (#6D28D9) for body text contrast.
+**Signature Brand Colour: Proof Gold**
+- **Colour Name:** Proof Gold
+- **Hex:** #F59E0B (hover/deeper: #D97706; on light backgrounds use #B45309 for text contrast)
+- **RGB:** R245 G158 B11
+- **Usage:** The single signature accent. Reserved for focal and proof moments: the home hero headline, big stat numbers, the one primary CTA per view, the logo wordmark, and key proof callouts. Used sparingly, never as body or excerpt text.
+- **Meaning:** Gold signals proof and value. It is the evidence-first heart of the brand: real metrics, real results, the work shown.
+- **Accessibility:** On the dark base (#0F172A) gold passes AA/AAA (about 8:1). On gold fills, use dark text (#0F172A), never white. Avoid gold text on light backgrounds (use #B45309 if unavoidable).
 
-**Secondary Brand Color: Execution Blue**
-- **Color Name:** Execution Blue
+**Link Colour: Quiet Blue**
+- **Colour Name:** Quiet Blue
 - **Hex:** #2563EB
 - **RGB:** R37 G99 B235
-- **CMYK:** C84 M58 Y0 K8
-- **Usage:** Secondary actions, links, technical elements, data points, supporting UI elements
-- **Relationship:** Complements Visionary Purple with technical credibility. Execution Blue grounds the visionary purple with solid reliability and systematic precision.
+- **Usage:** Inline links and link-style actions only. A usability convention, not a brand colour. Keep it out of headlines and brand moments.
 
-**Accent Color: Proof Gold**
-- **Color Name:** Proof Gold
-- **Hex:** #F59E0B
-- **RGB:** R245 G158 B11
-- **CMYK:** C0 M35 Y95 K4
-- **Usage:** Highlights, success states, milestone celebrations, premium features, "proof points" callouts
-- **Impact:** Gold signals achievement and value. Used sparingly to draw attention to key metrics, milestones achieved, and proof of execution. Creates visual interest and communicates premium positioning.
+**Retired: Visionary Purple (#7C3AED).** Purple was the brand primary under the previous SaaS-portfolio identity. It is retired. Do not reintroduce it as a brand colour. The honest, grounded, evidence-first identity is carried by gold on neutrals.
 
 ### Supporting Color Palette
 
@@ -122,37 +111,36 @@ Design elements suggest intelligent automation. Data visualization prominent. Te
 
 ### Color Usage Guidelines
 
-**Primary Applications:**
-- **Visionary Purple (#7C3AED):** Logo, primary CTAs, section headlines, key data points, brand moments
-- **Execution Blue (#2563EB):** Links, secondary buttons, technical callouts, supporting data, icons
-- **Proof Gold (#F59E0B):** Milestone badges, success highlights, premium features, achievement markers
+**The Distribution Rule (balance through hierarchy):**
+Gold only earns its meaning if it stays rare. The brand is neutral-dominant; gold marks the focal point and the proof. One gold focal point per view.
+- **Gold (signature/proof), sparingly:** logo wordmark, home hero headline, big stat numbers, the single primary CTA per view, key proof highlights.
+- **Off-white (#F8FAFC) text:** all page H1s and card titles. The home hero headline is the one exception that stays gold.
+- **Grey (#CBD5E1 / #64748B):** body, excerpts, captions. Never use gold for paragraphs.
+- **Neutral / outline:** secondary buttons and repeated card actions (e.g. "View Details") sit on a neutral surface with a subtle border that turns gold on hover. Never a wall of solid-gold buttons.
+- **Quiet Blue (#2563EB):** links only.
+- **Functional:** Success Green = works/verified; Error Red = killed/failed. These do real brand work, the honest verdict made visible.
+- **Tags and badges:** neutral, not gold.
 
-**Secondary Applications:**
-- Use Charcoal (#18181B) for 90% of body text
-- Slate (#64748B) for supporting text and captions
-- Silver (#E2E8F0) for subtle divisions and structure
-- Cloud (#F8FAFC) for page and section backgrounds
+**Light mode (long-form / print):** off-white canvas (#F8FAFC), Charcoal (#18181B) for body text, deeper gold (#B45309) for any gold text or links. The site itself is dark-first.
 
-**Approved Color Combinations:**
-- **Visionary Purple + Pure White:** Primary brand moments, hero sections, key CTAs
-- **Execution Blue + Cloud:** Technical sections, data displays, systematic frameworks
-- **Proof Gold + Deep Space:** Achievement callouts, premium features on dark backgrounds
-- **Charcoal + Pure White:** Content areas, long-form reading, maximum readability
+**Approved Combinations:**
+- **Gold + Deep Space (#0F172A):** hero headline, stat numbers, primary CTA (dark text on gold fills)
+- **Off-white + Deep Space:** page titles, long-form reading, maximum comfort
+- **Quiet Blue + Deep Space:** links
+- **Green / Red + Deep Space:** status, verdicts, results
 
 **Accessibility Requirements:**
-- Minimum contrast ratio: 4.5:1 for normal text (16px and below)
-- Minimum contrast ratio: 3:1 for large text (18px+ or 14px+ bold)
-- Visionary Purple (#7C3AED) on white passes for large text only
-- Use darker variant (#6D28D9) for body text on white
-- All functional colors meet WCAG AA standards
-- Test all color combinations with accessibility checkers
+- Minimum contrast ratio: 4.5:1 for normal text, 3:1 for large text (WCAG AA)
+- Gold (#F59E0B) on the dark base passes AA/AAA; on gold fills use dark text (#0F172A), never white
+- Avoid gold text on light surfaces (fails); use #B45309 if unavoidable
+- Keep small captions at #CBD5E1 or larger on dark, not the dimmer #64748B
+- All functional colours meet WCAG AA standards
 
-**Color Meanings:**
-- **Visionary Purple:** Innovation, AI-first thinking, transformation, premium positioning, visionary leadership
-- **Execution Blue:** Trust, systematic approach, technical precision, reliability, proof through building
-- **Proof Gold:** Achievement, value delivered, milestones reached, premium quality, success validation
-- **Neutral Grays:** Professional foundation, readability, systematic organization, clean execution
-- **Functional Colors:** Clear communication states that guide user understanding and action
+**Colour Meanings:**
+- **Proof Gold:** evidence, proof, real numbers, the focal signal
+- **Quiet Blue:** interactive, links, navigation
+- **Neutral Greys / Deep Space:** the honest, grounded, instrument-panel foundation that lets the work lead
+- **Functional Green / Red:** what works, what was killed, the honest verdict made visible
 
 ---
 
@@ -307,7 +295,7 @@ Design elements suggest intelligent automation. Data visualization prominent. Te
 
 **Design Concept:**
 The Jamie Watters brand logo combines three symbolic elements:
-1. **Forward Arrow/Trajectory:** Upward movement representing $1B by 2030 trajectory
+1. **Forward Arrow/Trajectory:** Upward movement representing momentum and progress
 2. **AI Neural Connection:** Subtle node/network pattern suggesting AI orchestration
 3. **Solo Builder Icon:** Single figure/initial suggesting one-person enterprise at scale
 
@@ -316,7 +304,7 @@ The logo is intentionally **bold and direct**—no corporate softness, no gradie
 **Brand Connection:**
 - **Visionary Purple color:** Innovation and AI-first positioning
 - **Geometric precision:** Reflects systematic, technical approach
-- **Forward trajectory:** Visual representation of audacious vision
+- **Forward trajectory:** Visual representation of momentum and growth
 - **Clean, modern aesthetic:** Professional without corporate stuffiness
 
 **Distinctive Elements:**
@@ -480,7 +468,7 @@ The logo is intentionally **bold and direct**—no corporate softness, no gradie
 
 **Design Approach:** Grid-based and systematic—every element aligns to 8px spacing system. Reflects operational rigor and technical precision.
 
-**White Space Usage:** Generous—let content breathe. White space communicates premium positioning and makes technical content more readable.
+**White Space Usage:** Generous, let content breathe. White space communicates clarity and makes technical content more readable.
 
 **Hierarchy Principles:** Size, weight, and color establish clear information hierarchy. Most important = largest/boldest/brand color. Supporting info = smaller/lighter/neutral.
 
@@ -563,7 +551,7 @@ The logo is intentionally **bold and direct**—no corporate softness, no gradie
 - Format: PNG with transparency or solid background
 
 **Cover Images:**
-- Hero headline: "Building $1B Solo by 2030 with AI" or current milestone
+- Hero headline: "The honest AI lab: tested, honest, useful" or current build
 - Background: Gradient (Visionary Purple to Execution Blue) or actual product screenshot
 - Typography: Inter Extrabold white text
 - Dimensions: Platform-specific (LinkedIn 1584x396px, Twitter 1500x500px)
@@ -726,7 +714,7 @@ The logo is intentionally **bold and direct**—no corporate softness, no gradie
 
 ### Product Applications
 
-**Digital Product Design (SoloMarket, AI Tools, Frameworks):**
+**Digital Product Design (convenience SaaS, benchmarks, open-source tools):**
 
 **User Interface:**
 - **Buttons:** Visionary Purple primary, white secondary with Visionary Purple border
@@ -830,7 +818,7 @@ The logo is intentionally **bold and direct**—no corporate softness, no gradie
 **Creative Interpretation (Where flexibility is acceptable):**
 - **Image selection:** Can choose from various authentic images that match style criteria
 - **Layout variations:** Can adapt grid system for specific contexts while maintaining spacing principles
-- **Content tone:** Can vary writing style slightly for different audiences (corporate escapists vs. builders)
+- **Content tone:** Can vary writing style slightly for different audiences (technical builders vs. founders and operators)
 - **Application context:** Can emphasize different brand colors based on context (Execution Blue for technical content, Proof Gold for milestones)
 - **Pattern usage:** Can create new patterns using brand colors and geometric forms if they fit visual principles
 
@@ -850,7 +838,7 @@ The logo is intentionally **bold and direct**—no corporate softness, no gradie
 5. **Document decision:** Note why adaptation was made for future reference
 
 **Evolution Considerations (How brand can grow while maintaining consistency):**
-- **Annual review:** Assess if brand still represents business positioning (as business scales to $1B)
+- **Annual review:** Assess if brand still represents the positioning (as the audience and work grow)
 - **Evolutionary not revolutionary:** Small refinements over time rather than complete rebrand
 - **Maintain recognition:** Core elements (logo, primary color, typography) should remain consistent
 - **Expand thoughtfully:** Can add new color tints, icon styles, or patterns while maintaining foundation
@@ -989,7 +977,7 @@ The logo is intentionally **bold and direct**—no corporate softness, no gradie
 
 ---
 
-*This Brand Style Guide serves as the definitive reference for all Jamie Watters brand applications. Consistent use of these guidelines ensures cohesive brand expression that builds recognition, trust, and differentiation across all touchpoints as we build toward the $1 billion solo enterprise by 2030.*
+*This Brand Style Guide serves as the definitive reference for all Jamie Watters brand applications. Consistent use of these guidelines ensures cohesive brand expression that builds recognition, trust, and differentiation across all touchpoints as the audience and the body of work grow.*
 
 **Document Control:**
 - **Version:** 1.0

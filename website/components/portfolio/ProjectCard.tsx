@@ -28,7 +28,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           <h3 className="text-xl font-semibold text-text-primary mb-1">
             {project.name}
           </h3>
-          <p className="text-sm text-brand-accent font-medium">
+          <p className="text-sm text-text-primary font-medium">
             {project.description.split('.')[0] + '.'} {/* Use first sentence as tagline */}
           </p>
         </div>
@@ -63,7 +63,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
       <div className="flex gap-2 mt-auto">
         <Link
           href={`/portfolio/${project.slug}`}
-          className="flex-1 bg-brand-primary hover:bg-brand-primary-hover text-white text-sm font-semibold px-4 py-2 rounded-md transition-base text-center"
+          className="flex-1 bg-bg-surface-hover text-text-primary text-sm font-semibold px-4 py-2 rounded-md transition-base text-center border border-border-default hover:border-brand-primary hover:text-brand-primary"
         >
           View Details
         </Link>
@@ -72,7 +72,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             href={project.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="border border-brand-primary text-brand-primary hover:bg-brand-primary hover:bg-opacity-10 px-3 py-2 rounded-md transition-base flex items-center justify-center"
+            className="border border-border-default text-text-secondary hover:text-brand-primary hover:border-brand-primary px-3 py-2 rounded-md transition-base flex items-center justify-center"
             aria-label="Visit project"
           >
             {project.url.includes('github.com') ? (

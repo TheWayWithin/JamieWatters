@@ -74,7 +74,7 @@ export default function GoalsTab() {
               onClick={() => setActiveCategory(cat)}
               className={`rounded-full px-3 py-1 text-body-xs font-medium transition-colors ${
                 activeCategory === cat
-                  ? 'bg-brand-primary text-white'
+                  ? 'bg-brand-primary text-bg-primary'
                   : 'bg-bg-tertiary text-text-secondary hover:text-text-primary'
               }`}
             >

@@ -114,7 +114,7 @@ export default function IssuesTab() {
               onClick={() => setActiveType(f.value)}
               className={`rounded-full px-3 py-1 text-body-xs font-medium transition-colors ${
                 activeType === f.value
-                  ? 'bg-brand-primary text-white'
+                  ? 'bg-brand-primary text-bg-primary'
                   : 'bg-bg-tertiary text-text-secondary hover:text-text-primary'
               }`}
             >
@@ -126,7 +126,7 @@ export default function IssuesTab() {
             <button
               onClick={() => handleShowAllToggle(false)}
               className={`rounded-l-full px-3 py-1 text-body-xs font-medium ${
-                !showAll ? 'bg-brand-primary text-white' : 'text-text-secondary hover:text-text-primary'
+                !showAll ? 'bg-brand-primary text-bg-primary' : 'text-text-secondary hover:text-text-primary'
               }`}
             >
               Open
@@ -134,7 +134,7 @@ export default function IssuesTab() {
             <button
               onClick={() => handleShowAllToggle(true)}
               className={`rounded-r-full px-3 py-1 text-body-xs font-medium ${
-                showAll ? 'bg-brand-primary text-white' : 'text-text-secondary hover:text-text-primary'
+                showAll ? 'bg-brand-primary text-bg-primary' : 'text-text-secondary hover:text-text-primary'
               }`}
             >
               All

@@ -48,7 +48,7 @@ export default async function ProofPage() {
     <main id="main-content" className="min-h-screen bg-bg-primary">
       {/* Header */}
       <section className="px-6 pt-12 pb-8 sm:pt-16 sm:pb-12 max-w-4xl mx-auto text-center">
-        <h1 className="text-display-xl sm:text-display-xl font-bold text-brand-primary mb-6">
+        <h1 className="text-display-xl sm:text-display-xl font-bold text-text-primary mb-6">
           Proof
         </h1>
         <p className="text-body-lg lg:text-body-xl text-text-secondary max-w-2xl mx-auto leading-relaxed">
@@ -74,12 +74,12 @@ export default async function ProofPage() {
                 {value}
               </div>
               <div className="text-body-sm font-semibold text-text-primary mb-1">{label}</div>
-              <div className="text-caption text-text-tertiary">{note}</div>
+              <div className="text-caption text-text-secondary">{note}</div>
             </div>
           ))}
         </div>
 
-        <p className="text-caption text-text-tertiary text-center mt-6">
+        <p className="text-caption text-text-secondary text-center mt-6">
           Article counts and GitHub stars refresh hourly. Downloads and subscribers will join here
           once those channels are live.
         </p>
