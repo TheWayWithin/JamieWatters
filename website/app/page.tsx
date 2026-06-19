@@ -74,6 +74,12 @@ export default async function Home() {
                 these tools, finding out what actually holds up, and telling you the truth about it
                 before you spend your own time finding out.
               </p>
+              <p>
+                There's a quieter thread here too. As AI gets better at thinking for you, the
+                skill that matters most is thinking for yourself: keeping your own judgement
+                instead of handing it over. I'm working that out in public alongside everything
+                else.
+              </p>
             </div>
           </div>
         </section>
