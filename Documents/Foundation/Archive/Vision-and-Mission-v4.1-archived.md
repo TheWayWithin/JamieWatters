@@ -1,8 +1,8 @@
 # Vision and Mission
 
 **Name:** Jamie Watters
-**Date:** June 19, 2026
-**Version:** 4.2 (4.0 → 4.1: added epistemic sovereignty thread, thinking for yourself as AI accelerates; 4.1 → 4.2: aligned claims with public site — dropped GitHub top-1%, clarified the 38-year tech arc, qualified the bestseller)
+**Date:** June 18, 2026
+**Version:** 4.1 (v4.0 + epistemic sovereignty thread: thinking for yourself as AI accelerates)
 
 ---
 
@@ -48,7 +48,7 @@ I build things to learn, not to sell. I give the code away. I share what works, 
 Riding waves of emerging technology, building things fast, making sense of what's real, and sharing honestly. I'm energised by the ride itself: the speed, the learning, the challenge of navigating the unknown. Building financial freedom for my family while doing work I genuinely love.
 
 **What I Can Be Best At:**
-Translating between the frontier and the real world, and making it useful. Builders rarely communicate. Communicators rarely build. Strategists rarely do either. The intersection of all three is nearly empty, and in a world drowning in AI hype, someone who can build the thing, see what it means, and tell the truth about it occupies a position that gets more valuable with every wave. The evidence: 38 years in corporate technology in global banking (systems programming early on, then data centres, resilience, and major-incident management), 19 products built and tested (several since retired), 4 published books (pre-AI, including one that for several years outsold every other book on its topic), creator of Efformism (an original philosophical framework), and innovations on The Headless Way (an established contemplative practice). This isn't a claim about potential. It's a documented track record of building, thinking originally, and communicating at the highest level, across technology, business, and philosophy. ADHD sharpens the edge: fast pattern-matching, quick acquisition, connecting dots across domains that most people keep in separate boxes.
+Translating between the frontier and the real world, and making it useful. Builders rarely communicate. Communicators rarely build. Strategists rarely do either. The intersection of all three is nearly empty, and in a world drowning in AI hype, someone who can build the thing, see what it means, and tell the truth about it occupies a position that gets more valuable with every wave. The evidence: 38 years in corporate (including complex systems in global banking), 19 AI-built products, top 1% of GitHub contributors, 4 published books (pre-AI, including a genuine global #1 bestseller in category), creator of Efformism (an original philosophical framework), and innovations on The Headless Way (an established contemplative practice). This isn't a claim about potential. It's a documented track record of building, thinking originally, and communicating at the highest level, across technology, business, and philosophy. ADHD sharpens the edge: fast pattern-matching, quick acquisition, connecting dots across domains that most people keep in separate boxes.
 
 **What Drives My Economic Engine:**
 Profit per subscribed viewer. Each person who subscribes because they trust my honesty and value my insight represents a lifetime relationship: views, trust, conversion to paid offerings (convenience SaaS, premium content, benchmarks), and inbound opportunities (speaking, advisory, collaboration). The single metric to optimise is the subscribed audience built on trust. Video-first, because it's the hardest medium to fake, rewards depth over time, and resists the bot and agent noise that is drowning text-based social media. Supporting channels: independent benchmarks across verticals generating authoritative data, automated trading (Trader-7), convenience SaaS, and advisory. Everything feeds the audience or is fed by it.
@@ -65,7 +65,7 @@ Where all three circles overlap: I'm genuinely passionate about riding waves and
 **I am** the honest practitioner who builds, tests, fails, and shares everything openly
 **That** gives you real insight into what works, what doesn't, and why, plus open-source tools you can verify and use yourself
 **Unlike** AI gurus selling courses of recycled ideas, hype-driven influencers faking it, or enterprise consultants who've never built anything
-**Because** I have 19 products built and tested with AI, 38 years of corporate experience, 4 published books (including one that for several years outsold every other book on its topic), and a track record of sharing failures as loudly as wins. My code is open. My numbers are real. If I recommend it, I'm using it.
+**Because** I have 19 products built with AI, 38 years of corporate experience, 4 published books (including a genuine global #1 bestseller), top 1% of GitHub contributors, and a track record of sharing failures as loudly as wins. My code is open. My numbers are real. If I recommend it, I'm using it.
 
 ---
 
@@ -78,15 +78,16 @@ Real insight from someone actually doing the work. Not theory, not hype: what's 
 I share my failures to earn the right to be believed about my wins. In a world of AI slop and fake-it-till-you-make-it, I'm in the truth business. My code is open, my metrics are public, and I kill what doesn't work in full view.
 
 **Real Reasons to Believe:**
-- 4 published books, including one that for several years outsold every other book on its topic (he can communicate complex ideas people actually want to consume)
-- 19 products built and tested with AI tools across search, trading, monitoring, and benchmarking, several since retired (he's tested the frontier, not just read about it)
+- 4 published books, including a genuine global #1 bestseller in category (he can communicate complex ideas people actually want to consume)
+- Top 1% of GitHub contributors (he's not just talking about building, he's actually building)
+- 19 products built with AI tools across search, trading, monitoring, and benchmarking (he's tested the frontier, not just read about it)
 - 38 years in corporate including complex systems in global banking (he understands how the real world works, not just the tech world)
 - Creator of Efformism and innovator on The Headless Way (he thinks originally, not just recycles)
 - Open-source code anyone can inspect (nothing to hide)
 - Kills his own products publicly when they don't work (if he says something works, he means it)
 
 **Kitchen Logic:**
-If he wrote a book that outsold every other on its topic for years, he can explain things people actually want to hear. If he open-sources his code, he's not hiding behind marketing. If he kills his own products publicly, he's not going to recommend something that doesn't work.
+If he wrote a global bestseller, he can explain things people actually want to hear. If he's in the top 1% on GitHub, he's not faking the building. If he open-sources his code, he's not hiding behind marketing. If he kills his own products publicly, he's not going to recommend something that doesn't work.
 
 **Guarantees:**
 - If I recommend it, I'm using it
