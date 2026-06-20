@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import { Twitter, Linkedin, Github, Mail } from 'lucide-react';
+import { NewsletterSignup } from '../newsletter/NewsletterSignup';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const showSignup = !!process.env.BUTTONDOWN_API_KEY;
 
   const quickLinks = [
     { href: '/', label: 'Home' },
@@ -40,6 +42,11 @@ export default function Footer() {
       role="contentinfo"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        {showSignup && (
+          <div className="mb-12 pb-12 border-b border-border-subtle max-w-xl">
+            <NewsletterSignup variant="footer" />
+          </div>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
           {/* Brand Section */}
           <div>

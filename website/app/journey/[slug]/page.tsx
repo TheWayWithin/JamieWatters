@@ -7,6 +7,7 @@ import { renderMarkdown } from '@/lib/markdown';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { ShareButtons } from '@/components/blog/ShareButtons';
+import { NewsletterSignup } from '@/components/newsletter/NewsletterSignup';
 import {
   getBlogPostSchema,
   getBreadcrumbSchema,
@@ -202,6 +203,13 @@ For now, this shows that the database integration is working correctly for post 
           dangerouslySetInnerHTML={{ __html: contentHtml }}
         />
       </article>
+
+      {/* Newsletter Signup */}
+      {process.env.BUTTONDOWN_API_KEY && (
+        <section className="px-6 pb-4 max-w-3xl mx-auto">
+          <NewsletterSignup variant="inline" />
+        </section>
+      )}
 
       {/* Social Share Section */}
       <section className="px-6 py-12 sm:py-16 border-t border-border-subtle max-w-3xl mx-auto">
