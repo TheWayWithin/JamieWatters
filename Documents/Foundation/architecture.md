@@ -225,9 +225,10 @@ This section tracks what's been built versus what was originally designed, helpi
 │                                   └─────────────────────┘      │
 │                                                                 │
 │  ┌─────────────────────────────────────────────────────────┐   │
-│  │  Content (Git Repository)                               │   │
+│  │  Content & Assets                                       │   │
 │  │  - /content/posts/*.md (Blog markdown files)            │   │
-│  │  - /public/images/* (Optimized images)                  │   │
+│  │  - /public/images/* (Static assets, legacy blog images) │   │
+│  │  - Cloudflare R2 (blog hero images, since Sprint 6)     │   │
 │  └─────────────────────────────────────────────────────────┘   │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
@@ -332,7 +333,8 @@ Status: ✅ ACTIVE (currently deployed on Netlify)
   - **Status**: 🔌 Configured but not yet connected in application code
 - **File Storage**:
   - Blog markdown files to be stored in Git repository (planned)
-  - Images in `/public/` directory (served via Netlify Edge Network)
+  - **Static assets**: `/public/` directory (favicons, OG images, legacy blog images, project screenshots), served via Netlify Edge Network
+  - **Blog hero images**: Cloudflare R2 (bucket `jamiewatters-work`, public read via `pub-4f2aa5e351b44f67ba6dd0bc32fe1bb2.r2.dev`). Uploaded by `jpub` at publish time, stored under `blog/` prefix. Decouples image publishing from Netlify rebuilds — zero egress fees, S3-compatible API. Migrated 2026-05-03 (Sprint 6).
   - Vercel Blob Storage available for large assets if needed (future)
 
 #### Networking
