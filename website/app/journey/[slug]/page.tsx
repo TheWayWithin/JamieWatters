@@ -205,9 +205,7 @@ For now, this shows that the database integration is working correctly for post 
       </article>
 
       {/* Newsletter Signup */}
-      {/* TEMP(preview): `true` ungates for the deploy preview. Re-gate to
-          `process.env.BUTTONDOWN_API_KEY` before merging to main. */}
-      {true && (
+      {process.env.BUTTONDOWN_API_KEY && (
         <section className="px-6 pb-4 max-w-3xl mx-auto">
           <NewsletterSignup variant="inline" />
         </section>

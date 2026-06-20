@@ -4,9 +4,7 @@ import { NewsletterSignup } from '../newsletter/NewsletterSignup';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-  // TEMP(preview): ungated so the form is visible on the deploy preview.
-  // Re-gate to `!!process.env.BUTTONDOWN_API_KEY` before merging to main.
-  const showSignup = true;
+  const showSignup = !!process.env.BUTTONDOWN_API_KEY;
 
   const quickLinks = [
     { href: '/', label: 'Home' },

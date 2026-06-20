@@ -131,9 +131,7 @@ export default async function BlogPostPage({
         dangerouslySetInnerHTML={{ __html: contentHtml }}
       />
 
-      {/* TEMP(preview): `true` ungates for the deploy preview. Re-gate to
-          `process.env.BUTTONDOWN_API_KEY` before merging to main. */}
-      {true && (
+      {process.env.BUTTONDOWN_API_KEY && (
         <div className="mt-12">
           <NewsletterSignup variant="inline" />
         </div>
