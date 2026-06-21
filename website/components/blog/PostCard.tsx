@@ -2,12 +2,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Card } from '../ui/Card';
 import { Calendar, Clock } from 'lucide-react';
-import type { PostWithMetadata } from '@/lib/database';
+import type { PostListItem } from '@/lib/database';
 import { renderMarkdown } from '@/lib/markdown';
 import { use } from 'react';
 
 interface PostCardProps {
-  post: PostWithMetadata;
+  post: PostListItem;
 }
 
 export function PostCard({ post }: PostCardProps) {
