@@ -10,7 +10,7 @@ readTime: 7
 draft: false
 ---
 
-A few weeks ago I wrote that six different AI models all told me, with full confidence, that Graphify uploads your code to a server. They were wrong. The tool is local-first, MIT-licensed, builds its graph on your machine. The post wrote itself: don't trust the consensus, check the source.
+A few days ago I wrote that six different AI models all told me, with full confidence, that Graphify uploads your code to a server. They were wrong. The tool is local-first, MIT-licensed, builds its graph on your machine. The post wrote itself: don't trust the consensus, check the source.
 
 So this week I checked harder. I ran it.
 
@@ -58,4 +58,4 @@ It flips to a yes in two cases. Point it at a code-heavy repo, 80 percent or mor
 
 The thing I keep relearning: the consensus was wrong, and so was I, but in different directions. Six models invented a server upload that does not happen. I missed a default API call that does. The only way to know which fears are real is to run the thing yourself and watch what actually leaves the machine.
 
-If you are using Graphify under any kind of privacy constraint, check your shell for a stray API key before your next build. What did it do on your run, zero out, or not?
+If you are using Graphify under any kind of privacy constraint, check your shell for a stray API key before your next build, strip it, and pass `--no-label`. Then watch the build report. Zero in, zero out is the only line that proves it stayed on your machine.
