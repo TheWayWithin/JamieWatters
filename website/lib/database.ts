@@ -27,6 +27,11 @@ export interface PostWithMetadata extends Post {
   // Additional computed fields can be added here
 }
 
+// Post without the heavy `content` body. Used by list/index views (journey
+// grid, prev/next nav, sitemap) so we don't ship every post's full markdown
+// in the page payload. A full PostWithMetadata is still assignable to this.
+export type PostListItem = Omit<PostWithMetadata, 'content'>;
+
 /**
  * Get all projects with proper ordering
  */
@@ -171,10 +176,13 @@ export async function getProjectWithPosts(slug: string) {
 /**
  * Get all blog posts with proper ordering
  */
-export async function getAllPosts(): Promise<PostWithMetadata[]> {
+export async function getAllPosts(): Promise<PostListItem[]> {
   try {
     const posts = await prisma.post.findMany({
       orderBy: { publishedAt: 'desc' },
+      // Omit the full markdown body: list views (journey grid, prev/next nav,
+      // sitemap) never render it, and including it bloated /journey to ~1.1MB.
+      omit: { content: true },
     });
     return posts;
   } catch (error) {
