@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Rss } from 'lucide-react';
-import { getAllPosts } from '@/lib/database';
+import { getPagedPosts } from '@/lib/database';
 import { PostCard } from '@/components/blog/PostCard';
 import { Button } from '@/components/ui/Button';
 import {
@@ -22,8 +22,14 @@ export const metadata: Metadata = {
 
 export const revalidate = 3600; // 1 hour ISR
 
-export default async function JourneyPage() {
-  const posts = await getAllPosts();
+export default async function JourneyPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const { page: pageParam } = await searchParams;
+  const requestedPage = parseInt(pageParam ?? '1', 10) || 1;
+  const { posts, page, totalPages } = await getPagedPosts(requestedPage, 20);
 
   // Generate breadcrumb structured data
   const breadcrumbSchema = getBreadcrumbSchema([
@@ -69,18 +75,32 @@ export default async function JourneyPage() {
           ))}
         </div>
 
-        {/* Pagination placeholder (for future when there are >10 posts) */}
-        {posts.length > 10 && (
+        {/* Pagination */}
+        {totalPages > 1 && (
           <div className="flex items-center justify-center gap-6 mt-12">
-            <Button variant="ghost" size="sm" disabled>
-              ← Previous
-            </Button>
+            {page > 1 ? (
+              <Button variant="ghost" size="sm" asChild>
+                <Link href={page - 1 === 1 ? '/journey' : `/journey?page=${page - 1}`}>
+                  ← Previous
+                </Link>
+              </Button>
+            ) : (
+              <Button variant="ghost" size="sm" disabled>
+                ← Previous
+              </Button>
+            )}
             <span className="text-body text-text-secondary">
-              Page 1 of 1
+              Page {page} of {totalPages}
             </span>
-            <Button variant="ghost" size="sm" disabled>
-              Next →
-            </Button>
+            {page < totalPages ? (
+              <Button variant="ghost" size="sm" asChild>
+                <Link href={`/journey?page=${page + 1}`}>Next →</Link>
+              </Button>
+            ) : (
+              <Button variant="ghost" size="sm" disabled>
+                Next →
+              </Button>
+            )}
           </div>
         )}
       </section>

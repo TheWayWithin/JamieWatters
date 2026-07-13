@@ -28,6 +28,13 @@ export interface PostWithMetadata extends Post {
 }
 
 /**
+ * A post without its heavy `content` body — for list views, prev/next nav, and
+ * the sitemap, none of which render the markdown. Keeps /journey from shipping
+ * every post's full body in the HTML payload. (ISS-8)
+ */
+export type PostListItem = Omit<PostWithMetadata, 'content'>;
+
+/**
  * Get all projects with proper ordering
  */
 export async function getAllProjects(): Promise<ProjectWithMetrics[]> {
@@ -171,10 +178,13 @@ export async function getProjectWithPosts(slug: string) {
 /**
  * Get all blog posts with proper ordering
  */
-export async function getAllPosts(): Promise<PostWithMetadata[]> {
+export async function getAllPosts(): Promise<PostListItem[]> {
   try {
+    // Omit `content` (the only heavy column) — list/nav/sitemap never render the
+    // body, so shipping it bloated /journey to ~1MB of HTML. (ISS-8)
     const posts = await prisma.post.findMany({
       orderBy: { publishedAt: 'desc' },
+      omit: { content: true },
     });
     return posts;
   } catch (error) {
@@ -187,6 +197,39 @@ export async function getAllPosts(): Promise<PostWithMetadata[]> {
     }
     
     throw new Error('Failed to fetch posts');
+  }
+}
+
+/**
+ * Get one page of posts (metadata only) for the /journey list.
+ * Uses DB-level skip/take + a count so the page ships ~20 cards, not all ~185.
+ * `requestedPage` is clamped into range. (ISS-8)
+ */
+export async function getPagedPosts(
+  requestedPage = 1,
+  perPage = 20
+): Promise<{ posts: PostListItem[]; page: number; totalPages: number; total: number }> {
+  try {
+    const total = await prisma.post.count();
+    const totalPages = Math.max(1, Math.ceil(total / perPage));
+    const page = Math.min(Math.max(1, requestedPage), totalPages);
+    const posts = await prisma.post.findMany({
+      orderBy: { publishedAt: 'desc' },
+      omit: { content: true },
+      skip: (page - 1) * perPage,
+      take: perPage,
+    });
+    return { posts, page, totalPages, total };
+  } catch (error) {
+    console.error('Error fetching paged posts:', error);
+
+    // Fallback during build - return an empty page to allow build to complete
+    if (process.env.NODE_ENV === 'production' || process.env.NEXT_PHASE === 'phase-production-build') {
+      console.warn('Database not available during build - returning empty posts page');
+      return { posts: [], page: 1, totalPages: 1, total: 0 };
+    }
+
+    throw new Error('Failed to fetch paged posts');
   }
 }
 
