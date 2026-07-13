@@ -277,10 +277,10 @@ export const placeholderPosts: PlaceholderPost[] = [
     id: "1",
     slug: "week-1-building-jamiewatters",
     title: "Week 1: Building JamieWatters.work",
-    excerpt: "The journey of building a personal brand website begins. Why I'm building in public and what I hope to achieve by documenting this journey to billion-dollar solopreneur.",
+    excerpt: "The journey of building a personal brand website begins. Why I'm building in public, and what I hope to achieve by documenting the work honestly: what holds up and what doesn't.",
     content: `# Week 1: Building JamieWatters.work
 
-The journey begins. This week marks the start of documenting my path from zero to building a billion-dollar portfolio of AI-powered SaaS products—completely solo.
+The journey begins. This week marks the start of documenting my work building with AI in the open, sharing the real numbers with the failures louder than the wins.
 
 ## Why Build in Public?
 
@@ -292,7 +292,7 @@ JamieWatters.work is more than a portfolio site. It's:
 - A transparent view into my 10+ active projects
 - Real metrics and honest updates
 - A platform to share frameworks and learnings
-- Proof that one person can build something massive
+- Proof of what one person building in the open can actually ship
 
 ## This Week's Progress
 

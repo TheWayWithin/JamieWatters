@@ -18,7 +18,7 @@
   },
   "author": "Jamie Watters",
   "license": "MIT",
-  "description": "Jamie Watters personal brand website - Building $1B Solo by 2030",
+  "description": "Jamie Watters personal brand website - building with AI in the open, sharing what actually holds",
   "dependencies": {
     "@hello-pangea/dnd": "^18.0.1",
     "@prisma/client": "^6.17.0",
