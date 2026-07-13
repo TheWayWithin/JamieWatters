@@ -4,7 +4,7 @@
 **Mission:** Serve the live Mission-Control cockpit at `jamiewatters.work/admin/cockpit`, behind the existing `/admin` auth, replacing the raw Tailscale-Funnel URL
 **Owner:** Agent-11 + Jamie
 **Reference:** `~/shared/mission-control/projects/PRJ-11-cockpit-site-brief.md` (MC task **T-119**, PRJ-11)
-**Status:** Built + verified locally — **awaiting Jamie's OK to deploy** (Netlify env var + push)
+**Status:** ✅ Shipped — live at `jamiewatters.work/admin/cockpit`, board renders behind admin auth. T-119 complete (2026-07-13).
 
 ---
 
@@ -51,15 +51,15 @@ Two brief assumptions turned out not to hold in the repo; the design adapts arou
 - [x] 2.1 `npx tsc --noEmit` clean
 - [x] 2.2 `npm run build` green; both routes registered (`ƒ /admin/cockpit`, `ƒ /api/admin/cockpit`)
 - [x] 2.3 Unauthed + bogus-token GET `/api/admin/cockpit` → **401**; page shell → **200** (via `next start`)
-- [ ] 2.4 End-to-end with real `BRAIN_COCKPIT_URL` via `netlify dev` — needs the env var set (Jamie / next step)
+- [x] 2.4 Confirmed the funnel URL returns the live board (HTTP 200, `<title>Operating Cockpit</title>`, ~22KB). Verified via direct fetch instead of `netlify dev`.
 
-## Phase 3: Deploy (Jamie-gated — NOT done)
+## Phase 3: Deploy (Jamie-gated — done)
 
-- [ ] 3.1 Set `BRAIN_COCKPIT_URL` in Netlify dashboard (Site settings → Environment variables) to the full funnel URL incl. token
-- [ ] 3.2 Add the same to local `.env` for `netlify dev` testing (gitignored)
-- [ ] 3.3 `netlify dev` → open `/admin/cockpit`, log in, confirm the live board renders
-- [ ] 3.4 Commit + push → Netlify deploy (Jamie's explicit OK)
-- [ ] 3.5 Confirm `jamiewatters.work/admin/cockpit` shows the live board behind auth
+- [x] 3.1 Set `BRAIN_COCKPIT_URL` in Netlify dashboard as a **secret** variable, all scopes
+- [x] 3.2 Added the same to local `website/.env.local` (gitignored)
+- [~] 3.3 Skipped local `netlify dev` preview in favour of verifying on the live (auth-gated) deploy
+- [x] 3.4 Commit `3e1d267` + push to `main` → Netlify deploy (Jamie's explicit OK)
+- [x] 3.5 Confirmed `jamiewatters.work/admin/cockpit` shows the live board behind auth (Jamie, 2026-07-13)
 
 ## Done when
 
