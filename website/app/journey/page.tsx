@@ -2,7 +2,9 @@ import Link from 'next/link';
 import { Rss } from 'lucide-react';
 import { getPagedPosts } from '@/lib/database';
 import { PostCard } from '@/components/blog/PostCard';
+import { FeedFilterBar } from '@/components/blog/FeedFilterBar';
 import { Button } from '@/components/ui/Button';
+import { isEditorialType } from '@/lib/taxonomy';
 import { getSEOMetadata } from '@/lib/seo';
 import {
   getBreadcrumbSchema,
@@ -21,17 +23,29 @@ export const revalidate = 3600; // 1 hour ISR
 export default async function JourneyPage({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<{ page?: string; type?: string }>;
 }) {
-  const { page: pageParam } = await searchParams;
+  const { page: pageParam, type: typeParam } = await searchParams;
   const requestedPage = parseInt(pageParam ?? '1', 10) || 1;
-  const { posts, page, totalPages } = await getPagedPosts(requestedPage, 20);
+  const activeType = typeParam && isEditorialType(typeParam) ? typeParam : undefined;
+  const { posts, page, totalPages } = await getPagedPosts(requestedPage, 20, {
+    editorialType: activeType,
+  });
 
   // Generate breadcrumb structured data
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: 'Home', url: 'https://jamiewatters.work' },
     { name: 'The Journey', url: 'https://jamiewatters.work/journey' },
   ]);
+
+  // Pagination links preserve the active type filter.
+  const pageHref = (p: number) => {
+    const params = new URLSearchParams();
+    if (activeType) params.set('type', activeType);
+    if (p > 1) params.set('page', String(p));
+    const qs = params.toString();
+    return qs ? `/journey?${qs}` : '/journey';
+  };
 
   return (
     <>
@@ -65,20 +79,26 @@ export default async function JourneyPage({
 
       {/* Blog Posts Grid */}
       <section className="px-6 pb-16 sm:pb-24 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {posts.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
-        </div>
+        <FeedFilterBar activeType={activeType} />
+
+        {posts.length === 0 ? (
+          <p className="text-body text-text-secondary py-12 text-center">
+            No {activeType ? `${activeType} ` : ''}posts yet. Try another filter.
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {posts.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        )}
 
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex items-center justify-center gap-6 mt-12">
             {page > 1 ? (
               <Button variant="ghost" size="sm" asChild>
-                <Link href={page - 1 === 1 ? '/journey' : `/journey?page=${page - 1}`}>
-                  ← Previous
-                </Link>
+                <Link href={pageHref(page - 1)}>← Previous</Link>
               </Button>
             ) : (
               <Button variant="ghost" size="sm" disabled>
@@ -90,7 +110,7 @@ export default async function JourneyPage({
             </span>
             {page < totalPages ? (
               <Button variant="ghost" size="sm" asChild>
-                <Link href={`/journey?page=${page + 1}`}>Next →</Link>
+                <Link href={pageHref(page + 1)}>Next →</Link>
               </Button>
             ) : (
               <Button variant="ghost" size="sm" disabled>

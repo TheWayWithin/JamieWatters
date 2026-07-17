@@ -150,10 +150,18 @@ relative paths (render from public/, no R2 needed). No slug collisions.
   filesystem /blog still renders. `content/blog/*.md` stays as migration source.
   trader-7 files: left in repo, not posts.
 
-**T4 — Feed views: topic + type filters + topic pages.**
-Add filter UI to `/journey` (topic + type facets), generate
-`/journey/topic/[topic]` (7 pages) as filtered views. `getPagedPosts` gains
-optional topic/type args. PostCard already shows tags.
+**T4 — Feed views: topic + type filters + topic pages — DONE 2026-07-17.**
+- `getPagedPosts` gains optional `FeedFilters` (topic `has`, editorialType eq).
+- `components/blog/FeedFilterBar.tsx`: server-rendered link chips (topic chips
+  deep-link to topic pages; type chips toggle `?type=`). No client JS.
+- `app/journey/topic/[topic]/page.tsx`: 7 SSG topic pages
+  (generateStaticParams over TOPICS), per-topic SEO metadata + canonical,
+  breadcrumb schema, filter bar, pagination that preserves the type filter.
+- `/journey` reads `?type=`, renders the filter bar + empty state.
+- PostCard: replaced noisy raw #tags with clean linked topic chips + a type
+  badge.
+Verified on built server: topic pages 200 (bogus 404); essay filter → exactly
+4; thinking → 18; open-source → 0 (empty state); build 258 pages, tsc clean.
 
 **T5 — Redirects + nav + sitemap/RSS.**
 301 `/blog` → `/journey` and `/blog/{slug}` → `/journey/{slug}` (netlify.toml

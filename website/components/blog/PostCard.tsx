@@ -5,6 +5,7 @@ import { Calendar, Clock } from 'lucide-react';
 import type { PostListItem } from '@/lib/database';
 import { renderMarkdown } from '@/lib/markdown';
 import { use } from 'react';
+import { isTopic, TOPIC_LABELS, isEditorialType, EDITORIAL_TYPE_LABELS } from '@/lib/taxonomy';
 
 interface PostCardProps {
   post: PostListItem;
@@ -34,6 +35,13 @@ export function PostCard({ post }: PostCardProps) {
         </div>
       )}
 
+      {/* Editorial type badge */}
+      {post.editorialType && isEditorialType(post.editorialType) && (
+        <span className="inline-flex self-start px-2 py-0.5 mb-2 text-[11px] font-semibold uppercase tracking-wide rounded bg-bg-surface-hover text-text-tertiary">
+          {EDITORIAL_TYPE_LABELS[post.editorialType]}
+        </span>
+      )}
+
       <h3 className="text-xl font-semibold text-text-primary mb-2">
         {post.title}
       </h3>
@@ -54,17 +62,20 @@ export function PostCard({ post }: PostCardProps) {
         dangerouslySetInnerHTML={{ __html: excerptHtml }}
       />
 
-      {/* Tags */}
-      <div className="flex flex-wrap gap-2 mb-4">
-        {post.tags.map((tag) => (
-          <span
-            key={tag}
-            className="px-2 py-1 text-xs font-medium bg-bg-surface-hover text-text-secondary rounded"
-          >
-            #{tag}
-          </span>
-        ))}
-      </div>
+      {/* Topics — clean controlled facets, linked to their topic pages */}
+      {post.topics.filter(isTopic).length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-4">
+          {post.topics.filter(isTopic).map((topic) => (
+            <Link
+              key={topic}
+              href={`/journey/topic/${topic}`}
+              className="px-2 py-1 text-xs font-medium bg-bg-surface-hover text-text-secondary rounded hover:text-brand-primary transition-base"
+            >
+              {TOPIC_LABELS[topic]}
+            </Link>
+          ))}
+        </div>
+      )}
 
       {/* Read More Link */}
       <Link

@@ -201,19 +201,35 @@ export async function getAllPosts(): Promise<PostListItem[]> {
 }
 
 /**
+ * Optional facet filters for the unified feed (Wave 3). Both narrow the same
+ * chronological stream; omitting them returns everything (unchanged behaviour).
+ */
+export interface FeedFilters {
+  topic?: string;
+  editorialType?: string;
+}
+
+/**
  * Get one page of posts (metadata only) for the /journey list.
  * Uses DB-level skip/take + a count so the page ships ~20 cards, not all ~185.
  * `requestedPage` is clamped into range. (ISS-8)
+ * Optional `filters` narrow by topic and/or editorial type (Wave 3).
  */
 export async function getPagedPosts(
   requestedPage = 1,
-  perPage = 20
+  perPage = 20,
+  filters: FeedFilters = {}
 ): Promise<{ posts: PostListItem[]; page: number; totalPages: number; total: number }> {
   try {
-    const total = await prisma.post.count();
+    const where = {
+      ...(filters.topic ? { topics: { has: filters.topic } } : {}),
+      ...(filters.editorialType ? { editorialType: filters.editorialType } : {}),
+    };
+    const total = await prisma.post.count({ where });
     const totalPages = Math.max(1, Math.ceil(total / perPage));
     const page = Math.min(Math.max(1, requestedPage), totalPages);
     const posts = await prisma.post.findMany({
+      where,
       orderBy: { publishedAt: 'desc' },
       omit: { content: true },
       skip: (page - 1) * perPage,
