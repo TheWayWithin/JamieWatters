@@ -6,8 +6,7 @@ import { getBlogPostBySlug, getBlogSlugs } from '@/lib/blog';
 import { renderMarkdown } from '@/lib/markdown';
 import { formatReadTime } from '@/lib/read-time-calculator';
 import { NewsletterSignup } from '@/components/newsletter/NewsletterSignup';
-
-const SITE_URL = 'https://jamiewatters.work';
+import { getSEOMetadata, SITE_URL } from '@/lib/seo';
 
 export function generateStaticParams() {
   return getBlogSlugs().map((slug) => ({ slug }));
@@ -40,25 +39,14 @@ export async function generateMetadata({
         alt: post.title,
       };
 
-  return {
+  return getSEOMetadata({
     title: post.title,
     description: post.excerpt,
-    openGraph: {
-      title: post.title,
-      description: post.excerpt,
-      url: `${SITE_URL}/blog/${post.slug}`,
-      type: 'article',
-      publishedTime: post.date,
-      authors: ['Jamie Watters'],
-      images: [ogImage],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: post.title,
-      description: post.excerpt,
-      images: [ogImage.url],
-    },
-  };
+    path: `/blog/${post.slug}`,
+    type: 'article',
+    publishedTime: post.date,
+    image: ogImage,
+  });
 }
 
 export default async function BlogPostPage({

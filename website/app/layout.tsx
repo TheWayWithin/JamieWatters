@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { getNonce } from '@/lib/nonce';
+import { SITE_URL } from '@/lib/seo';
 import './globals.css';
 
 const inter = Inter({
@@ -28,6 +29,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'Jamie Watters | Building in public at the AI frontier',
     template: '%s | Jamie Watters',

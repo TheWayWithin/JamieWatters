@@ -1,19 +1,15 @@
-import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Twitter, Linkedin, Github, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { getSEOMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata = getSEOMetadata({
   title: 'About Jamie Watters',
   description:
     'A systems programmer who learned to code at the metal, lost the thread in management, and got his first love handed back by AI. Building in public and betting on cognitive sovereignty.',
-  openGraph: {
-    title: 'About Jamie Watters',
-    description:
-      'A systems programmer who learned to code at the metal, lost the thread in management, and got his first love handed back by AI. Building in public and betting on cognitive sovereignty.',
-  },
-};
+  path: '/about',
+});
 
 export default function AboutPage() {
   return (

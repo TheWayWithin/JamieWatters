@@ -15,12 +15,18 @@ import {
 export const revalidate = 60;
 
 // SEO Metadata
-export const metadata = getSEOMetadata({
-  title: 'Become More Valuable, Not Less, as AI Accelerates',
-  description:
-    "I build with AI, test what's real, kill what isn't, and share the whole lot in public. Open code, real numbers, the failures before the wins.",
-  type: 'website',
-});
+export const metadata = {
+  ...getSEOMetadata({
+    title: 'Become More Valuable, Not Less, as AI Accelerates',
+    description:
+      "I build with AI, test what's real, kill what isn't, and share the whole lot in public. Open code, real numbers, the failures before the wins.",
+    path: '/',
+    type: 'website',
+  }),
+  // The root page sits in the layout's own segment, so the title template
+  // does not apply here; carry the suffix explicitly.
+  title: 'Become More Valuable, Not Less, as AI Accelerates | Jamie Watters',
+};
 
 export default async function Home() {
   const featuredProjects = await getFeaturedProjects();

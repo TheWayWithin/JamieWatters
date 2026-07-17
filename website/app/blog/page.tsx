@@ -1,13 +1,14 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import type { Metadata } from 'next';
 import { getAllBlogPosts } from '@/lib/blog';
 import { formatReadTime } from '@/lib/read-time-calculator';
+import { getSEOMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata = getSEOMetadata({
   title: 'Blog',
   description: 'Thoughts on AI, solopreneurship, and building in public.',
-};
+  path: '/blog',
+});
 
 export default function BlogPage() {
   const posts = getAllBlogPosts();

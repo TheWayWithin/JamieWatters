@@ -1,24 +1,20 @@
-import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Rss } from 'lucide-react';
 import { getPagedPosts } from '@/lib/database';
 import { PostCard } from '@/components/blog/PostCard';
 import { Button } from '@/components/ui/Button';
+import { getSEOMetadata } from '@/lib/seo';
 import {
   getBreadcrumbSchema,
   renderStructuredData,
 } from '@/lib/structured-data';
 
-export const metadata: Metadata = {
+export const metadata = getSEOMetadata({
   title: 'The Journey',
   description:
-    'Weekly updates on building AI-powered businesses as a solo operator. Wins, failures, and lessons learned — all shared transparently.',
-  openGraph: {
-    title: 'The Journey | Jamie Watters',
-    description:
-      'Weekly updates on building AI-powered businesses as a solo operator. Wins, failures, and lessons learned — all shared transparently.',
-  },
-};
+    'Weekly updates on building AI-powered businesses as a solo operator. Wins, failures, and lessons learned, all shared transparently.',
+  path: '/journey',
+});
 
 export const revalidate = 3600; // 1 hour ISR
 

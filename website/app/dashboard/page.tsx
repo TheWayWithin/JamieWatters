@@ -12,7 +12,7 @@ export const metadata = getSEOMetadata({
   title: 'Proof',
   description:
     'The numbers behind the work: articles published, GitHub stars, and products shipped. Real, current, and yours to check.',
-  type: 'website',
+  path: '/dashboard',
 });
 
 export default async function ProofPage() {

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { getSEOMetadata, SITE_URL } from '@/lib/seo';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ExternalLink, Github } from 'lucide-react';
@@ -34,14 +35,12 @@ export async function generateMetadata({
     ? project.description.slice(0, 157) + '...'
     : project.description;
 
-  return {
+  return getSEOMetadata({
     title: project.name,
     description,
-    openGraph: {
-      title: `${project.name} | Jamie Watters`,
-      description,
-    },
-  };
+    path: `/portfolio/${slug}`,
+    image: `${SITE_URL}/og?type=project&title=${encodeURIComponent(project.name)}`,
+  });
 }
 
 // Generate static params for all projects (SSG)

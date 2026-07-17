@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { ShareButtons } from '@/components/blog/ShareButtons';
 import { NewsletterSignup } from '@/components/newsletter/NewsletterSignup';
+import { getSEOMetadata, SITE_URL } from '@/lib/seo';
 import {
   getBlogPostSchema,
   getBreadcrumbSchema,
@@ -40,11 +41,10 @@ export async function generateMetadata({
     };
   }
 
-  const postUrl = `https://jamiewatters.work/journey/${slug}`;
   const heroImageUrl = post.image
-    ? (post.image.startsWith('http') ? post.image : `https://jamiewatters.work${post.image}`)
+    ? (post.image.startsWith('http') ? post.image : `${SITE_URL}${post.image}`)
     : null;
-  const fallbackOg = `https://jamiewatters.work/og?type=post&title=${encodeURIComponent(post.title)}`;
+  const fallbackOg = `${SITE_URL}/og?type=post&title=${encodeURIComponent(post.title)}`;
 
   const ogImage = heroImageUrl
     ? {
@@ -60,25 +60,14 @@ export async function generateMetadata({
         alt: post.title,
       };
 
-  return {
+  return getSEOMetadata({
     title: post.title,
     description: post.excerpt,
-    openGraph: {
-      title: post.title,
-      description: post.excerpt,
-      url: postUrl,
-      type: 'article',
-      publishedTime: (post.publishedAt || post.createdAt).toISOString(),
-      authors: ['Jamie Watters'],
-      images: [ogImage],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: post.title,
-      description: post.excerpt,
-      images: [ogImage.url],
-    },
-  };
+    path: `/journey/${slug}`,
+    type: 'article',
+    publishedTime: (post.publishedAt || post.createdAt).toISOString(),
+    image: ogImage,
+  });
 }
 
 export default async function BlogPostPage({

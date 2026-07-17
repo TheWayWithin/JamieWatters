@@ -1,21 +1,17 @@
-import type { Metadata } from 'next';
 import { getAllProjects } from '@/lib/database';
 import { ProjectCard } from '@/components/portfolio/ProjectCard';
+import { getSEOMetadata } from '@/lib/seo';
 import {
   getBreadcrumbSchema,
   renderStructuredData,
 } from '@/lib/structured-data';
 
-export const metadata: Metadata = {
+export const metadata = getSEOMetadata({
   title: 'Portfolio',
   description:
     "Products I've built with AI, in public. What's live, what's in build, and what I've retired.",
-  openGraph: {
-    title: 'Portfolio | Jamie Watters',
-    description:
-      "Products I've built with AI, in public. What's live, what's in build, and what I've retired.",
-  },
-};
+  path: '/portfolio',
+});
 
 export const revalidate = 3600; // 1 hour ISR
 
