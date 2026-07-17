@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ProjectCard } from '@/components/portfolio/ProjectCard';
 import { PostCard } from '@/components/blog/PostCard';
 import { Button } from '@/components/ui/Button';
+import { NewsletterSignup } from '@/components/newsletter/NewsletterSignup';
 import { getFeaturedProjects, getRecentPosts } from '@/lib/database';
 import { getSEOMetadata } from '@/lib/seo';
 import {
@@ -47,7 +48,7 @@ export default async function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg">
-                <Link href="/journey">Subscribe</Link>
+                <Link href="#subscribe">Subscribe</Link>
               </Button>
               <Button asChild variant="secondary" size="lg">
                 <Link href="/about">Read the story</Link>
@@ -248,8 +249,8 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Closing CTA */}
-        <section className="py-16 lg:py-24 px-6 bg-bg-primary">
+        {/* Closing CTA: the signup itself */}
+        <section id="subscribe" className="py-16 lg:py-24 px-6 bg-bg-primary scroll-mt-20">
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-body-lg lg:text-body-xl text-text-primary mb-4 leading-relaxed">
               I'm in the water, riding this wave in real time, in code and in writing.
@@ -259,9 +260,9 @@ export default async function Home() {
               from the beach, stay a while. I'll tell you what's working before you waste the time
               finding out yourself.
             </p>
-            <Button asChild size="lg">
-              <Link href="/journey">Subscribe</Link>
-            </Button>
+            <div className="max-w-xl mx-auto text-left">
+              <NewsletterSignup variant="inline" />
+            </div>
           </div>
         </section>
       </main>
