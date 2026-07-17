@@ -144,7 +144,7 @@ export default async function Home() {
               <li className="flex gap-3">
                 <span className="text-brand-accent flex-shrink-0">▹</span>
                 <span>
-                  19 products built with AI, across search, trading, monitoring, and benchmarking
+                  20 products built with AI, across search, trading, monitoring, and estate tooling
                 </span>
               </li>
               <li className="flex gap-3">
