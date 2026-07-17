@@ -74,7 +74,8 @@ async function main() {
   check('homepage renders the signup section', home.includes('id="subscribe"'));
 
   // 2. Canonical + og:url on every key public page.
-  for (const pagePath of ['/about', '/portfolio', '/journey', '/blog', '/dashboard']) {
+  // Note: /blog was retired in Wave 3 (now 301s into /journey), so it's dropped here.
+  for (const pagePath of ['/about', '/portfolio', '/journey', '/dashboard']) {
     await checkHead(pagePath);
   }
 

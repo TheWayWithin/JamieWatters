@@ -197,9 +197,32 @@ items). Build 254 pages, tsc clean.
   to end — no local admin credentials (same limit as Wave 2); the form is a
   client component gated behind auth, verified via compile + the wired data path.
 
-**T7 — Verify + regression script.**
-`scripts/verify-wave3.ts`: /blog + /blog/{slug} 301 to /journey; topic pages
-200; feed filter returns filtered set; sitemap contains former blog slugs under
-/journey; RSS non-empty; build green. Live spot-check post-deploy.
+**T7 — Verify + regression script — DONE 2026-07-17.**
+`scripts/verify-wave3.ts` (BASE_URL-switchable): 19 checks — /blog + /blog/{slug}
+permanent-redirect to /journey, 7 topic pages 200 (bogus 404), type filter
+narrows the feed, migrated post renders under /journey, sitemap covers migrated
+post + 7 topic pages and drops /blog, RSS non-empty (187 items), no Blog in nav,
+and the Wave 2 regression (/api/admin/* 401). All pass on localhost.
+Cross-wave fix: verify-wave1 dropped /blog from its canonical loop (it now 301s
+into /journey). All three wave scripts green.
 
-Sequencing: T1 → T2 ∥ T3 → T4 ∥ T6 → T5 → T7. Jamie gates the push.
+Sequencing done: T1 → T2 → T3 → T4 → T5 → T6 → T7. All local commits; Jamie
+gates the push to main (deploys prod).
+
+---
+
+## Ready to ship
+
+7 local commits (d359735..T7). DB migration + backfill + blog import already
+applied to Neon (Jamie authorised each). Site code (feed views, redirects, nav,
+RSS, admin UI) deploys on push. Build 254 pages, tsc clean, verify-wave1/2/3 all
+pass. Awaiting Jamie's push confirmation.
+
+### Post-ship follow-ups (not blockers)
+- 17 zero-topic posts + `ten-days-letting-check-do-work` (malformed tag):
+  hand-tag via the admin editor.
+- jpub topic *inference* (DB default already covers type=build-log + empty topics).
+- Optional later cleanup: remove `content/blog/*.md`, `lib/blog.ts`, and the two
+  one-shot migration scripts once prod is proven.
+- 2 essay-leaning migrated posts (ai-cofounder, the-three-options-trap) left as
+  build-log — flip in admin if wanted.
