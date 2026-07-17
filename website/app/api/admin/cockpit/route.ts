@@ -59,7 +59,7 @@ function fallbackPage(message: string): NextResponse {
 }
 
 export async function GET(req: NextRequest) {
-  // --- Auth: this route guards itself (middleware only covers /api/metrics) ---
+  // --- Auth: this route guards itself (middleware handles CSP only) ---
   const token = extractTokenFromRequest(req) || req.headers.get('x-auth-token');
   if (!token) {
     return NextResponse.json({ error: 'Authentication required' }, { status: 401 });

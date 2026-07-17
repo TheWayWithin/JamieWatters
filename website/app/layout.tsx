@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import Script from 'next/script';
-import { Analytics } from '@vercel/analytics/react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { getNonce } from '@/lib/nonce';
@@ -98,8 +97,6 @@ export default async function RootLayout({
         <Header />
         <main>{children}</main>
         <Footer />
-        {/* Analytics with CSP nonce support - currently disabled but ready for production */}
-        {/* <Analytics nonce={nonce} /> */}
       </body>
     </html>
   );

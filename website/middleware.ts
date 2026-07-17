@@ -7,8 +7,10 @@ import { NextRequest, NextResponse } from 'next/server';
  * - CSP with nonce-based script execution (prevents XSS attacks)
  * - Cryptographically secure nonce generation per request
  * - Strict CSP policy aligned with OWASP best practices
- * - Admin route authentication (JWT token verification)
  * - Comprehensive security headers
+ *
+ * NOTE: This middleware is CSP-only. All /api/admin/* routes enforce their own
+ * authentication via verifyToken in lib/auth.ts.
  *
  * Architecture Decision:
  * - Nonces generated in middleware, passed via headers to React Server Components
@@ -17,14 +19,6 @@ import { NextRequest, NextResponse } from 'next/server';
  *
  * Reference: CLAUDE.md - Security-First Development Principles
  */
-
-// Define protected admin routes (but NOT /admin itself - it has its own auth)
-// NOTE: /api/admin/* routes are NOT included here because they handle their own authentication
-// This middleware only protects non-API admin routes
-const ADMIN_ROUTES = ['/api/metrics'];
-
-// Define public routes that should never be protected
-const PUBLIC_ROUTES = ['/api/auth/logout', '/api/auth', '/admin'];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -36,14 +30,6 @@ export async function middleware(request: NextRequest) {
 
   // Generate cryptographically secure nonce for CSP
   const nonce = generateNonce();
-
-  // Check if this is a protected admin route
-  if (isAdminRoute(pathname) && !isPublicRoute(pathname)) {
-    const authResponse = await handleAdminRoute(request, nonce);
-    if (authResponse) {
-      return authResponse;
-    }
-  }
 
   // For all routes, add CSP headers with nonce
   return addSecurityHeaders(request, nonce);
@@ -62,59 +48,6 @@ function generateNonce(): string {
 
   // Convert to base64 (URL-safe)
   return Buffer.from(array).toString('base64');
-}
-
-/**
- * Handle admin route authentication
- * Returns response if auth fails, null if auth succeeds
- */
-async function handleAdminRoute(
-  request: NextRequest,
-  nonce: string
-): Promise<NextResponse | null> {
-  try {
-    // Extract token from request
-    const token = getTokenFromRequest(request);
-
-    if (!token) {
-      return redirectToLogin(request);
-    }
-
-    // Basic token format check (detailed verification happens in API routes)
-    if (!isValidTokenFormat(token)) {
-      return redirectToLogin(request);
-    }
-
-    // Auth successful - add context headers for downstream verification
-    const response = NextResponse.next();
-    response.headers.set('x-auth-token', token);
-
-    return null; // Continue to CSP headers
-  } catch (error) {
-    console.error('Middleware authentication error:', error);
-    return redirectToLogin(request);
-  }
-}
-
-/**
- * Redirect to login page with return URL
- */
-function redirectToLogin(request: NextRequest): NextResponse {
-  const url = request.nextUrl.clone();
-
-  // For API routes, return 401 instead of redirect
-  if (url.pathname.startsWith('/api/')) {
-    return NextResponse.json(
-      { error: 'Authentication required' },
-      { status: 401 }
-    );
-  }
-
-  // For pages, redirect to admin login with return URL
-  url.pathname = '/admin';
-  url.searchParams.set('returnUrl', request.nextUrl.pathname);
-
-  return NextResponse.redirect(url);
 }
 
 /**
@@ -201,61 +134,6 @@ function addSecurityHeaders(request: NextRequest, nonce: string): NextResponse {
   response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
 
   return response;
-}
-
-/**
- * Check if route is protected admin route
- */
-function isAdminRoute(pathname: string): boolean {
-  return ADMIN_ROUTES.some(route =>
-    pathname === route || pathname.startsWith(route + '/')
-  );
-}
-
-/**
- * Check if route is public (should not be protected)
- */
-function isPublicRoute(pathname: string): boolean {
-  return PUBLIC_ROUTES.some(route =>
-    pathname === route || pathname.startsWith(route + '/')
-  );
-}
-
-/**
- * Extract token from request headers and cookies (edge runtime compatible)
- */
-function getTokenFromRequest(request: NextRequest): string | null {
-  // Check Authorization header first (Bearer token)
-  const authHeader = request.headers.get('Authorization');
-  if (authHeader?.startsWith('Bearer ')) {
-    return authHeader.slice(7);
-  }
-
-  // Check cookies
-  const cookies = request.headers.get('Cookie');
-  if (cookies) {
-    const tokenMatch = cookies.match(/auth-token=([^;]+)/);
-    if (tokenMatch) {
-      return decodeURIComponent(tokenMatch[1]);
-    }
-  }
-
-  return null;
-}
-
-/**
- * Basic token format validation (edge runtime compatible)
- */
-function isValidTokenFormat(token: string): boolean {
-  if (!token || typeof token !== 'string') return false;
-
-  // Check if it looks like our token format: base64.base64
-  const parts = token.split('.');
-  if (parts.length !== 2) return false;
-
-  // Basic base64 format check
-  const base64Regex = /^[A-Za-z0-9_-]+$/;
-  return base64Regex.test(parts[0]) && base64Regex.test(parts[1]);
 }
 
 /**

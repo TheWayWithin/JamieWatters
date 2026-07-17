@@ -4,7 +4,7 @@
  * Verifies: the homepage Subscribe CTA reaches the on-page signup instead of
  * /journey, every key public page carries the correct absolute canonical and
  * og:url (including one portfolio slug and one journey slug), the stale
- * '/api/auth/login' middleware entry is gone, and /api/metrics stays protected.
+ * '/api/auth/login' middleware entry is gone, and /api/metrics is deleted (Wave 2).
  * Run from website/: npx tsx scripts/verify-wave1.ts
  * Against production instead: BASE_URL=https://jamiewatters.work npx tsx scripts/verify-wave1.ts
  */
@@ -89,8 +89,9 @@ async function main() {
   // 3. Middleware: stale entry gone from source, admin API still protected.
   const middleware = fs.readFileSync(path.join(__dirname, '..', 'middleware.ts'), 'utf8');
   check("middleware.ts no longer lists '/api/auth/login'", !middleware.includes('/api/auth/login'));
+  // Wave 2 deleted /api/metrics and its middleware guard, so it now 404s.
   const metrics = await fetch(`${BASE_URL}/api/metrics`);
-  check('/api/metrics still requires auth (401)', metrics.status === 401, String(metrics.status));
+  check('/api/metrics is gone (404)', metrics.status === 404, String(metrics.status));
 
   console.log(failures === 0 ? '\nAll checks passed.' : `\n${failures} check(s) FAILED.`);
   process.exit(failures === 0 ? 0 : 1);

@@ -35,7 +35,7 @@ const MC_TABS: Tab[] = [
 ];
 
 /* ---- Which MC paths are considered "Mission Control" ---- */
-const MC_PATHS = ['/admin/cockpit', '/admin/goals', '/admin/hitl', '/admin/execution', '/admin/portfolio', '/admin/agents', '/admin/audit', '/admin/mission-control'];
+const MC_PATHS = ['/admin/cockpit', '/admin/goals', '/admin/hitl', '/admin/execution', '/admin/portfolio', '/admin/agents', '/admin/audit'];
 
 function resolveTopTab(path: string): string {
   if (path.startsWith('/admin/content')) return 'content';
@@ -53,7 +53,6 @@ function resolveMcTab(path: string): string {
   if (path.startsWith('/admin/portfolio')) return 'portfolio';
   if (path.startsWith('/admin/agents')) return 'agents';
   if (path.startsWith('/admin/audit')) return 'audit';
-  if (path.startsWith('/admin/mission-control')) return 'command';
   return 'command';
 }
 
