@@ -16,6 +16,15 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    // PRJ-18 Wave 3: the legacy filesystem /blog merged into /journey. Preserve
+    // inbound links + SEO with permanent redirects (308). Slugs are unchanged,
+    // so /blog/{slug} maps 1:1 to /journey/{slug}.
+    return [
+      { source: '/blog', destination: '/journey', permanent: true },
+      { source: '/blog/:slug', destination: '/journey/:slug', permanent: true },
+    ];
+  },
   async headers() {
     return [
       // Only cache headers - security headers handled by middleware.ts

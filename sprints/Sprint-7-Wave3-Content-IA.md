@@ -163,11 +163,24 @@ relative paths (render from public/, no R2 needed). No slug collisions.
 Verified on built server: topic pages 200 (bogus 404); essay filter → exactly
 4; thinking → 18; open-source → 0 (empty state); build 258 pages, tsc clean.
 
-**T5 — Redirects + nav + sitemap/RSS.**
-301 `/blog` → `/journey` and `/blog/{slug}` → `/journey/{slug}` (netlify.toml
-or middleware — respect Wave 2's CSP-only middleware). Drop "Blog" from nav.
-Sitemap now covers everything via Neon; add topic pages. Confirm RSS pulls the
-unified feed.
+**T5 — Redirects + nav + sitemap/RSS + retire /blog route — DONE 2026-07-17.**
+- Redirects in `next.config.js` `redirects()` (permanent 308, framework-native,
+  middleware stays CSP-only): `/blog`→`/journey`, `/blog/:slug`→`/journey/:slug`.
+  Chose Next redirects over netlify.toml — same effect, version-controlled with
+  the app. 308 is treated as permanent by search engines (== 301 for SEO).
+- Retired the `/blog` route: deleted `app/blog/page.tsx` + `app/blog/[slug]`.
+  `lib/blog.ts` + `content/blog/*.md` + the migrate script kept as inert
+  provenance (only referenced by the one-shot migrator; a later cleanup can
+  remove them once prod is proven).
+- Dropped "Blog" from the header nav.
+- Sitemap: removed the `/blog` entry (both main + fallback blocks), added the 7
+  topic hub pages.
+- Built the missing RSS route (`app/api/rss/route.ts`): the /journey page
+  advertised "Subscribe via RSS" → a 404 until now. Serves the unified Neon
+  feed as RSS 2.0.
+Verified on built server: /blog + /blog/{slug} → 308 to /journey; nav has no
+Blog; sitemap has 7 topic pages, no /blog; RSS 200 (application/rss+xml, 187
+items). Build 254 pages, tsc clean.
 
 **T6 — Admin editor: add the two fields.**
 Extend the content editor form (`app/admin/content/…`) with topic multiselect

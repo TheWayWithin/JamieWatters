@@ -10,6 +10,7 @@
 
 import { MetadataRoute } from 'next'
 import { getAllProjects, getAllPosts } from '@/lib/database'
+import { TOPICS } from '@/lib/taxonomy'
 
 const SITE_URL = 'https://jamiewatters.work'
 
@@ -47,12 +48,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: 'monthly',
         priority: 0.7,
       },
-      {
-        url: `${SITE_URL}/blog`,
+      // Wave 3 topic hub pages (filtered views of the unified feed)
+      ...TOPICS.map((topic) => ({
+        url: `${SITE_URL}/journey/topic/${topic}`,
         lastModified: new Date(),
-        changeFrequency: 'monthly',
+        changeFrequency: 'weekly' as const,
         priority: 0.6,
-      },
+      })),
     ]
 
     // Dynamic project routes
@@ -124,12 +126,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         lastModified: new Date(),
         changeFrequency: 'monthly',
         priority: 0.7,
-      },
-      {
-        url: `${SITE_URL}/blog`,
-        lastModified: new Date(),
-        changeFrequency: 'monthly',
-        priority: 0.6,
       },
     ]
 

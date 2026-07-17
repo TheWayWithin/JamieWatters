@@ -32,7 +32,6 @@ export default function Header() {
     { href: '/', label: 'Home' },
     { href: '/portfolio', label: 'Portfolio' },
     { href: '/dashboard', label: 'Proof' },
-    { href: '/blog', label: 'Blog' },
     { href: '/journey', label: 'The Journey' },
     { href: '/about', label: 'About' },
   ];
