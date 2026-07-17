@@ -24,7 +24,7 @@ import { NextRequest, NextResponse } from 'next/server';
 const ADMIN_ROUTES = ['/api/metrics'];
 
 // Define public routes that should never be protected
-const PUBLIC_ROUTES = ['/api/auth/login', '/api/auth/logout', '/api/auth', '/admin'];
+const PUBLIC_ROUTES = ['/api/auth/logout', '/api/auth', '/admin'];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

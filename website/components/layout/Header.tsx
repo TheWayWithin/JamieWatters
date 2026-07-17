@@ -69,12 +69,12 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/about"
+            <a
+              href="mailto:jamie@jamiewatters.work"
               className="bg-brand-primary text-bg-primary px-6 py-2 rounded-md font-semibold hover:bg-brand-primary-hover transition-base"
             >
               Contact
-            </Link>
+            </a>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -117,13 +117,13 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/about"
+            <a
+              href="mailto:jamie@jamiewatters.work"
               className="bg-brand-primary text-bg-primary px-6 py-4 rounded-lg font-semibold hover:bg-brand-primary-hover transition-all duration-200 text-center mt-6 shadow-lg hover:shadow-xl"
               onClick={() => setMobileMenuOpen(false)}
             >
               Contact
-            </Link>
+            </a>
             </nav>
           </div>
         </>
