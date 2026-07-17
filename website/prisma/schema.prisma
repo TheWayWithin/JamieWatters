@@ -65,20 +65,20 @@ model AgentSchedule {
 }
 
 model AgentTask {
-  id        String    @id @default(cuid())
-  section   String
-  content   String
-  completed Boolean   @default(false)
-  sortOrder Int       @default(0)
-  syncedAt  DateTime  @default(now())
-  tid       String?   @unique
-  project   String?
-  mode      String?   // build | growth | content | admin
-  size      String?   // S | M | L
-  taskStatus String?  // inbox | ready | in_progress | waiting_on_jamie | waiting_on_agent | waiting_external | blocked | done | archived
-  blockedBy String?
-  dueDate   DateTime?
-  owner     String?
+  id         String    @id @default(cuid())
+  section    String
+  content    String
+  completed  Boolean   @default(false)
+  sortOrder  Int       @default(0)
+  syncedAt   DateTime  @default(now())
+  tid        String?   @unique
+  project    String?
+  mode       String? // build | growth | content | admin
+  size       String? // S | M | L
+  taskStatus String? // inbox | ready | in_progress | waiting_on_jamie | waiting_on_agent | waiting_external | blocked | done | archived
+  blockedBy  String?
+  dueDate    DateTime?
+  owner      String?
 
   @@index([completed])
   @@index([section])
@@ -112,6 +112,10 @@ model Post {
   postType      String         @default("manual")
   projectId     String?
   published     Boolean        @default(false)
+  // Wave 3 (PRJ-18) unified-feed facets. topics: controlled 7-topic vocab
+  // (see lib/taxonomy.ts); editorialType: 'essay' | 'build-log'.
+  topics        String[]       @default([])
+  editorialType String?
   contentPillar ContentPillar?
   phase         ProjectPhase?
   postTypeEnum  PostTypeEnum?
@@ -122,11 +126,13 @@ model Post {
   project       Project?       @relation(fields: [projectId], references: [id])
 
   @@index([contentPillar])
+  @@index([editorialType])
   @@index([phase])
   @@index([postType])
   @@index([projectId])
   @@index([publishedAt])
   @@index([targetPersona])
+  @@index([topics], type: Gin)
 }
 
 model Project {
@@ -165,8 +171,8 @@ model Project {
   projectId        String?          @unique
   program          String?
   keyResult        String?
-  tier             String?          // NOW | NEXT | LATER
-  health           String?          // green | amber | red
+  tier             String? // NOW | NEXT | LATER
+  health           String? // green | amber | red
   killDate         DateTime?
   nextProofPoint   String?
   progress         String?
@@ -310,8 +316,8 @@ model Goal {
   updatedAt    DateTime  @updatedAt
   goalId       String?   @unique
   parentId     String?
-  horizon      String?   // 'yearly' | 'quarterly'
-  period       String?   // '2026', 'Q2-2026', 'Q3-2026'
+  horizon      String? // 'yearly' | 'quarterly'
+  period       String? // '2026', 'Q2-2026', 'Q3-2026'
   confidence   String?
   dueDate      DateTime?
   reviewNotes  String?
@@ -330,14 +336,14 @@ model HitlItem {
   id              String    @id @default(cuid())
   tid             String?
   description     String
-  type            String    // quick_yes_no | review_and_edit | decision | approve_with_conditions
-  priority        String    // P0 | P1 | P2
+  type            String // quick_yes_no | review_and_edit | decision | approve_with_conditions
+  priority        String // P0 | P1 | P2
   requestingAgent String?
   project         String?
   waitingSince    DateTime
   blocks          String?
   status          String    @default("open") // open | resolved
-  outcome         String?   // approved | approved_with_changes | rework_requested | deferred | rejected
+  outcome         String? // approved | approved_with_changes | rework_requested | deferred | rejected
   resolvedAt      DateTime?
   resolvedNotes   String?
   syncedAt        DateTime  @default(now())
@@ -389,9 +395,9 @@ model EventLog {
   id        String   @id @default(cuid())
   timestamp DateTime
   actor     String
-  entity    String   // task | project | goal | hitl | decision
+  entity    String // task | project | goal | hitl | decision
   entityId  String
-  action    String   // status_change | created | resolved | completed
+  action    String // status_change | created | resolved | completed
   fromValue String?
   toValue   String?
   reason    String?
@@ -420,11 +426,11 @@ model Decision {
 
 model McMetric {
   id       String   @id @default(cuid())
-  group    String   // strategic | execution | agent_performance | product_business
+  group    String // strategic | execution | agent_performance | product_business
   name     String
   current  String?
   target   String?
-  status   String?  // ok | needs_attention | below | at_risk
+  status   String? // ok | needs_attention | below | at_risk
   syncedAt DateTime @default(now())
 
   @@unique([group, name])

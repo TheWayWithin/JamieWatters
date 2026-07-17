@@ -36,6 +36,10 @@ export function PostForm({ mode, postId, initialData, projects = [] }: PostFormP
     postTypeEnum: initialData?.postTypeEnum || '',
     targetPersona: initialData?.targetPersona || '',
     phase: initialData?.phase || '',
+    // Unified-feed facets (Wave 3). UI to select these lands in T6; defaults
+    // here keep new posts valid (type defaults to build-log at write time).
+    topics: initialData?.topics || [],
+    editorialType: initialData?.editorialType || '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);

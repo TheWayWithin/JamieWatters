@@ -3,6 +3,7 @@ import { revalidatePath } from 'next/cache';
 import { verifyToken, extractTokenFromRequest } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
+import { TOPICS, EDITORIAL_TYPES, normalizeEditorialType } from '@/lib/taxonomy';
 
 // Force Node.js runtime for auth
 export const runtime = 'nodejs';
@@ -53,6 +54,8 @@ export async function POST(req: NextRequest) {
       postType: z.enum(['manual', 'daily-update', 'weekly-plan']).default('manual'),
       published: z.boolean().default(false),
       projectId: z.string().nullable().optional().transform(val => val === '' || val === null ? null : val),
+      topics: z.array(z.enum(TOPICS)).max(2).optional(),
+      editorialType: z.enum(EDITORIAL_TYPES).nullable().optional(),
     });
 
     const validation = schema.safeParse(body);
@@ -111,6 +114,8 @@ export async function POST(req: NextRequest) {
         tags: data.tags || [],
         readTime,
         postType: data.postType,
+        topics: data.topics ?? [],
+        editorialType: normalizeEditorialType(data.editorialType),
         published: data.published,
         publishedAt: data.published ? new Date() : null,
         projectId: data.projectId || null,

@@ -3,6 +3,7 @@ import { revalidatePath } from 'next/cache';
 import { verifyToken, extractTokenFromRequest } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
+import { TOPICS, EDITORIAL_TYPES } from '@/lib/taxonomy';
 
 // Force Node.js runtime for auth
 export const runtime = 'nodejs';
@@ -105,6 +106,8 @@ export async function PUT(
       readTime: z.number().optional(),
       published: z.boolean().optional(),
       projectId: z.string().nullable().optional(),
+      topics: z.array(z.enum(TOPICS)).max(2).optional(),
+      editorialType: z.enum(EDITORIAL_TYPES).nullable().optional(),
     });
 
     const validation = schema.safeParse(body);
@@ -165,6 +168,8 @@ export async function PUT(
         ...(data.readTime && { readTime: data.readTime }),
         ...(data.published !== undefined && { published: data.published, publishedAt }),
         ...(data.projectId !== undefined && { projectId: data.projectId }),
+        ...(data.topics !== undefined && { topics: data.topics }),
+        ...(data.editorialType !== undefined && { editorialType: data.editorialType }),
       },
       include: {
         project: {

@@ -6,12 +6,19 @@
  */
 
 import { z } from 'zod';
+import { TOPICS, EDITORIAL_TYPES, normalizeTopics, normalizeEditorialType } from '@/lib/taxonomy';
 
 /**
  * Post type enum (legacy string field)
  */
 export const PostTypeSchema = z.enum(['manual', 'daily-update', 'weekly-plan']);
 export type PostType = z.infer<typeof PostTypeSchema>;
+
+/**
+ * Unified-feed facets (PRJ-18 Wave 3). Separate axes from postType above.
+ */
+export const TopicsSchema = z.array(z.enum(TOPICS)).max(2, 'Maximum 2 topics allowed');
+export const EditorialTypeSchema = z.enum(EDITORIAL_TYPES).nullable().optional();
 
 /**
  * Content pillar enum (Sprint 1)
@@ -82,6 +89,10 @@ export const CreatePostSchema = z.object({
   postTypeEnum: PostTypeEnumSchema,
   targetPersona: TargetPersonaSchema,
   phase: ProjectPhaseSchema,
+
+  // Unified-feed facets (Wave 3)
+  topics: TopicsSchema.default([]),
+  editorialType: EditorialTypeSchema,
 });
 
 export type CreatePostInput = z.infer<typeof CreatePostSchema>;
@@ -132,6 +143,10 @@ export const UpdatePostSchema = z.object({
   postTypeEnum: PostTypeEnumSchema,
   targetPersona: TargetPersonaSchema,
   phase: ProjectPhaseSchema,
+
+  // Unified-feed facets (Wave 3)
+  topics: TopicsSchema.optional(),
+  editorialType: EditorialTypeSchema,
 });
 
 export type UpdatePostInput = z.infer<typeof UpdatePostSchema>;
@@ -168,6 +183,10 @@ export const PostFormSchema = z.object({
   postTypeEnum: z.string().optional(),
   targetPersona: z.string().optional(),
   phase: z.string().optional(),
+
+  // Unified-feed facets (Wave 3)
+  topics: z.array(z.string()).default([]), // multiselect of controlled topics
+  editorialType: z.string().optional(), // Empty string or 'essay' | 'build-log'
 });
 
 export type PostFormData = z.infer<typeof PostFormSchema>;
@@ -207,6 +226,12 @@ export function formDataToCreateInput(formData: PostFormData): CreatePostInput {
     phase: formData.phase && formData.phase !== ''
       ? formData.phase as 'IDEATION' | 'MVP' | 'LAUNCH' | 'GROWTH' | 'MAINTENANCE' | 'ARCHIVED' | 'PAUSED'
       : null,
+    // Unified-feed facets (Wave 3). normalizeTopics keeps only the valid 7,
+    // capped at 2; TopicsSchema then validates.
+    topics: normalizeTopics(formData.topics ?? []),
+    editorialType: formData.editorialType && formData.editorialType !== ''
+      ? normalizeEditorialType(formData.editorialType)
+      : null,
   };
 }
 
@@ -225,6 +250,8 @@ export function postToFormData(post: {
   postTypeEnum?: string | null;
   targetPersona?: string | null;
   phase?: string | null;
+  topics?: string[] | null;
+  editorialType?: string | null;
 }): PostFormData {
   return {
     title: post.title,
@@ -239,6 +266,9 @@ export function postToFormData(post: {
     postTypeEnum: post.postTypeEnum || '',
     targetPersona: post.targetPersona || '',
     phase: post.phase || '',
+    // Unified-feed facets (Wave 3)
+    topics: normalizeTopics(post.topics ?? []),
+    editorialType: post.editorialType || '',
   };
 }
 
