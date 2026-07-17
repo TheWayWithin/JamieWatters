@@ -136,10 +136,19 @@ posts with empty tag arrays) stay in the main feed and get hand-tagged via T6.
 One post has a malformed stringified-array tag (`ten-days-letting-check-do-work`)
 — left for hand-tag.
 
-**T3 — Migrate the 5 (or 7) filesystem /blog posts into Neon.**
-Import script reading `content/blog/*.md` → Post rows (map frontmatter, upload
-any local hero to R2 per Sprint-6 flow). Slug-collision check vs journey. Decide
-trader-7 spec files in/out. Retire `content/blog/` + `lib/blog.ts` read path.
+**T3 — Migrate filesystem /blog posts into Neon — DONE (data) 2026-07-17.**
+`scripts/migrate-blog-to-neon.ts` (dry-run default, `--apply`, idempotent
+upsert-by-slug). Reuses the site's own `lib/blog.ts` parser, so only the 5 real
+dated posts import; the 2 `trader-7-*` files (a graphics spec + a
+frontmatter-less draft) are correctly skipped — they were never published.
+Applied: 5 inserts → 189 posts total, all published, facets pre-assigned
+(ai-cofounder/graphify-six-ais/i-ran-graphify/same-tool-two-ways → ai+building;
+the-three-options-trap → thinking+ai; all build-log). Images kept as committed
+relative paths (render from public/, no R2 needed). No slug collisions.
+- DEFERRED to T5 (avoids a broken intermediate): retiring the `/blog` route +
+  `lib/blog.ts` read path ships atomically WITH the 301 redirects. Until then the
+  filesystem /blog still renders. `content/blog/*.md` stays as migration source.
+  trader-7 files: left in repo, not posts.
 
 **T4 — Feed views: topic + type filters + topic pages.**
 Add filter UI to `/journey` (topic + type facets), generate
