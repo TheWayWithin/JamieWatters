@@ -83,6 +83,8 @@ export default async function EditPostPage({ params }: PageProps) {
     postType: post.postType,
     projectId: post.projectId,
     published: post.published,
+    topics: post.topics,
+    editorialType: post.editorialType,
   });
 
   return (

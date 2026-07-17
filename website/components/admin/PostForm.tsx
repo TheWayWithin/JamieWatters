@@ -8,6 +8,13 @@ import { MarkdownEditor } from './MarkdownEditor';
 import { useAutoSave } from '@/hooks/useAutoSave';
 import { calculateReadTime } from '@/lib/read-time-calculator';
 import {
+  TOPICS,
+  TOPIC_LABELS,
+  EDITORIAL_TYPES,
+  EDITORIAL_TYPE_LABELS,
+  DEFAULT_EDITORIAL_TYPE,
+} from '@/lib/taxonomy';
+import {
   PostFormSchema,
   type PostFormData,
   formDataToCreateInput,
@@ -73,6 +80,18 @@ export function PostForm({ mode, postId, initialData, projects = [] }: PostFormP
       }
     }
   }, [mode, initialData, restore, clearDraft]);
+
+  // Topic multiselect: toggle on/off, capped at 2 (the per-post limit).
+  const toggleTopic = (topic: string) => {
+    setFormData((prev) => {
+      const current = prev.topics ?? [];
+      if (current.includes(topic)) {
+        return { ...prev, topics: current.filter((t) => t !== topic) };
+      }
+      if (current.length >= 2) return prev; // at the cap — ignore
+      return { ...prev, topics: [...current, topic] };
+    });
+  };
 
   const updateField = (field: keyof PostFormData, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -262,6 +281,60 @@ export function PostForm({ mode, postId, initialData, projects = [] }: PostFormP
         error={errors.tagsInput}
         helperText="Separate multiple tags with commas"
       />
+
+      {/* Unified-feed facets (Wave 3) — drive the live /journey filters */}
+      <div className="border border-border-subtle rounded-lg p-4">
+        <h3 className="text-body-sm font-semibold text-text-primary mb-1">
+          Feed Facets
+        </h3>
+        <p className="text-body-sm text-text-tertiary mb-4">
+          Topics and type power the /journey filters and topic pages.
+        </p>
+
+        {/* Topics — up to 2 */}
+        <label className="block text-body-sm font-medium text-text-primary mb-2">
+          Topics (choose up to 2)
+        </label>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {TOPICS.map((topic) => {
+            const active = (formData.topics ?? []).includes(topic);
+            const atCap = (formData.topics ?? []).length >= 2 && !active;
+            return (
+              <button
+                key={topic}
+                type="button"
+                onClick={() => toggleTopic(topic)}
+                disabled={atCap}
+                className={`px-3 py-1.5 text-sm rounded-full border transition-base ${
+                  active
+                    ? 'bg-brand-primary text-white border-brand-primary'
+                    : atCap
+                      ? 'bg-bg-primary text-text-tertiary border-border-subtle opacity-50 cursor-not-allowed'
+                      : 'bg-bg-primary text-text-secondary border-border-default hover:border-brand-primary'
+                }`}
+              >
+                {TOPIC_LABELS[topic]}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Editorial type */}
+        <label className="block text-body-sm font-medium text-text-primary mb-2">
+          Type
+        </label>
+        <select
+          value={formData.editorialType || DEFAULT_EDITORIAL_TYPE}
+          onChange={(e) => updateField('editorialType', e.target.value)}
+          className="w-full bg-bg-primary border border-border-default rounded-md px-4 py-3 text-body text-text-primary"
+        >
+          {EDITORIAL_TYPES.map((t) => (
+            <option key={t} value={t}>
+              {EDITORIAL_TYPE_LABELS[t]}
+            </option>
+          ))}
+        </select>
+      </div>
 
       {/* Content Categorization (Sprint 1) */}
       <div className="border border-border-subtle rounded-lg p-4">

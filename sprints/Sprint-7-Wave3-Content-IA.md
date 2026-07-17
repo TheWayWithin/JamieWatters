@@ -182,9 +182,20 @@ Verified on built server: /blog + /blog/{slug} → 308 to /journey; nav has no
 Blog; sitemap has 7 topic pages, no /blog; RSS 200 (application/rss+xml, 187
 items). Build 254 pages, tsc clean.
 
-**T6 — Admin editor: add the two fields.**
-Extend the content editor form (`app/admin/content/…`) with topic multiselect
-(the 7) + editorial type. jpub auto-defaults type=build-log, infers topics.
+**T6 — Admin editor: add the two fields — DONE 2026-07-17.**
+- `PostForm.tsx`: new "Feed Facets" section — topic multiselect (7 chip
+  buttons, capped at 2 with disabled state) + editorial-type select
+  (build-log default / essay). Wired through the existing
+  formDataToCreateInput → POST/PUT path (both persist since T1).
+- `app/admin/content/posts/[id]/page.tsx`: pass `topics` + `editorialType` into
+  `postToFormData` so editing preserves current facets.
+- jpub/DB defaults: create API already defaults editorialType→build-log
+  (normalizeEditorialType) and topics→[] when absent, so jpub posts without
+  these fields still land correctly. Full topic *inference* in jpub is a
+  separate tool change (outside this repo) — DB-side default is in place.
+- Verified: tsc clean, build compiles admin/content routes. NOT click-tested end
+  to end — no local admin credentials (same limit as Wave 2); the form is a
+  client component gated behind auth, verified via compile + the wired data path.
 
 **T7 — Verify + regression script.**
 `scripts/verify-wave3.ts`: /blog + /blog/{slug} 301 to /journey; topic pages
