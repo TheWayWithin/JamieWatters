@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/Button';
 import { getProofStats } from '@/lib/proof';
 import { getSEOMetadata } from '@/lib/seo';
 
-// Refresh hourly: article counts and live GitHub stars.
+// Rendering is per-request (root layout forces dynamic for CSP nonces);
+// this bounds the GitHub star fetch cache to an hour.
 export const revalidate = 3600;
 
 export const metadata = getSEOMetadata({
@@ -16,6 +17,17 @@ export const metadata = getSEOMetadata({
 
 export default async function ProofPage() {
   const stats = await getProofStats();
+
+  // The root layout forces dynamic rendering, so this runs per request:
+  // DB counts are live at render time; GitHub stars come from an hourly fetch cache.
+  const refreshedAt = new Date().toLocaleString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'UTC',
+  });
 
   const cards = [
     {
@@ -80,8 +92,8 @@ export default async function ProofPage() {
         </div>
 
         <p className="text-caption text-text-secondary text-center mt-6">
-          Article counts and GitHub stars refresh hourly. Downloads and subscribers will join here
-          once those channels are live.
+          Article and product counts come straight from the database; GitHub stars refresh hourly.
+          Last refreshed {refreshedAt} UTC.
         </p>
       </section>
 
