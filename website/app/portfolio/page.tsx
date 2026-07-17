@@ -1,5 +1,7 @@
+import Link from 'next/link';
 import { getAllProjects } from '@/lib/database';
 import { ProjectCard } from '@/components/portfolio/ProjectCard';
+import { getProofPoint } from '@/lib/portfolio-proof';
 import { getSEOMetadata } from '@/lib/seo';
 import {
   getBreadcrumbSchema,
@@ -9,24 +11,23 @@ import {
 export const metadata = getSEOMetadata({
   title: 'Portfolio',
   description:
-    "Products I've built with AI, in public. What's live, what's in build, and what I've retired.",
+    "Products I've built with AI, in public. What's live now, and what's still on the bench.",
   path: '/portfolio',
 });
 
 export const revalidate = 3600; // 1 hour ISR
 
+// Genuinely usable products (public URL, shipped) go in the proof grid.
+const LIVE_STATUSES = new Set(['LIVE', 'BETA']);
+
 export default async function PortfolioPage() {
   const projects = await getAllProjects();
 
-  const liveCount = projects.filter((p) => p.status === 'LIVE').length;
-  const inBuildCount = projects.filter(
-    (p) => p.status !== 'LIVE' && p.status !== 'ARCHIVED'
-  ).length;
-
-  // Get the most recent update date from all projects
-  const mostRecentUpdate = projects.reduce((latest, project) => {
-    return project.updatedAt > latest ? project.updatedAt : latest;
-  }, projects[0]?.updatedAt || new Date());
+  // Split: usable products get full proof cards; pre-launch work is a short
+  // "in the workshop" line, not a wishlist of empty cards (Wave 4, Option A).
+  const liveProducts = projects.filter((p) => LIVE_STATUSES.has(p.status));
+  const workshop = projects.filter((p) => !LIVE_STATUSES.has(p.status));
+  const openSourceCount = liveProducts.filter((p) => p.githubUrl).length;
 
   // Generate breadcrumb structured data
   const breadcrumbSchema = getBreadcrumbSchema([
@@ -46,67 +47,46 @@ export default async function PortfolioPage() {
           Portfolio
         </h1>
         <p className="text-body-lg sm:text-body-lg text-text-secondary max-w-2xl">
-          {projects.length} products built with AI, in public. What's live, what's in build, and what I've retired.
+          {liveProducts.length} products live and in people's hands, {openSourceCount} with
+          the code open to read. Built with AI, in public. Each one earns its place below.
         </p>
       </section>
 
-      {/* Aggregate Metrics Bar */}
-      <section className="px-6 pb-8 sm:pb-12 max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {/* Products built */}
-          <div className="bg-bg-surface border border-border-default rounded-lg p-4 sm:p-6">
-            <div className="text-3xl sm:text-4xl font-bold text-brand-accent font-mono mb-1">
-              {projects.length}
-            </div>
-            <div className="text-body-sm text-text-secondary">
-              Built
-            </div>
-          </div>
-
-          {/* Live */}
-          <div className="bg-bg-surface border border-border-default rounded-lg p-4 sm:p-6">
-            <div className="text-3xl sm:text-4xl font-bold text-brand-accent font-mono mb-1">
-              {liveCount}
-            </div>
-            <div className="text-body-sm text-text-secondary">
-              Live
-            </div>
-          </div>
-
-          {/* In build */}
-          <div className="bg-bg-surface border border-border-default rounded-lg p-4 sm:p-6">
-            <div className="text-3xl sm:text-4xl font-bold text-brand-accent font-mono mb-1">
-              {inBuildCount}
-            </div>
-            <div className="text-body-sm text-text-secondary">
-              In build
-            </div>
-          </div>
-
-          {/* Last Updated */}
-          <div className="bg-bg-surface border border-border-default rounded-lg p-4 sm:p-6">
-            <div className="text-sm sm:text-base font-semibold text-text-primary mb-1">
-              Last Updated
-            </div>
-            <div className="text-body-sm text-text-secondary">
-              {mostRecentUpdate.toLocaleDateString('en-US', { 
-                month: 'short', 
-                day: 'numeric', 
-                year: 'numeric' 
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Project Grid */}
-      <section className="px-6 pb-16 sm:pb-24 max-w-7xl mx-auto">
+      {/* Proof grid — live products only */}
+      <section className="px-6 pb-12 sm:pb-16 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+          {liveProducts.map((project) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              proofPoint={getProofPoint(project.slug)}
+            />
           ))}
         </div>
       </section>
+
+      {/* In the workshop — pre-launch work, named honestly, no empty cards */}
+      {workshop.length > 0 && (
+        <section className="px-6 pb-16 sm:pb-24 max-w-7xl mx-auto">
+          <h2 className="text-body-sm uppercase tracking-wide text-text-tertiary mb-3">
+            In the workshop
+          </h2>
+          <p className="text-body text-text-secondary max-w-2xl">
+            Not live yet, so not counted above:{' '}
+            {workshop.map((p, i) => (
+              <span key={p.id}>
+                <Link
+                  href={`/portfolio/${p.slug}`}
+                  className="text-text-primary hover:text-brand-primary transition-base"
+                >
+                  {p.name}
+                </Link>
+                {i < workshop.length - 1 ? ', ' : '.'}
+              </span>
+            ))}
+          </p>
+        </section>
+      )}
       </main>
     </>
   );

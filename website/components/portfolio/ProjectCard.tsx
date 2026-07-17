@@ -6,9 +6,11 @@ import type { ProjectWithMetrics } from '@/lib/database';
 
 interface ProjectCardProps {
   project: ProjectWithMetrics;
+  /** One honest proof line (Wave 4). Rendered under the description if present. */
+  proofPoint?: string;
 }
 
-export function ProjectCard({ project }: ProjectCardProps) {
+export function ProjectCard({ project, proofPoint }: ProjectCardProps) {
   const statusColors = {
     RESEARCH: 'bg-purple-500/15 text-purple-400',
     DESIGN: 'bg-indigo-500/15 text-indigo-400',
@@ -41,9 +43,16 @@ export function ProjectCard({ project }: ProjectCardProps) {
         </span>
       </div>
 
-      <p className="text-text-secondary text-sm mb-4 flex-1">
+      <p className="text-text-secondary text-sm mb-4">
         {project.description}
       </p>
+
+      {/* Proof point — one honest, verifiable line (Wave 4) */}
+      {proofPoint && (
+        <p className="text-sm text-text-primary border-l-2 border-brand-primary pl-3 mb-4 flex-1">
+          {proofPoint}
+        </p>
+      )}
 
       {/* Tech Stack */}
       <div className="flex flex-wrap gap-2 mb-4">
