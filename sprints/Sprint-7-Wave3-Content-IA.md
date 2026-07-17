@@ -123,10 +123,18 @@ btree-indexed) to the Post model. Shipped:
   (additive), but it mutates the real DB, so it rides with the gated deploy or
   a deliberate go. Not yet applied.
 
-**T2 — Backfill existing ~185 posts.**
-Script: map free-form tags → the 7 topics (lossy, with a fallback), set
-`editorialType` default `build-log`, produce a report of posts needing a hand
-essay-tag. Jamie hand-tags the essays from that list. Idempotent, dry-run first.
+**T2 — Backfill existing posts — DONE (applied to Neon) 2026-07-17.**
+`scripts/backfill-wave3-topics.ts` (dry-run default, `--apply` to write,
+idempotent). Grounded the tag→topic map in the real 219-tag distribution.
+Results on 184 posts: 167 got topics (trading 72, ai 88, building 92,
+ai-search 19, business 20, thinking 17, open-source 0 — grows from new posts),
+all 184 typed (180 build-log, 4 essays). Jamie's calls: clawdbot/openclaw →
+`ai` (building-with-AI, not trading); 4 confirmed essays flipped
+(you-are-not-the-house-you-built, if-it-makes-you-angry, contact-is-the-test,
+truth-is-the-currency-of-the-future). 17 zero-topic posts (mostly ai-visibility
+posts with empty tag arrays) stay in the main feed and get hand-tagged via T6.
+One post has a malformed stringified-array tag (`ten-days-letting-check-do-work`)
+— left for hand-tag.
 
 **T3 — Migrate the 5 (or 7) filesystem /blog posts into Neon.**
 Import script reading `content/blog/*.md` → Post rows (map frontmatter, upload
