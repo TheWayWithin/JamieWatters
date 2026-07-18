@@ -1,14 +1,16 @@
 ---
-title: "I built the same tool two ways to settle an argument"
+title: "A goal prompt beat my build framework on a real job"
 slug: "same-tool-two-ways"
 date: 2026-07-16
-excerpt: "Spec-first or goal-first? I didn't believe either side, so I built the same tool both ways with one spec and one model. Both worked. The bill didn't tie."
+excerpt: "Same spec, same model, two methods: a seven-part goal prompt against a full agent framework. The lean prompt tied on correctness and won on time, cost, and clutter. Here are the numbers."
 tags: [ai-coding, agents, building-in-public]
 image: /images/blog/same-tool-two-ways.png
 imageAlt: "Two workbenches building the same object, one cluttered with scaffolding, one spare, both producing an identical result."
 readTime: 5
 draft: false
 ---
+
+*Same spec, same model, two methods: a seven-part goal prompt against a full agent framework. The lean prompt tied on correctness and won on time, cost, and clutter. Here are the numbers.*
 
 There are two claims about building software with AI that I hear constantly, and I believe neither.
 
@@ -54,8 +56,8 @@ The thing I will actually keep is smaller than the verdict. That self-verificati
 
 ---
 
-I shipped the winner. Executor File is public now, on its own domain. I turned the seven-part structure into a small reusable command so I never have to remember it. And I am folding the two lessons back into agent-11: give small tools a lean profile instead of the full scaffolding, and build that self-verification clause into every job.
+I shipped the winner. [Executor File](https://executorfile.com) is public now, on its own domain, and the [code is on GitHub](https://github.com/TheWayWithin/executor-file). I turned the seven-part structure into a small reusable command so I never have to remember it. And I am folding the two lessons back into agent-11: give small tools a lean profile instead of the full scaffolding, and build that self-verification clause into every job.
 
 The wider point was never goal-first versus frameworks. It is that I nearly adopted a strong opinion on someone else's say-so, twice, in opposite directions. The experiment cost about two hours and thirty-five dollars, and it swapped two beliefs for one measurement.
 
-If you build with these tools and you are carrying a conviction you have not actually tested, run the cheap version of it on your own work this week. What would you find if you measured it instead of arguing it?
+If you build with these tools and you are carrying a conviction you have not actually tested, run the cheap version of it on your own work this week. The measurement costs an afternoon. It is how you trade an opinion for a fact, the way I just did, twice.
