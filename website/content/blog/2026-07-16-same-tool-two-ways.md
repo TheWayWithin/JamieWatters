@@ -42,7 +42,11 @@ Goal-first finished in 18 minutes. The framework took 1 hour 28.
 
 Goal-first cost $12.64. The framework cost $22.51, close to double.
 
-And the repositories told the plainest story of all. The goal-first build was 12 files that map one-to-one onto the spec. The framework build produced an equally good 10-file product, then buried it under roughly 125 files of scaffolding the tool never needed. Same product, drowned. On the parts a real person actually touches, the README and the printed instructions a grieving executor has to follow, the lean build was at least as good, and on anticipating the ways things go wrong, it was better.
+And the repositories told the plainest story of all. The goal-first build was 12 files that map one-to-one onto the spec. The framework build produced an equally good 10-file product, then buried it in a repo of 143 files, all but ten of them scaffolding the tool never needed. Same product, drowned. On the parts a real person actually touches, the README and the printed instructions a grieving executor has to follow, the lean build was at least as good, and on anticipating the ways things go wrong, it was better.
+
+![Scorecard comparing a goal prompt against an agent framework on one build: correctness tied at 5/5, while the goal prompt won on effort (0 vs 4 minutes), time (18 vs 88 minutes), cost ($12.64 vs $22.51), and files (12 vs 143).](/images/blog/same-tool-two-ways-scorecard.png)
+
+*One bounded build, measured. Correctness tied; goal-first won on effort, time, cost, and clutter. n=1, so read it as one data point, not a law.*
 
 ---
 
