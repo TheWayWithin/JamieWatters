@@ -2,7 +2,7 @@
 
 **Name:** Jamie Watters
 **Date:** June 19, 2026
-**Version:** 4.2 (4.0 → 4.1: added epistemic sovereignty thread, thinking for yourself as AI accelerates; 4.1 → 4.2: aligned claims with public site — dropped GitHub top-1%, clarified the 38-year tech arc, qualified the bestseller)
+**Version:** 4.3 (4.0 → 4.1: added epistemic sovereignty thread, thinking for yourself as AI accelerates; 4.1 → 4.2: aligned claims with public site — dropped GitHub top-1%, clarified the 38-year tech arc, qualified the bestseller; 4.2 → 4.3: named open source as a promotion / reputation / discovery channel that feeds the subscribed-viewer north-star, with a one-question filter for what gets open-sourced)
 
 ---
 
@@ -192,10 +192,20 @@ How I work day to day. Not timeless values, but the principles that guide curren
 - **Independent benchmarks:** authoritative data across verticals (AI search, trading bots, crypto tools, market instruments). Subscription access, published analysis, and content.
 - **Automated income:** Trader-7 (algorithmic trading). No customers, no marketing. Scales with capital and accuracy.
 - **Convenience SaaS:** a few tools kept running as paid services for people who'd rather not self-host. Side revenue, not the business model.
-- **Open source:** give the code away. Proof of capability, not IP to protect.
+- **Open source:** give the code away. Proof of capability, not IP to protect, and a promotion / reputation / discovery channel (see "The Role of Open Source" below).
 - **Advisory (exploring):** AI transformation consulting for businesses. Leverages bank + building experience. Testing, not committed.
 
 What I avoid: hosting costs at scale, customer support burden, anything requiring hustle and cold outreach.
+
+---
+
+## The Role of Open Source
+
+Open source is a channel, not a product line. I give the code away because it promotes the work, builds reputation, and puts me in front of technical builders who would never find me through video first. Building in the open also exposes me to new problems and new tools, and that exposure is raw material: it becomes the next piece of content. Attention, reputation, discovery: all of it flows one way, toward the audience.
+
+That makes open source a means, fully subordinate to the north-star. It is never a second metric and never a portfolio to maintain. Stars, forks and adoption are leading signals, not the goal; they matter only insofar as they convert into trust and, eventually, subscribed viewers. The moment open source starts to feel like a SaaS empire of things to keep alive, it has drifted from channel back into the trap v4.0 killed.
+
+So every open-source move faces one question before it ships: will this get attention, build my reputation, or give me something to make content about? If the answer is none of those, it is maintenance, not strategy, and it stays private. The flagship, the tools I open, the experiments I share: each earns its place by feeding the chain, or it does not happen.
 
 ---
 
