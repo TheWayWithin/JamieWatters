@@ -5,7 +5,7 @@ date: 2026-07-16
 excerpt: "Same spec, same model, two methods: a seven-part goal prompt against a full agent framework. The lean prompt tied on correctness and won on time, cost, and clutter. Here are the numbers."
 tags: [ai-coding, agents, building-in-public]
 image: /images/blog/same-tool-two-ways.png
-imageAlt: "Two workbenches building the same object, one cluttered with scaffolding, one spare, both producing an identical result."
+imageAlt: "Two routes to the same tool: a short straight line labelled 'one goal prompt' and a long looping line labelled 'a full framework', both arriving at a node reading 'same tool, both correct, byte-for-byte'."
 readTime: 5
 draft: false
 ---
