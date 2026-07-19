@@ -39,6 +39,15 @@ async function main() {
   const home = await fetch(`${BASE_URL}/`).then((r) => r.text());
   check('homepage counter says 20 products', home.includes('20 products built with AI'));
 
+  // Featured primary lineup (set 2026-07-19): promote executor-file, demote modeloptix + plebtest.
+  const featured = await prisma.project.findMany({
+    where: { featured: true, url: { startsWith: 'http' }, status: { not: 'ARCHIVED' } },
+    select: { slug: true },
+  });
+  const got = featured.map((f) => f.slug).sort();
+  const want = ['ai-search-arena', 'aisearchmastery', 'executor-file'].sort();
+  check('featured set is the primary lineup', JSON.stringify(got) === JSON.stringify(want), got.join(', '));
+
   console.log(failures === 0 ? '\nAll checks passed.' : `\n${failures} check(s) FAILED.`);
   process.exit(failures === 0 ? 0 : 1);
 }
