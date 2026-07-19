@@ -23,6 +23,8 @@ const nextConfig = {
     return [
       { source: '/blog', destination: '/journey', permanent: true },
       { source: '/blog/:slug', destination: '/journey/:slug', permanent: true },
+      // T-191: RSS moved from robots-blocked /api/rss to the standard /rss.xml.
+      { source: '/api/rss', destination: '/rss.xml', permanent: true },
     ];
   },
   async headers() {

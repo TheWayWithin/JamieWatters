@@ -44,6 +44,13 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Jamie Watters' }],
   creator: 'Jamie Watters',
+  alternates: {
+    types: {
+      'application/rss+xml': [
+        { url: '/rss.xml', title: 'Jamie Watters — The Journey' },
+      ],
+    },
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
