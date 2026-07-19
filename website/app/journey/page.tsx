@@ -66,7 +66,7 @@ export default async function JourneyPage({
         {/* RSS Link */}
         <Button variant="ghost" size="sm" asChild>
           <a
-            href="/api/rss"
+            href="/rss.xml"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2"
