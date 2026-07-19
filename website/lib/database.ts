@@ -183,6 +183,7 @@ export async function getAllPosts(): Promise<PostListItem[]> {
     // Omit `content` (the only heavy column) — list/nav/sitemap never render the
     // body, so shipping it bloated /journey to ~1MB of HTML. (ISS-8)
     const posts = await prisma.post.findMany({
+      where: { published: true },
       orderBy: { publishedAt: 'desc' },
       omit: { content: true },
     });
@@ -222,6 +223,7 @@ export async function getPagedPosts(
 ): Promise<{ posts: PostListItem[]; page: number; totalPages: number; total: number }> {
   try {
     const where = {
+      published: true,
       ...(filters.topic ? { topics: { has: filters.topic } } : {}),
       ...(filters.editorialType ? { editorialType: filters.editorialType } : {}),
     };
@@ -255,6 +257,7 @@ export async function getPagedPosts(
 export async function getRecentPosts(limit: number = 3): Promise<PostWithMetadata[]> {
   try {
     const posts = await prisma.post.findMany({
+      where: { published: true },
       orderBy: { publishedAt: 'desc' },
       take: limit,
     });
@@ -397,6 +400,7 @@ export async function getProjectSlugs(): Promise<string[]> {
 export async function getPostSlugs(): Promise<string[]> {
   try {
     const posts = await prisma.post.findMany({
+      where: { published: true },
       select: { slug: true },
     });
     return posts.map(p => p.slug);
