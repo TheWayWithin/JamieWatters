@@ -2,7 +2,7 @@
 
 **Name:** Jamie Watters
 **Date:** June 19, 2026
-**Version:** 4.3 (4.0 → 4.1: added epistemic sovereignty thread, thinking for yourself as AI accelerates; 4.1 → 4.2: aligned claims with public site — dropped GitHub top-1%, clarified the 38-year tech arc, qualified the bestseller; 4.2 → 4.3: named open source as a promotion / reputation / discovery channel that feeds the subscribed-viewer north-star, with a one-question filter for what gets open-sourced)
+**Version:** 4.4 (4.0 → 4.1: added epistemic sovereignty thread, thinking for yourself as AI accelerates; 4.1 → 4.2: aligned claims with public site — dropped GitHub top-1%, clarified the 38-year tech arc, qualified the bestseller; 4.2 → 4.3: named open source as a promotion / reputation / discovery channel that feeds the subscribed-viewer north-star, with a one-question filter for what gets open-sourced; 4.3 → 4.4: broadened the audience — from technical builders and founders to anyone adopting and embracing AI to build a better life and stay relevant in the future that's coming; builders and founders remain the core early adopters, not the boundary)
 
 ---
 
@@ -60,7 +60,7 @@ Where all three circles overlap: I'm genuinely passionate about riding waves and
 
 ## My Value Proposition
 
-**For** technical builders and founders navigating AI-driven change
+**For** anyone embracing AI to build a better life and stay relevant in the future that's coming — technical builders and founders at the core, and just as much the career professional wondering what survives, the late starter, the solo operator without a technical background
 **Who** want to learn from someone actually riding the wave, not selling theory from the beach
 **I am** the honest practitioner who builds, tests, fails, and shares everything openly
 **That** gives you real insight into what works, what doesn't, and why, plus open-source tools you can verify and use yourself
