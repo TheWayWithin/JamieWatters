@@ -71,10 +71,10 @@ export default async function Home() {
             </h2>
             <div className="space-y-6 text-body-lg text-text-secondary leading-relaxed">
               <p>
-                For builders and founders trying to make sense of AI change without drowning in
-                hype. Really, it's for anyone embracing AI to build a better life and stay
-                relevant as the world changes: the career professional wondering what survives,
-                the late starter, the solo operator who's never written code.
+                For anyone embracing AI to build a better life and stay relevant as the world
+                changes. That's the builder or founder trying to make sense of it without
+                drowning in hype, the career professional wondering what survives, the late
+                starter, and the solo operator who's never written code.
               </p>
               <p>
                 I'm not an AI guru selling a course of recycled ideas, and I'm not a consultant
