@@ -200,6 +200,23 @@ For now, this shows that the database integration is working correctly for post 
         />
       </article>
 
+      {/* Buy Me a Coffee */}
+      <section className="px-6 pb-8 max-w-3xl mx-auto">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-bg-surface border border-border-default rounded-lg p-6">
+          <p className="text-body-sm text-text-secondary">
+            No paywall, no sponsors. If this saved you some time, you can buy me a coffee.
+          </p>
+          <a
+            href="https://buymeacoffee.com/jamiewatters"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 flex-shrink-0 rounded-md border border-border-emphasis px-4 py-2 text-body-sm font-medium text-text-primary hover:border-brand-primary hover:text-brand-primary transition-base"
+          >
+            ☕ Buy me a coffee
+          </a>
+        </div>
+      </section>
+
       {/* Newsletter Signup */}
       {process.env.BUTTONDOWN_API_KEY && (
         <section className="px-6 pb-4 max-w-3xl mx-auto">

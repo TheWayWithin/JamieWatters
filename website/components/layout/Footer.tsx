@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Twitter, Linkedin, Github, Mail } from 'lucide-react';
+import { Twitter, Linkedin, Github, Mail, Coffee } from 'lucide-react';
 import { NewsletterSignup } from '../newsletter/NewsletterSignup';
 
 export default function Footer() {
@@ -33,6 +33,11 @@ export default function Footer() {
       href: 'mailto:jamie@jamiewatters.work',
       label: 'Email',
       icon: Mail,
+    },
+    {
+      href: 'https://buymeacoffee.com/jamiewatters',
+      label: 'Buy Me a Coffee',
+      icon: Coffee,
     },
   ];
 
