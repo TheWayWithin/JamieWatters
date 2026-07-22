@@ -35,8 +35,14 @@ const STANDING_INTRO = `This week's field report: what I built, tested, and lear
 
 const SIGN_OFF = `That's the week. Hit reply if any of it lands; it comes straight to me.
 
-Jamie
-[jamiewatters.work](https://jamiewatters.work)`;
+Jamie`;
+
+// Standard footer, every issue. One primary CTA per email (the reply ask above);
+// everything here is identity, not competing asks. Support line matches the
+// site's end-of-post card voice exactly.
+const FOOTER = `**Follow the build:** [YouTube](https://www.youtube.com/@jamiewatterswork) · [X](https://x.com/Jamie_within) · [LinkedIn](https://www.linkedin.com/in/jamie-watters-solo/) · [jamiewatters.work](https://jamiewatters.work?utm_source=jamiewatters&utm_medium=email)
+
+No paywall, no sponsors. If this saved you some time, you can [buy me a coffee](https://buymeacoffee.com/jamiewatters).`;
 
 // ---------------------------------------------------------------- helpers
 
@@ -82,14 +88,12 @@ function oneLine(text) {
 }
 
 /**
- * Subject hook = newest post's title, trailing full stop dropped, first
- * letter lowercased unless it starts an acronym (second char uppercase).
+ * Subject hook = newest post's title, trailing full stop dropped. The title
+ * keeps its own capitalisation — lowercasing the first letter broke proper
+ * nouns ("garry Tan", JW-ISS-9).
  */
 function subjectFor(newestTitle) {
-  let hook = newestTitle.trim().replace(/\.$/, '');
-  if (hook.length > 1 && hook[1] === hook[1].toLowerCase()) {
-    hook = hook[0].toLowerCase() + hook.slice(1);
-  }
+  const hook = newestTitle.trim().replace(/\.$/, '');
   return `Jamie's Field Report: ${hook}`;
 }
 
@@ -112,7 +116,7 @@ function composeBody(posts) {
   const cards = posts
     .map((p) => `### [${p.title}](${p.link})\n\n${oneLine(p.description)}`)
     .join('\n\n');
-  return `${weeklyIntro()}\n\n---\n\n${cards}\n\n---\n\n${SIGN_OFF}\n`;
+  return `${weeklyIntro()}\n\n---\n\n${cards}\n\n---\n\n${SIGN_OFF}\n\n${FOOTER}\n`;
 }
 
 async function api(path, body) {
