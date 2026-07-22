@@ -80,11 +80,18 @@ function parseFeed(xml) {
   return items;
 }
 
-/** First sentence of the excerpt, as the card's one line. */
-function oneLine(text) {
+/**
+ * The card's dek = the post's full excerpt. Cutting it to the first sentence
+ * stripped the benefit the dek exists to carry (JW-ISS-10) — deks are authored
+ * per the content standard (overt benefit + dramatic difference, <=~320 chars),
+ * so pass them through whole; cap only runaway ones, at a sentence boundary.
+ */
+function cardDek(text, cap = 350) {
   const s = text.trim().replace(/\s+/g, ' ');
-  const firstSentence = s.match(/^.*?[.!?](?=\s|$)/);
-  return firstSentence ? firstSentence[0] : s;
+  if (s.length <= cap) return s;
+  const head = s.slice(0, cap);
+  const cut = Math.max(head.lastIndexOf('. '), head.lastIndexOf('! '), head.lastIndexOf('? '));
+  return cut > 0 ? head.slice(0, cut + 1) : head.trimEnd() + '…';
 }
 
 /**
@@ -114,7 +121,7 @@ function weeklyIntro() {
 
 function composeBody(posts) {
   const cards = posts
-    .map((p) => `### [${p.title}](${p.link})\n\n${oneLine(p.description)}`)
+    .map((p) => `### [${p.title}](${p.link})\n\n${cardDek(p.description)}`)
     .join('\n\n');
   return `${weeklyIntro()}\n\n---\n\n${cards}\n\n---\n\n${SIGN_OFF}\n\n${FOOTER}\n`;
 }

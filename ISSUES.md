@@ -16,6 +16,7 @@ ID or another repo's. Raise issues here with `python3 ~/shared/scripts/repo-issu
 
 | ID | Title | Status | Severity | Detail | MC-SYNC |
 |----|-------|--------|----------|--------|---------|
+| JW-ISS-10 | field-report.mjs oneLine() truncated card deks to the first sentence, stripping the benefit the dek carries (e.g. 'A friend said it should be a business.') | Resolved | med | 2026-07-22 | ✅ 2026-07-22 — oneLine() replaced with cardDek(): full authored excerpt passes through, sentence-boundary cap at 350 chars; dek standard (overt benefit + dramatic difference) added to reference/content-standard.md |
 | JW-ISS-9 | field-report.mjs subjectFor lowercases proper nouns — 'garry Tan' in live test subject; drop the lowercasing, keep the title's own case after the colon | Resolved | med | 2026-07-22 | ✅ 2026-07-22 — lowercasing dropped in subjectFor; dry-run shows 'Jamie's Field Report: Garry Tan...'; verified in test send |
 _(none)_
 
