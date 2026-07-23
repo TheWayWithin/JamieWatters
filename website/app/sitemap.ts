@@ -12,6 +12,10 @@ import { MetadataRoute } from 'next'
 import { getAllProjects, getAllPosts } from '@/lib/database'
 import { TOPICS } from '@/lib/taxonomy'
 
+// Posts publish via jpub (DB write, no deploy) — without revalidation the sitemap
+// stays frozen at build time and new posts never reach it (JW-ISS-15). Match rss.xml.
+export const revalidate = 3600 // 1 hour
+
 const SITE_URL = 'https://jamiewatters.work'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
