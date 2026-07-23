@@ -11,11 +11,28 @@ import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/admin', '/api/']
-    },
+    rules: [
+      // AI crawlers explicitly allowed — deliberate policy (PRJ-25 / T-244, 2026-07-23):
+      // AI visibility is a goal of this site, so retrieval bots AND training bots
+      // (including Google-Extended) are welcome. Revisit in the monthly re-score.
+      {
+        userAgent: [
+          'GPTBot',
+          'ClaudeBot',
+          'Claude-Web',
+          'PerplexityBot',
+          'Google-Extended',
+          'OAI-SearchBot',
+        ],
+        allow: '/',
+        disallow: ['/admin', '/api/'],
+      },
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/admin', '/api/'],
+      },
+    ],
     sitemap: 'https://jamiewatters.work/sitemap.xml',
   }
 }
