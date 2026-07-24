@@ -6,10 +6,36 @@ import { NewsletterSignup } from '@/components/newsletter/NewsletterSignup';
 import { getFeaturedProjects, getRecentPosts } from '@/lib/database';
 import { getSEOMetadata } from '@/lib/seo';
 import {
+  getFAQSchema,
   getPersonSchema,
   getWebsiteSchema,
   renderStructuredData,
 } from '@/lib/structured-data';
+
+// Rendered as a visible FAQ section below AND as FAQPage JSON-LD — the two must
+// stay in sync (Google requires markup to match on-page content).
+const HOMEPAGE_FAQ = [
+  {
+    question: 'Do you build all of this yourself?',
+    answer:
+      "Yes: me plus AI. Most of the code is written with Anthropic's Claude and reviewed, tested and shipped by me. That working method is the subject of the site, not a secret behind it.",
+  },
+  {
+    question: 'Is the code really open?',
+    answer:
+      'The product code is public on GitHub under TheWayWithin, open for anyone to inspect. When a product stops earning its place I kill it in public and write the post-mortem.',
+  },
+  {
+    question: 'What do subscribers actually get?',
+    answer:
+      'A weekly digest of the field reports: what I built, what worked, what failed and what it cost. Double opt-in, no spam, unsubscribe any time.',
+  },
+  {
+    question: 'Are you selling a course or consulting?',
+    answer:
+      'No. There is no funnel here; the writing is free and the products stand on their own. If that ever changes, it will say so in plain sight.',
+  },
+];
 
 // ISR: Revalidate every 60 seconds
 export const revalidate = 60;
@@ -33,13 +59,19 @@ export default async function Home() {
   const recentPosts = await getRecentPosts(3);
 
   const personSchema = getPersonSchema();
-  const websiteSchema = getWebsiteSchema();
+  // dateModified = the newest post's publish date: the honest "content last changed" signal
+  const latestPostDate = recentPosts[0]?.publishedAt ?? recentPosts[0]?.createdAt;
+  const websiteSchema = getWebsiteSchema(
+    latestPostDate ? new Date(latestPostDate).toISOString() : undefined
+  );
+  const faqSchema = getFAQSchema(HOMEPAGE_FAQ);
 
   return (
     <>
       {/* Structured Data for SEO */}
       {renderStructuredData(personSchema)}
       {renderStructuredData(websiteSchema)}
+      {renderStructuredData(faqSchema)}
 
       <main id="main-content" className="min-h-screen">
         {/* Hero */}
@@ -145,8 +177,16 @@ export default async function Home() {
               <li className="flex gap-3">
                 <span className="text-brand-accent flex-shrink-0">▹</span>
                 <span>
-                  4 published books, including the best-selling book on business continuity in the
-                  world for its first few years
+                  4 published books, including the best-selling book on{' '}
+                  <a
+                    href="https://en.wikipedia.org/wiki/Business_continuity_planning"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-4 decoration-border-default hover:text-brand-secondary transition-base"
+                  >
+                    business continuity
+                  </a>{' '}
+                  in the world for its first few years
                 </span>
               </li>
               <li className="flex gap-3">
@@ -163,12 +203,31 @@ export default async function Home() {
               </li>
               <li className="flex gap-3">
                 <span className="text-brand-accent flex-shrink-0">▹</span>
-                <span>Creator of Efformism, and innovations on The Headless Way</span>
+                <span>
+                  Creator of Efformism, and innovations on{' '}
+                  <a
+                    href="https://www.headless.org"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-4 decoration-border-default hover:text-brand-secondary transition-base"
+                  >
+                    The Headless Way
+                  </a>
+                </span>
               </li>
               <li className="flex gap-3">
                 <span className="text-brand-accent flex-shrink-0">▹</span>
                 <span>
-                  Code open for anyone to inspect; products killed in public when they don't work
+                  Code open for{' '}
+                  <a
+                    href="https://github.com/TheWayWithin"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-4 decoration-border-default hover:text-brand-secondary transition-base"
+                  >
+                    anyone to inspect
+                  </a>
+                  ; products killed in public when they don't work
                 </span>
               </li>
             </ul>
@@ -253,6 +312,27 @@ export default async function Home() {
             <p className="text-body-lg text-text-secondary leading-relaxed">
               That's the whole deal. No funnel, no secret sauce, no "DM me to scale."
             </p>
+          </div>
+        </section>
+
+        {/* Questions, honestly answered — visible twin of the FAQPage JSON-LD above */}
+        <section className="py-16 lg:py-24 px-6 bg-bg-primary">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-display-lg font-bold text-text-primary mb-8">
+              Questions people actually ask
+            </h2>
+            <dl className="space-y-8">
+              {HOMEPAGE_FAQ.map((item) => (
+                <div key={item.question}>
+                  <dt className="text-body-lg font-semibold text-text-primary mb-2">
+                    {item.question}
+                  </dt>
+                  <dd className="text-body-lg text-text-secondary leading-relaxed">
+                    {item.answer}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </section>
 
