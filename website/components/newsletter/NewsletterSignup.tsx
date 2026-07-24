@@ -54,6 +54,11 @@ export function NewsletterSignup({ variant = 'footer', heading, subtext }: Newsl
       if (res.ok && data.success) {
         setStatus('success');
         setEmail('');
+        // Plausible goal "Newsletter Signup" (JW-ISS-14) — window.plausible exists
+        // only once the analytics script has loaded; never block the signup on it.
+        (window as unknown as { plausible?: (event: string) => void }).plausible?.(
+          'Newsletter Signup'
+        );
         return;
       }
       setError(data.error || 'Something went wrong. Please try again.');
