@@ -92,7 +92,10 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
-      <head />
+      <head>
+        {/* Explicit sitemap pointer for crawlers/scanners that only read page HTML */}
+        <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+      </head>
       <body className="font-sans">
         {/* Plausible Analytics - using Next.js Script component for proper loading */}
         <Script

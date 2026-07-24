@@ -49,13 +49,14 @@ export function getPersonSchema() {
  *
  * @see https://schema.org/WebSite
  */
-export function getWebsiteSchema() {
+export function getWebsiteSchema(dateModified?: string) {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: SITE_NAME,
     url: SITE_URL,
     description: 'Building with AI in public: open code, real numbers, and honest field reports on what actually holds up.',
+    ...(dateModified ? { dateModified } : {}),
     author: {
       '@type': 'Person',
       name: 'Jamie Watters',
@@ -64,6 +65,33 @@ export function getWebsiteSchema() {
       '@type': 'Person',
       name: 'Jamie Watters',
     },
+  };
+}
+
+/**
+ * FAQ Page Schema - for genuinely question-and-answer shaped content ONLY.
+ * The items passed here MUST match visible Q&A content on the page
+ * (Google requirement: FAQ markup must reflect on-page content).
+ *
+ * @see https://schema.org/FAQPage
+ */
+export interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+export function getFAQSchema(items: FAQItem[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
   };
 }
 

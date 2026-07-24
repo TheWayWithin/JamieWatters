@@ -66,6 +66,7 @@ export async function generateMetadata({
     path: `/journey/${slug}`,
     type: 'article',
     publishedTime: (post.publishedAt || post.createdAt).toISOString(),
+    modifiedTime: post.updatedAt.toISOString(),
     image: ogImage,
   });
 }

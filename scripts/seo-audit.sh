@@ -8,7 +8,10 @@
 
 set -u
 DOMAIN="${1:-jamiewatters.work}"
-BASE="https://$DOMAIN"
+case "$DOMAIN" in
+  http*) BASE="$DOMAIN" ;;   # full URL (e.g. http://localhost:3000) for local builds
+  *) BASE="https://$DOMAIN" ;;
+esac
 FAILS=0
 pass() { printf 'PASS  %s\n' "$1"; }
 fail() { printf 'FAIL  %s\n' "$1"; FAILS=$((FAILS + 1)); }
@@ -46,6 +49,11 @@ check_tag 'property="og:image"' 'homepage og:image'
 check_tag 'property="og:url"' 'homepage og:url'
 check_tag 'name="twitter:card"' 'twitter card'
 check_tag 'application/ld\+json' 'structured data (ld+json)'
+
+# 3b. AI-visibility head/content signals (T-247)
+check_tag 'rel="sitemap"' 'sitemap <link> in head'
+echo "$HOME" | grep -qE 'datePublished|dateModified|article:published_time' && pass "date metadata present" || fail "date metadata MISSING (datePublished/dateModified/article:published_time)"
+echo "$HOME" | grep -q 'FAQPage' && pass "FAQPage schema present" || warn "no FAQPage schema (fine unless the page has Q&A content)"
 
 # 4. Analytics
 echo "$HOME" | grep -qi 'plausible' && pass "Plausible script present" || fail "Plausible script MISSING"

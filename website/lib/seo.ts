@@ -28,6 +28,8 @@ export interface SEOMetadataOptions {
   image?: string | SEOImage;
   /** Article-only: ISO date string. Ignored unless type is 'article'. */
   publishedTime?: string;
+  /** Article-only: ISO date string for last modification. Ignored unless type is 'article'. */
+  modifiedTime?: string;
 }
 
 export function absoluteUrl(path: string): string {
@@ -47,6 +49,7 @@ export function getSEOMetadata(page: SEOMetadataOptions): Metadata {
       ? {
           type: 'article' as const,
           publishedTime: page.publishedTime,
+          modifiedTime: page.modifiedTime,
           authors: ['Jamie Watters'],
         }
       : { type: 'website' as const };

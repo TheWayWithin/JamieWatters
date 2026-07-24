@@ -110,8 +110,22 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Copyright */}
-        <div className="mt-12 pt-8 border-t border-border-subtle text-center">
+        {/* Transparency + copyright */}
+        <div className="mt-12 pt-8 border-t border-border-subtle text-center space-y-3">
+          <p className="text-body-sm text-text-tertiary max-w-2xl mx-auto">
+            How this site works: I write every post myself, with AI assisting the research,
+            drafting and code. No sponsors, no paid placements, and no affiliate links unless a
+            post says so in plain sight. The site&apos;s code is open on{' '}
+            <a
+              href="https://github.com/TheWayWithin/JamieWatters"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-2 hover:text-brand-secondary transition-base"
+            >
+              GitHub
+            </a>
+            .
+          </p>
           <p className="text-body-sm text-text-tertiary">
             © {currentYear} Jamie Watters. All rights reserved.
           </p>
