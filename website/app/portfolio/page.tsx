@@ -3,15 +3,17 @@ import { getAllProjects } from '@/lib/database';
 import { ProjectCard } from '@/components/portfolio/ProjectCard';
 import { getProofPoint } from '@/lib/portfolio-proof';
 import { getSEOMetadata } from '@/lib/seo';
+import { AuthorBio } from '@/components/AuthorBio';
 import {
   getBreadcrumbSchema,
+  getCollectionPageSchema,
   renderStructuredData,
 } from '@/lib/structured-data';
 
 export const metadata = getSEOMetadata({
   title: 'Portfolio',
   description:
-    "Products I've built with AI, in public. What's live now, and what's still on the bench.",
+    'Every product I have shipped as a solo builder working with AI: what is live, what is in the workshop, and what each earns. See the code and the real numbers.',
   path: '/portfolio',
 });
 
@@ -35,9 +37,36 @@ export default async function PortfolioPage() {
     { name: 'Portfolio', url: 'https://jamiewatters.work/portfolio' },
   ]);
 
+  // Last content change = the most recent project update; drives the visible
+  // date and dateModified in the CollectionPage schema.
+  const lastUpdated = projects.reduce(
+    (latest, p) => (p.updatedAt > latest ? p.updatedAt : latest),
+    new Date(0)
+  );
+  const lastUpdatedISO = lastUpdated.toISOString();
+  const lastUpdatedDisplay = lastUpdated.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+
+  const collectionSchema = getCollectionPageSchema({
+    name: 'Portfolio',
+    description:
+      'Products Jamie Watters has shipped as a solo builder working with AI, each with live status and real numbers.',
+    url: 'https://jamiewatters.work/portfolio',
+    dateModified: lastUpdatedISO,
+    items: liveProducts.map((p) => ({
+      name: p.name,
+      url: `https://jamiewatters.work/portfolio/${p.slug}`,
+      description: p.description,
+    })),
+  });
+
   return (
     <>
       {/* Structured Data for SEO */}
+      {renderStructuredData(collectionSchema)}
       {renderStructuredData(breadcrumbSchema)}
 
       <main className="min-h-screen bg-bg-primary">
@@ -49,6 +78,9 @@ export default async function PortfolioPage() {
         <p className="text-body-lg sm:text-body-lg text-text-secondary max-w-2xl">
           {liveProducts.length} products live and in people's hands, {openSourceCount} with
           the code open to read. Built with AI, in public. Each one earns its place below.
+        </p>
+        <p className="text-caption text-text-tertiary mt-3">
+          Last updated <time dateTime={lastUpdatedISO}>{lastUpdatedDisplay}</time>
         </p>
       </section>
 
@@ -87,6 +119,11 @@ export default async function PortfolioPage() {
           </p>
         </section>
       )}
+
+      {/* About the builder — reusable home for outbound references */}
+      <section className="px-6 pb-16 sm:pb-24 max-w-3xl mx-auto">
+        <AuthorBio heading="About the builder" />
+      </section>
       </main>
     </>
   );

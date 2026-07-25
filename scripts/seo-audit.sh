@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # seo-audit.sh — PRJ-25 mechanical SEO + AI-visibility checks (T-244 pilot).
-# Usage: ./scripts/seo-audit.sh [domain]   (default: jamiewatters.work)
+# Usage: ./scripts/seo-audit.sh [domain]                  site-level audit (default: jamiewatters.work)
+#        ./scripts/seo-audit.sh [domain] --page /about    inner-page audit of one path (T-261)
 # Reusable on any PRJ-25 product: pass its domain. Exit code = number of FAILs.
 # Covers the mechanical half of the frozen checklist in
 # ~/Shared/mission-control/projects/PRJ-25-seo-register.md. Lighthouse/CWV,
@@ -19,6 +20,72 @@ warn() { printf 'WARN  %s\n' "$1"; }
 
 fetch() { curl -sL --max-time 20 "$1"; }
 code_of() { curl -sL -o /dev/null -w '%{http_code}' --max-time 20 "$1"; }
+
+# ---------------------------------------------------------------------------
+# Inner-page mode (--page /path): template-level checks for the monthly
+# re-score — meta description quality, date metadata, structured data,
+# outbound links. The homepage-only checks above don't cover templates.
+# ---------------------------------------------------------------------------
+if [ "${2:-}" = "--page" ]; then
+  PAGEPATH="${3:?usage: seo-audit.sh <domain> --page /path}"
+  URL="$BASE$PAGEPATH"
+  echo "== SEO page audit: $URL =="
+  c=$(code_of "$URL")
+  [ "$c" = "200" ] || { fail "$PAGEPATH -> $c"; echo "== done: $FAILS fail(s) =="; exit "$FAILS"; }
+  pass "$PAGEPATH -> 200"
+  PAGE=$(fetch "$URL")
+
+  echo "$PAGE" | grep -qiE '<title>[^<]+</title>' && pass "<title>" || fail "<title> MISSING"
+  echo "$PAGE" | grep -qi 'rel="canonical"' && pass "canonical" || fail "canonical MISSING"
+
+  DESC=$(echo "$PAGE" | grep -o '<meta name="description" content="[^"]*"' | head -1 | sed 's/<meta name="description" content="//;s/"$//')
+  if [ -z "$DESC" ]; then
+    fail "meta description MISSING"
+  else
+    LEN=${#DESC}
+    if [ "$LEN" -ge 120 ] && [ "$LEN" -le 180 ]; then
+      pass "meta description present ($LEN chars, in 120-180 band)"
+    else
+      warn "meta description present but $LEN chars (aim 150-160)"
+    fi
+  fi
+
+  # Date metadata: article meta tags, a <time datetime>, or dates in JSON-LD
+  echo "$PAGE" | grep -qE 'article:published_time|article:modified_time|<time[^>]*datetime=|datePublished|dateModified' \
+    && pass "date metadata present" || fail "date metadata MISSING"
+
+  # Structured data: present and every block parses as JSON
+  if echo "$PAGE" | grep -q 'application/ld+json'; then
+    BLOCKS=$(echo "$PAGE" | python3 -c "
+import re, sys, json
+c = sys.stdin.read()
+blocks = re.findall(r'<script type=\"application/ld\+json\">(.*?)</script>', c, re.S)
+bad = 0
+types = []
+for b in blocks:
+    try:
+        d = json.loads(b)
+        types.append(str(d.get('@type')))
+    except Exception:
+        bad += 1
+print(len(blocks), bad, ','.join(types) if types else '-')
+")
+    N=$(echo "$BLOCKS" | cut -d' ' -f1); BAD=$(echo "$BLOCKS" | cut -d' ' -f2); TYPES=$(echo "$BLOCKS" | cut -d' ' -f3)
+    if [ "$BAD" = "0" ]; then pass "ld+json: $N block(s) all parse [$TYPES]"; else fail "ld+json: $BAD of $N block(s) fail to parse"; fi
+  else
+    fail "ld+json MISSING"
+  fi
+
+  # Outbound links (R.1.1): at least one external href in the page body
+  HOST=$(echo "$BASE" | sed 's|^https://||;s|^http://||;s|/.*||;s|:.*||')
+  EXT=$(echo "$PAGE" | grep -o 'href="https\?://[^"]*"' | grep -cv "$HOST")
+  [ "$EXT" -ge 1 ] && pass "outbound links present ($EXT external href(s))" || fail "no outbound links"
+
+  echo "$PAGE" | grep -q 'FAQPage' && pass "FAQPage schema present" || warn "no FAQPage schema (fine unless the page has Q&A content)"
+
+  echo "== done: $FAILS fail(s) =="
+  exit "$FAILS"
+fi
 
 echo "== SEO audit: $BASE =="
 

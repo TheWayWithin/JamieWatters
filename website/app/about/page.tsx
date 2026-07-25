@@ -3,22 +3,68 @@ import Image from 'next/image';
 import { Twitter, Linkedin, Github, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { getSEOMetadata } from '@/lib/seo';
+import {
+  getBreadcrumbSchema,
+  getFAQSchema,
+  getProfilePageSchema,
+  renderStructuredData,
+} from '@/lib/structured-data';
+
+// Bump this when the page copy changes; it drives the visible date and the
+// dateModified in the ProfilePage schema.
+const ABOUT_UPDATED = '2026-07-25';
+
+// Rendered visibly in the FAQ section below AND as FAQPage JSON-LD from the
+// same constant, so the markup can never drift from the on-page content.
+const ABOUT_FAQ = [
+  {
+    question: 'What did you do before building with AI?',
+    answer:
+      'I started as a systems programmer in 1985, writing operating systems and real-time banking systems in assembler, earned a computing degree, and then spent twenty years in technology management.',
+  },
+  {
+    question: 'What is cognitive sovereignty?',
+    answer:
+      'The ability to keep your own first-person judgement, grounded in real depth, while most advice converges on one machine-generated answer. It is the bet this whole body of work is built on.',
+  },
+  {
+    question: 'How do I get in touch?',
+    answer:
+      'Email jamie@jamiewatters.work, or find me on X, LinkedIn or GitHub. The links are in the contact section below.',
+  },
+];
 
 export const metadata = getSEOMetadata({
   title: 'About Jamie Watters',
   description:
-    'A systems programmer who learned to code at the metal, lost the thread in management, and got his first love handed back by AI. Building in public and betting on cognitive sovereignty.',
+    'Systems programmer since 1985, twenty years in management, now building AI products solo and in public. Learn who Jamie Watters is and what he is betting on.',
   path: '/about',
 });
 
 export default function AboutPage() {
+  const profileSchema = getProfilePageSchema({ dateModified: ABOUT_UPDATED });
+  const faqSchema = getFAQSchema(ABOUT_FAQ);
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: 'Home', url: 'https://jamiewatters.work' },
+    { name: 'About', url: 'https://jamiewatters.work/about' },
+  ]);
+
   return (
-    <main className="min-h-screen bg-bg-primary">
+    <>
+      {/* Structured Data for SEO */}
+      {renderStructuredData(profileSchema)}
+      {renderStructuredData(faqSchema)}
+      {renderStructuredData(breadcrumbSchema)}
+
+      <main className="min-h-screen bg-bg-primary">
       {/* Page Header with Profile Photo */}
       <section className="px-6 pt-12 pb-8 sm:pt-16 sm:pb-12 max-w-4xl mx-auto text-center">
-        <h1 className="text-display-xl sm:text-display-xl font-bold text-text-primary mb-12">
+        <h1 className="text-display-xl sm:text-display-xl font-bold text-text-primary mb-4">
           About Jamie
         </h1>
+        <p className="text-caption text-text-tertiary mb-12">
+          Updated <time dateTime={ABOUT_UPDATED}>25 July 2026</time>
+        </p>
 
         {/* Profile Photo */}
         <div className="flex justify-center mb-12">
@@ -101,9 +147,26 @@ export default function AboutPage() {
           <p>
             I am an odd fit to make it, which is exactly the point. I learned to code at the metal
             while the rest of the world abstracted upward into vibe-coded slop, and I kept the
-            discipline. I wrote what was, for its first few years, the best-selling book on business
-            continuity in the world, so I know precisely how a monoculture fails: quietly, then all at once, everyone together. And I
-            teach mindfulness and I coach, so the inner half of "keep your own mind" isn't a metaphor
+            discipline. I wrote what was, for its first few years, the best-selling book on{' '}
+            <a
+              href="https://en.wikipedia.org/wiki/Business_continuity_planning"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-4 decoration-border-default hover:text-brand-secondary transition-base"
+            >
+              business continuity
+            </a>{' '}
+            in the world, so I know precisely how a monoculture fails: quietly, then all at once, everyone together. And I
+            teach mindfulness in{' '}
+            <a
+              href="https://www.headless.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-4 decoration-border-default hover:text-brand-secondary transition-base"
+            >
+              The Headless Way
+            </a>{' '}
+            tradition and I coach, so the inner half of "keep your own mind" isn't a metaphor
             to me. Three different lives, one pattern underneath them: the depth that each new
             abstraction layer quietly erased, and that I happened to hang on to.
           </p>
@@ -124,7 +187,16 @@ export default function AboutPage() {
           </p>
           <p>
             If I recommend it, I am using it. If it failed, you will hear about the failure before
-            you hear about the win. My code is open for you to check. That is the whole offer.
+            you hear about the win. My code is{' '}
+            <a
+              href="https://github.com/TheWayWithin"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-4 decoration-border-default hover:text-brand-secondary transition-base"
+            >
+              open for you to check
+            </a>
+            . That is the whole offer.
           </p>
           <p>
             I am in the water. If you would rather learn from someone actually riding the wave than
@@ -132,6 +204,23 @@ export default function AboutPage() {
             before you waste the time finding out yourself.
           </p>
         </div>
+      </section>
+
+      {/* FAQ — visible content and the FAQPage schema come from ABOUT_FAQ */}
+      <section className="px-6 pb-12 sm:pb-16 max-w-3xl mx-auto">
+        <h2 className="text-display-md font-semibold text-text-primary mb-8">
+          Questions people actually ask
+        </h2>
+        <dl className="space-y-8">
+          {ABOUT_FAQ.map((item) => (
+            <div key={item.question}>
+              <dt className="text-body-lg font-semibold text-text-primary mb-2">
+                {item.question}
+              </dt>
+              <dd className="text-body text-text-secondary leading-relaxed">{item.answer}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       {/* Contact Section */}
@@ -200,6 +289,7 @@ export default function AboutPage() {
           </Button>
         </div>
       </section>
-    </main>
+      </main>
+    </>
   );
 }

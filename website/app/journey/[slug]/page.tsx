@@ -8,7 +8,8 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { ShareButtons } from '@/components/blog/ShareButtons';
 import { NewsletterSignup } from '@/components/newsletter/NewsletterSignup';
-import { getSEOMetadata, SITE_URL } from '@/lib/seo';
+import { getSEOMetadata, buildMetaDescription, SITE_URL } from '@/lib/seo';
+import { AuthorBio } from '@/components/AuthorBio';
 import {
   getBlogPostSchema,
   getBreadcrumbSchema,
@@ -62,7 +63,7 @@ export async function generateMetadata({
 
   return getSEOMetadata({
     title: post.title,
-    description: post.excerpt,
+    description: buildMetaDescription(post.excerpt),
     path: `/journey/${slug}`,
     type: 'article',
     publishedTime: (post.publishedAt || post.createdAt).toISOString(),
@@ -200,6 +201,11 @@ For now, this shows that the database integration is working correctly for post 
           dangerouslySetInnerHTML={{ __html: contentHtml }}
         />
       </article>
+
+      {/* Author bio — reusable home for outbound references */}
+      <section className="px-6 pb-8 max-w-3xl mx-auto">
+        <AuthorBio />
+      </section>
 
       {/* Buy Me a Coffee */}
       <section className="px-6 pb-8 max-w-3xl mx-auto">
