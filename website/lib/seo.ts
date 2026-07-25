@@ -36,6 +36,20 @@ export function absoluteUrl(path: string): string {
   return new URL(path, SITE_URL).toString();
 }
 
+/**
+ * Build a meta description from free text (e.g. a post excerpt).
+ * Search snippets and AI crawlers both work best at ~150-160 characters;
+ * longer text gets cut mid-sentence by the SERP anyway, so we truncate at a
+ * word boundary ourselves and keep the visible excerpt untouched.
+ */
+export function buildMetaDescription(text: string, max = 160): string {
+  const clean = text.replace(/\s+/g, ' ').trim();
+  if (clean.length <= max) return clean;
+  const slice = clean.slice(0, max - 1);
+  const cut = slice.slice(0, slice.lastIndexOf(' '));
+  return `${cut.replace(/[,;:.!?]$/, '')}…`;
+}
+
 export function getSEOMetadata(page: SEOMetadataOptions): Metadata {
   const url = absoluteUrl(page.path);
 

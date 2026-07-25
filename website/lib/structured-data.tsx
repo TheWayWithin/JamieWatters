@@ -69,6 +69,72 @@ export function getWebsiteSchema(dateModified?: string) {
 }
 
 /**
+ * Profile Page Schema - for the about page.
+ * ProfilePage with a Person mainEntity is Google's supported pattern for
+ * "page about a person"; dates signal freshness to AI crawlers.
+ *
+ * @see https://schema.org/ProfilePage
+ */
+export function getProfilePageSchema(opts: { dateModified: string }) {
+  const person = getPersonSchema() as Record<string, unknown>;
+  delete person['@context'];
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    name: 'About Jamie Watters',
+    url: `${SITE_URL}/about`,
+    dateModified: opts.dateModified,
+    mainEntity: person,
+  };
+}
+
+/**
+ * Collection Page Schema - for the portfolio index.
+ * CollectionPage with an ItemList mainEntity describes "a curated list of
+ * things" (here: shipped products), each with its own detail-page URL.
+ *
+ * @see https://schema.org/CollectionPage
+ */
+export interface CollectionItem {
+  name: string;
+  url: string;
+  description?: string;
+}
+
+export function getCollectionPageSchema(opts: {
+  name: string;
+  description: string;
+  url: string;
+  items: CollectionItem[];
+  dateModified?: string;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: opts.name,
+    description: opts.description,
+    url: opts.url,
+    ...(opts.dateModified ? { dateModified: opts.dateModified } : {}),
+    author: {
+      '@type': 'Person',
+      name: 'Jamie Watters',
+      url: SITE_URL,
+    },
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: opts.items.length,
+      itemListElement: opts.items.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: item.name,
+        url: item.url,
+        ...(item.description ? { description: item.description } : {}),
+      })),
+    },
+  };
+}
+
+/**
  * FAQ Page Schema - for genuinely question-and-answer shaped content ONLY.
  * The items passed here MUST match visible Q&A content on the page
  * (Google requirement: FAQ markup must reflect on-page content).
