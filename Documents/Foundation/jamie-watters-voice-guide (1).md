@@ -156,6 +156,12 @@ These are patterns that immediately mark text as machine-generated. They are ban
 
 **Concrete specifics.** Numbers, names, tools, dates. "Nine CVEs in four days" beats "serious security issues." "36 kids in a class" beats "overcrowded." Specifics build trust. Vagueness destroys it.
 
+**The truth rule.** Never write a number, date, duration, quantity or price you have not been given or verified. If a specific figure would strengthen a sentence and you do not have it, write [VERIFY: what is missing] and leave it for Jamie. Do not estimate and do not round toward what feels plausible.
+
+Invented specifics are the most damaging error available here, because the guide rewards specificity and the temptation is strongest exactly where the reader trusts the writing most. A recent draft claimed a project took four days when it had taken under two hours. Nobody supplied the four days. It was invented to fill a sentence, then repeated three more times, and one paragraph of argument was built on top of it.
+
+This applies with double force to titles, pull quotes and opening lines, because those are the parts that get quoted without the surrounding text.
+
 **Systems-first explanation.** I started as a systems programmer. When I explain something, my instinct is to show the architecture before the details: how the pieces connect, where the pressure points are, what the feedback loops look like. Then I zoom in. This is how I naturally think, and the writing should reflect it.
 
 **Compression as instinct.** I favour the efficient path. Not because I'm rigorous, but because I'm lazy in the productive sense. If something can be said in fewer words, I will find those fewer words. This isn't just an ADHD accommodation. It's a genuine writing strength. Brevity isn't a constraint I impose; it's my natural register.
