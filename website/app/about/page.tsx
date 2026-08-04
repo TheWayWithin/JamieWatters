@@ -86,7 +86,7 @@ export default function AboutPage() {
           <p>
             There was one computer in my school. A Research Machines 380Z, kept in its own room
             like a holy relic. I talked my way in front of it and wrote BASIC games, and the thing
-            that hooked me wasn't the games. It was the loop. Type a line, run it, watch it do
+            that hooked me wasn&apos;t the games. It was the loop. Type a line, run it, watch it do
             exactly what I told it or fail in a way that was entirely my fault. Honest feedback.
             I have been chasing that loop ever since.
           </p>
@@ -99,7 +99,7 @@ export default function AboutPage() {
           </p>
           <p>
             This was before the abstractions arrived. No relational databases. No debuggers. No
-            full-screen editors, so we wrote our own, because there wasn't one to buy. You worked
+            full-screen editors, so we wrote our own, because there wasn&apos;t one to buy. You worked
             close to the metal because there was nowhere else to stand.
           </p>
           <p>
@@ -110,8 +110,8 @@ export default function AboutPage() {
           <p>
             Then I got scared. I was in my thirties and keeping up, but only just. I had watched
             languages turn over faster than the people using them, and I could see where it ended:
-            well before fifty I'd be cooked, no longer writing the real thing, just dragging and
-            dropping other people's components. The joy would be gone. So I retreated into
+            well before fifty I&apos;d be cooked, no longer writing the real thing, just dragging and
+            dropping other people&apos;s components. The joy would be gone. So I retreated into
             management, on the theory that people change more slowly than syntax. Twenty years of the
             conventional kind of success followed. Good title, good money, and something quiet died
             in the middle of it. The loop was gone. I had stopped living in the gap between effort
@@ -119,8 +119,8 @@ export default function AboutPage() {
           </p>
           <p>Then AI handed my first love back.</p>
           <p>
-            It carries the cognitive load I was afraid of, and I supply what it can't: vision,
-            discipline, the judgement of what's worth building in the first place. The thing I had
+            It carries the cognitive load I was afraid of, and I supply what it can&apos;t: vision,
+            discipline, the judgement of what&apos;s worth building in the first place. The thing I had
             written off as obsolete, my old-school engineering discipline and the strategic thinking
             the management years gave me, turned out to be the missing piece. I am more creative now,
             past fifty, than I was in my twenties. One person, a studio, building in public.
@@ -166,13 +166,13 @@ export default function AboutPage() {
             >
               The Headless Way
             </a>{' '}
-            tradition and I coach, so the inner half of "keep your own mind" isn't a metaphor
+            tradition and I coach, so the inner half of &quot;keep your own mind&quot; isn&apos;t a metaphor
             to me. Three different lives, one pattern underneath them: the depth that each new
             abstraction layer quietly erased, and that I happened to hang on to.
           </p>
           <p>
             So I am not building an empire. I am building a body of work, in the open. I build things
-            to learn, not to sell, and I give the code away. I share what worked, what didn't, and
+            to learn, not to sell, and I give the code away. I share what worked, what didn&apos;t, and
             why, including the products I have killed off in full public view. The value was never
             the software. It is the judgement and the trust, and those only compound if I show my
             working.
@@ -183,7 +183,7 @@ export default function AboutPage() {
             checked my numbers, used my tools, and decided the signal was worth the subscription. I
             am starting from roughly none of those, with a full-time bank job, which is either bold
             or daft. Probably both. The target points me in a direction. The practice is what makes
-            it durable: ride the wave, learn what's real, share it honestly.
+            it durable: ride the wave, learn what&apos;s real, share it honestly.
           </p>
           <p>
             If I recommend it, I am using it. If it failed, you will hear about the failure before
@@ -200,7 +200,7 @@ export default function AboutPage() {
           </p>
           <p>
             I am in the water. If you would rather learn from someone actually riding the wave than
-            someone selling theory from the beach, stay a while. I will tell you what's working
+            someone selling theory from the beach, stay a while. I will tell you what&apos;s working
             before you waste the time finding out yourself.
           </p>
         </div>
@@ -230,7 +230,7 @@ export default function AboutPage() {
             Get in Touch
           </h2>
           <p className="text-body-lg text-text-secondary mb-8">
-            Interested in collaborating, have questions, or just want to say hi? I'd love to hear
+            Interested in collaborating, have questions, or just want to say hi? I&apos;d love to hear
             from you.
           </p>
 

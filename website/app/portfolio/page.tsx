@@ -76,7 +76,7 @@ export default async function PortfolioPage() {
           Portfolio
         </h1>
         <p className="text-body-lg sm:text-body-lg text-text-secondary max-w-2xl">
-          {liveProducts.length} products live and in people's hands, {openSourceCount} with
+          {liveProducts.length} products live and in people&apos;s hands, {openSourceCount} with
           the code open to read. Built with AI, in public. Each one earns its place below.
         </p>
         <p className="text-caption text-text-tertiary mt-3">

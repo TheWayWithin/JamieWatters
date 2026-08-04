@@ -59,7 +59,7 @@ export default async function JourneyPage({
           The Journey
         </h1>
         <p className="text-body-lg sm:text-body-lg text-text-secondary max-w-2xl mb-6">
-          Field reports from building with AI in public. What's working, what isn't, and what it
+          Field reports from building with AI in public. What&apos;s working, what isn&apos;t, and what it
           cost me. Open numbers, the failures before the wins.
         </p>
 

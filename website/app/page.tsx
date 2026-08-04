@@ -81,7 +81,7 @@ export default async function Home() {
               Become more valuable, not less, as AI accelerates.
             </h1>
             <p className="text-body-lg lg:text-body-xl text-text-secondary max-w-2xl mx-auto mb-8 leading-relaxed">
-              I build with AI, test what's real, kill what isn't, and share the whole lot in
+              I build with AI, test what&apos;s real, kill what isn&apos;t, and share the whole lot in
               public. Open code, real numbers, the failures before the wins.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -104,20 +104,20 @@ export default async function Home() {
             <div className="space-y-6 text-body-lg text-text-secondary leading-relaxed">
               <p>
                 For anyone embracing AI to build a better life and stay relevant as the world
-                changes. That's the builder or founder trying to make sense of it without
+                changes. That&apos;s the builder or founder trying to make sense of it without
                 drowning in hype, the career professional wondering what survives, the late
-                starter, and the solo operator who's never written code.
+                starter, and the solo operator who&apos;s never written code.
               </p>
               <p>
-                I'm not an AI guru selling a course of recycled ideas, and I'm not a consultant
-                who's never shipped anything. I'm the man in the water: building things with
+                I&apos;m not an AI guru selling a course of recycled ideas, and I&apos;m not a consultant
+                who&apos;s never shipped anything. I&apos;m the man in the water: building things with
                 these tools, finding out what actually holds up, and telling you the truth about it
                 before you spend your own time finding out.
               </p>
               <p>
-                There's a quieter thread here too. As AI gets better at thinking for you, the
+                There&apos;s a quieter thread here too. As AI gets better at thinking for you, the
                 skill that matters most is thinking for yourself: keeping your own judgement
-                instead of handing it over. I'm working that out in public alongside everything
+                instead of handing it over. I&apos;m working that out in public alongside everything
                 else.
               </p>
             </div>
@@ -132,12 +132,12 @@ export default async function Home() {
             </h2>
             <div className="space-y-6 text-body-lg text-text-secondary leading-relaxed">
               <p>
-                Every product is a test of what's real at the frontier. I run the test in the open,
-                give the code away, and write up what worked, what didn't, and why. When something
+                Every product is a test of what&apos;s real at the frontier. I run the test in the open,
+                give the code away, and write up what worked, what didn&apos;t, and why. When something
                 stops earning its place, I kill it in public and tell you what it cost me.
               </p>
               <p>
-                The value was never the software. It's the judgement and the trust, and those only
+                The value was never the software. It&apos;s the judgement and the trust, and those only
                 compound if I show my working.
               </p>
             </div>
@@ -160,7 +160,7 @@ export default async function Home() {
               <p>
                 So the scarce thing, the only defensible thing, is the ability to keep your own
                 mind: real judgement, grounded in real depth, from someone actually doing the work.
-                That's what I'm building here. Not another feed of AI takes. A field report you can
+                That&apos;s what I&apos;m building here. Not another feed of AI takes. A field report you can
                 verify.
               </p>
             </div>
@@ -227,7 +227,7 @@ export default async function Home() {
                   >
                     anyone to inspect
                   </a>
-                  ; products killed in public when they don't work
+                  ; products killed in public when they don&apos;t work
                 </span>
               </li>
             </ul>
@@ -243,7 +243,7 @@ export default async function Home() {
                   The field report
                 </h2>
                 <p className="text-body-base text-text-secondary max-w-2xl">
-                  What's working, what isn't, and what it cost me. Open numbers, written as I go.
+                  What&apos;s working, what isn&apos;t, and what it cost me. Open numbers, written as I go.
                 </p>
               </div>
               <Button asChild variant="ghost" className="hidden sm:inline-flex">
@@ -304,13 +304,13 @@ export default async function Home() {
               The deal
             </h2>
             <div className="space-y-3 text-body-lg text-text-primary font-medium mb-8">
-              <p>If I recommend it, I'm using it.</p>
-              <p>If it failed, you'll hear about the failure before the win.</p>
+              <p>If I recommend it, I&apos;m using it.</p>
+              <p>If it failed, you&apos;ll hear about the failure before the win.</p>
               <p>My code is open for you to check.</p>
               <p>Every product I kill gets a public post-mortem.</p>
             </div>
             <p className="text-body-lg text-text-secondary leading-relaxed">
-              That's the whole deal. No funnel, no secret sauce, no "DM me to scale."
+              That&apos;s the whole deal. No funnel, no secret sauce, no &quot;DM me to scale.&quot;
             </p>
           </div>
         </section>
@@ -340,11 +340,11 @@ export default async function Home() {
         <section id="subscribe" className="py-16 lg:py-24 px-6 bg-bg-primary scroll-mt-20">
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-body-lg lg:text-body-xl text-text-primary mb-4 leading-relaxed">
-              I'm in the water, riding this wave in real time, in code and in writing.
+              I&apos;m in the water, riding this wave in real time, in code and in writing.
             </p>
             <p className="text-body-lg text-text-secondary mb-8 leading-relaxed">
-              If you'd rather learn from someone actually doing the work than someone selling theory
-              from the beach, stay a while. I'll tell you what's working before you waste the time
+              If you&apos;d rather learn from someone actually doing the work than someone selling theory
+              from the beach, stay a while. I&apos;ll tell you what&apos;s working before you waste the time
               finding out yourself.
             </p>
             <div className="max-w-xl mx-auto text-left">

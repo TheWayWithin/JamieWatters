@@ -19,13 +19,13 @@ export interface DatabaseMetrics {
   portfolioValue: number;
 }
 
-export interface ProjectWithMetrics extends Project {
-  // Additional computed fields can be added here
-}
+// Named aliases, kept so call sites read intentionally and so computed fields
+// can be added later (change to `Project & { … }` when that happens). Declared
+// as type aliases rather than empty extending interfaces, which are identical
+// to their supertype and flagged by @typescript-eslint/no-empty-object-type.
+export type ProjectWithMetrics = Project;
 
-export interface PostWithMetadata extends Post {
-  // Additional computed fields can be added here
-}
+export type PostWithMetadata = Post;
 
 /**
  * A post without its heavy `content` body — for list views, prev/next nav, and

@@ -119,7 +119,7 @@ export function DailyUpdateGenerator({ onGenerate }: DailyUpdateGeneratorProps) 
           No projects are set to track progress.
         </p>
         <p className="text-body-sm text-text-tertiary">
-          Go to Projects and enable "Track Progress" for projects you want to include in daily updates.
+          Go to Projects and enable &quot;Track Progress&quot; for projects you want to include in daily updates.
         </p>
       </Card>
     );
