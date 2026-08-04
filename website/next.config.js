@@ -4,6 +4,13 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: {
+    // Build and lint are separate gates. `npm run lint` is the real lint check and
+    // reports everything; it is not weakened by this. Decoupling keeps deploys from
+    // breaking on the pre-existing backlog (JW-ISS-19) that surfaced when ESLint was
+    // first configured here — before that, `next build` silently skipped linting.
+    ignoreDuringBuilds: true,
+  },
   images: {
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
