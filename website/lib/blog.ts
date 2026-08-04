@@ -122,8 +122,3 @@ export function getBlogPostBySlug(slug: string): BlogPost | null {
   }
   return post;
 }
-
-/** Slugs of all published posts, for generateStaticParams. */
-export function getBlogSlugs(): string[] {
-  return getAllBlogPosts().map((post) => post.slug);
-}

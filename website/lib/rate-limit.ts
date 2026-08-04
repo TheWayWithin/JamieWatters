@@ -105,35 +105,3 @@ export function getClientIdentifier(request: Request): string {
   const userAgent = request.headers.get('user-agent') || 'unknown';
   return `ua:${userAgent.slice(0, 50)}`; // Truncate to prevent abuse
 }
-
-/**
- * Reset rate limit for a specific identifier and endpoint
- * Useful for testing or manual intervention
- */
-export function resetRateLimit(identifier: string, endpoint: keyof typeof RATE_LIMITS): void {
-  const key = `${endpoint}:${identifier}`;
-  store.delete(key);
-}
-
-/**
- * Get current rate limit status for an identifier
- * Useful for debugging or monitoring
- */
-export function getRateLimitStatus(
-  identifier: string,
-  endpoint: keyof typeof RATE_LIMITS
-): { count: number; resetTime: number; remaining: number } | null {
-  const config = RATE_LIMITS[endpoint];
-  const key = `${endpoint}:${identifier}`;
-  const entry = store.get(key);
-  
-  if (!entry || Date.now() > entry.resetTime) {
-    return null;
-  }
-  
-  return {
-    count: entry.count,
-    resetTime: entry.resetTime,
-    remaining: Math.max(0, config.requests - entry.count),
-  };
-}

@@ -68,16 +68,6 @@ export function calculateReadTime(markdown: string): number {
 }
 
 /**
- * Format read time for display
- *
- * @param minutes - Reading time in minutes
- * @returns Formatted string like "5 min read" or "1 min read"
- */
-export function formatReadTime(minutes: number): string {
-  return minutes === 1 ? '1 min read' : `${minutes} min read`;
-}
-
-/**
  * Get word count from markdown content
  *
  * Useful for displaying word count alongside read time

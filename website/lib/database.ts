@@ -328,58 +328,6 @@ export async function getMetrics(): Promise<DatabaseMetrics> {
 }
 
 /**
- * Update project metrics (for admin API)
- */
-export async function updateProjectMetrics(
-  projectId: string,
-  metrics: {
-    mrr: number;
-    users: number;
-    status: ProjectStatus;
-  }
-): Promise<ProjectWithMetrics> {
-  try {
-    // Input validation
-    if (!projectId || typeof projectId !== 'string') {
-      throw new Error('Invalid project ID');
-    }
-
-    // Update project in transaction
-    const result = await prisma.$transaction(async (tx) => {
-      // Update the project
-      const updatedProject = await tx.project.update({
-        where: { id: projectId },
-        data: {
-          mrr: metrics.mrr,
-          users: metrics.users,
-          status: metrics.status,
-          updatedAt: new Date(),
-        },
-      });
-
-      // Record metrics history for future charts
-      await tx.metricsHistory.create({
-        data: {
-          id: crypto.randomUUID(),
-          projectId: projectId,
-          mrr: metrics.mrr,
-          users: metrics.users,
-          recordedAt: new Date(),
-        },
-      });
-
-      return updatedProject;
-    });
-
-    console.log('Project metrics updated:', { projectId, metrics });
-    return result;
-  } catch (error) {
-    console.error('Error updating project metrics:', error);
-    throw new Error('Failed to update project metrics');
-  }
-}
-
-/**
  * Get all project slugs for static generation
  */
 export async function getProjectSlugs(): Promise<string[]> {
