@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
+import type { ContentPreview } from '@/lib/content-preview';
 
 interface Project {
   id: string;
@@ -12,7 +13,7 @@ interface Project {
 }
 
 interface DailyUpdateGeneratorProps {
-  onGenerate: (preview: any) => void;
+  onGenerate: (preview: ContentPreview) => void;
 }
 
 export function DailyUpdateGenerator({ onGenerate }: DailyUpdateGeneratorProps) {

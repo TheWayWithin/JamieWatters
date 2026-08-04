@@ -32,6 +32,16 @@ interface Project {
   trackProgress: boolean;
 }
 
+/**
+ * What POST /api/admin/projects and PUT /api/admin/projects/[id] return.
+ * On a validation failure both routes send `details` as the Zod issues mapped
+ * to `{ field, message }`; on success neither field is present.
+ */
+interface ProjectSaveResponse {
+  error?: string;
+  details?: Array<{ field: string; message: string }>;
+}
+
 interface ProjectFormProps {
   project?: Project; // If editing existing project
   mode: 'create' | 'edit';
@@ -164,7 +174,7 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
         body: JSON.stringify(data),
       });
 
-      const result = await res.json();
+      const result: ProjectSaveResponse = await res.json();
 
       if (res.ok) {
         setSuccessMessage(
@@ -179,7 +189,7 @@ export function ProjectForm({ project, mode }: ProjectFormProps) {
       } else {
         setError(result.error || 'Failed to save project');
         if (result.details) {
-          const detailsText = result.details.map((d: any) => `${d.field}: ${d.message}`).join(', ');
+          const detailsText = result.details.map((d) => `${d.field}: ${d.message}`).join(', ');
           setError(`${result.error}: ${detailsText}`);
         }
         window.scrollTo({ top: 0, behavior: 'smooth' });

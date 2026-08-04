@@ -38,8 +38,15 @@ export function Button({
   };
 
   // If asChild is true, apply className to the child element
-  if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children as React.ReactElement<any>, {
+  // The only prop injected is className, so that is all the child has to
+  // accept. Be clear about what this does and does not prove: isValidElement's
+  // type argument is supplied by the caller and never checked at runtime (React
+  // only tests $$typeof), so this is still an assertion, just a narrow and
+  // stated one rather than the ReactElement<any> cast it replaces. It holds
+  // today because every asChild call site passes a Link or an <a>, both of
+  // which accept className.
+  if (asChild && React.isValidElement<{ className?: string }>(children)) {
+    return React.cloneElement(children, {
       className: `${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${className}`,
     });
   }

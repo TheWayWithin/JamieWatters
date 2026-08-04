@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/Badge';
 import { DailyUpdateGenerator } from '@/components/admin/DailyUpdateGenerator';
 import { ProgressReportGenerator } from '@/components/admin/ProgressReportGenerator';
 import { ContentPreviewModal } from '@/components/admin/ContentPreviewModal';
+import type { ContentPreview } from '@/lib/content-preview';
 
 interface Post {
   id: string;
@@ -29,7 +30,7 @@ export default function ContentPage() {
   const router = useRouter();
   const [recentPosts, setRecentPosts] = useState<Post[]>([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
-  const [preview, setPreview] = useState<any>(null);
+  const [preview, setPreview] = useState<ContentPreview | null>(null);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [publishError, setPublishError] = useState('');
   const [deletingId, setDeletingId] = useState<DeletingState>(null);
@@ -84,19 +85,24 @@ export default function ContentPage() {
     }
   };
 
-  const handleGeneratePreview = (generatedPreview: any) => {
+  const handleGeneratePreview = (generatedPreview: ContentPreview) => {
     setPreview(generatedPreview);
     setPreviewPostType('daily-update');
     setShowPreviewModal(true);
   };
 
-  const handleProgressReportPreview = (generatedPreview: any) => {
+  const handleProgressReportPreview = (generatedPreview: ContentPreview) => {
     setPreview(generatedPreview);
     setPreviewPostType('progress-report');
     setShowPreviewModal(true);
   };
 
   const handlePublish = async (data: { title: string; content: string; published: boolean }) => {
+    // Unreachable in practice: the modal that calls this only renders while
+    // `preview` is set. Present so the excerpt/tags/readTime reads below are
+    // sound now that `preview` is typed rather than `any`.
+    if (!preview) return;
+
     try {
       setPublishError('');
 

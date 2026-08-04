@@ -65,14 +65,29 @@ async function testRealRepo() {
     console.log('\n=== Test Complete ===');
     console.log('✅ GitHub integration working with real repository!');
 
-  } catch (error: any) {
-    console.error('\n❌ Test failed:');
-    console.error(`Status: ${error.status || 'unknown'}`);
-    console.error(`Message: ${error.message || error}`);
+  } catch (error) {
+    // Read the two fields the way the old `catch (error: any)` did, off
+    // whatever was thrown, rather than only off values that pass a guard.
+    // Gating these on isGitHubError would lose the status and the hint below
+    // for anything status-bearing whose message is missing, and would print
+    // the whole object for a plain `{ message }`. The one deliberate
+    // difference from the old code: a thrown null used to raise a TypeError
+    // here instead of reporting, and now reports.
+    const hasKey = <K extends string>(value: unknown, key: K): value is Record<K, unknown> =>
+      typeof value === 'object' && value !== null && key in value;
 
-    if (error.status === 404) {
+    const read = (value: unknown, key: 'status' | 'message'): unknown =>
+      hasKey(value, key) ? value[key] : undefined;
+
+    const status = read(error, 'status');
+
+    console.error('\n❌ Test failed:');
+    console.error(`Status: ${status || 'unknown'}`);
+    console.error(`Message: ${read(error, 'message') || error}`);
+
+    if (status === 404) {
       console.error('\nNote: Make sure project-plan.md is committed and pushed to GitHub');
-    } else if (error.status === 403) {
+    } else if (status === 403) {
       console.error('\nNote: Rate limit or permissions issue');
     }
 
