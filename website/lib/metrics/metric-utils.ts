@@ -1,11 +1,35 @@
-import { ProjectType } from '@prisma/client';
+import { ProjectType, type Prisma } from '@prisma/client';
+import { Activity } from 'lucide-react';
 import type { MetricDefinition, MetricValue, MetricFormat } from './metric-templates';
 import { METRIC_TEMPLATES } from './metric-templates';
 
 export interface Project {
   id: string;
   projectType: ProjectType;
-  customMetrics?: any; // Json type from Prisma
+  /**
+   * Prisma column `customMetrics Json?`, so this is genuinely a JSON value of
+   * unknown shape at the type level and has to be narrowed before use.
+   *
+   * Note the write path is narrower than the read path: `createProjectSchema`
+   * validates `customMetrics` as `Record<string, number>`, and ProjectForm
+   * writes exactly that. `getMetricsForProject` below still reads each entry as
+   * a config object, so in practice every field it looks for is absent and
+   * every default applies. That mismatch predates this change and is left as
+   * is; it is recorded here rather than hidden behind `any`.
+   */
+  customMetrics?: Prisma.JsonValue;
+}
+
+const METRIC_FORMATS: readonly MetricFormat[] = ['currency', 'number', 'percent', 'duration'];
+
+function isMetricFormat(value: Prisma.JsonValue | undefined): value is MetricFormat {
+  return typeof value === 'string' && (METRIC_FORMATS as readonly string[]).includes(value);
+}
+
+// Prisma.JsonObject declares its members optional, so reading an entry off one
+// yields `JsonValue | undefined`; both guards accept that.
+function isJsonObject(value: Prisma.JsonValue | undefined): value is Prisma.JsonObject {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 export interface ProjectWithMetrics extends Project {
@@ -21,14 +45,39 @@ export function getMetricsForProject(project: Project): MetricDefinition[] {
 
   // If project has custom metrics, merge them with defaults
   if (project.customMetrics && typeof project.customMetrics === 'object') {
-    const customMetricDefs = Object.entries(project.customMetrics).map(
-      ([key, config]: [string, any]) => ({
-        key,
-        label: config.label || key,
-        format: config.format || 'number',
-        icon: config.icon || 'Activity', // Default icon name
-        description: config.description,
-      })
+    const customMetricDefs: MetricDefinition[] = Object.entries(project.customMetrics).map(
+      ([key, value]) => {
+        // Entries whose value is not an object (the common case: a plain
+        // number) carry no config fields, so every default applies. Reading
+        // them through an empty object matches the old `config.label` on a
+        // number, which was simply undefined.
+        //
+        // This is close to the old behaviour but not identical, and the
+        // differences are all cases where the old code produced a value that
+        // did not match MetricDefinition: a non-string `label` (say 123) or
+        // `description` used to be passed straight through, and an
+        // unrecognised `format` string used to survive as-is. Those now fall
+        // back to the declared type. `format` is unaffected in practice
+        // because formatMetricValue's switch already treats anything it does
+        // not recognise as 'number'. One further difference: a null entry
+        // value used to throw a TypeError here and now yields a default
+        // definition. That case cannot arise, since the write path validates
+        // customMetrics as Record<string, number>.
+        const config: Prisma.JsonObject = isJsonObject(value) ? value : {};
+        return {
+          key,
+          // Falsy-string check, not just typeof: the old `config.label || key`
+          // fell back to the key for an empty label and that is worth keeping.
+          label: typeof config.label === 'string' && config.label ? config.label : key,
+          format: isMetricFormat(config.format) ? config.format : 'number',
+          // MetricDefinition.icon is a LucideIcon component, not a name. The
+          // previous code put the string 'Activity' here and cast the result,
+          // which is why this never type-checked honestly. A JSON config cannot
+          // carry a component, so custom metrics get the default icon.
+          icon: Activity,
+          description: typeof config.description === 'string' ? config.description : undefined,
+        };
+      }
     );
 
     // Custom metrics override defaults with same key
@@ -36,9 +85,9 @@ export function getMetricsForProject(project: Project): MetricDefinition[] {
     customMetricDefs.forEach((custom) => {
       const existingIndex = mergedMetrics.findIndex((m) => m.key === custom.key);
       if (existingIndex >= 0) {
-        mergedMetrics[existingIndex] = custom as MetricDefinition;
+        mergedMetrics[existingIndex] = custom;
       } else {
-        mergedMetrics.push(custom as MetricDefinition);
+        mergedMetrics.push(custom);
       }
     });
 
@@ -152,7 +201,7 @@ export function getTrendInfo(trend?: number): {
  * Validate metric value format.
  */
 export function isValidMetricValue(
-  value: any,
+  value: unknown,
   format: MetricFormat
 ): boolean {
   if (typeof value !== 'number' || isNaN(value)) {

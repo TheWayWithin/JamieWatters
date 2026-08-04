@@ -93,7 +93,7 @@ export function PostForm({ mode, postId, initialData, projects = [] }: PostFormP
     });
   };
 
-  const updateField = (field: keyof PostFormData, value: any) => {
+  const updateField = <K extends keyof PostFormData>(field: K, value: PostFormData[K]) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     // Clear error for this field
     if (errors[field]) {

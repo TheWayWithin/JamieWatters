@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { verifyToken, extractTokenFromRequest } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 import { TOPICS, EDITORIAL_TYPES, normalizeEditorialType } from '@/lib/taxonomy';
 
@@ -174,7 +175,7 @@ export async function GET(req: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '50');
 
     // Build where clause
-    const where: any = {};
+    const where: Prisma.PostWhereInput = {};
     if (postType) where.postType = postType;
     if (published !== undefined) where.published = published;
     if (projectId) where.projectId = projectId;

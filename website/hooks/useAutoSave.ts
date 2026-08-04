@@ -10,17 +10,17 @@
 
 import { useEffect, useRef, useCallback } from 'react';
 
-interface UseAutoSaveOptions {
+interface UseAutoSaveOptions<T> {
   enabled?: boolean; // Enable/disable auto-save
   onSave?: () => void; // Callback when auto-save occurs
-  onRestore?: (data: any) => void; // Callback when data is restored
+  onRestore?: (data: T) => void; // Callback when data is restored
 }
 
 export function useAutoSave<T>(
   key: string,
   data: T,
   intervalMs: number = 30000, // Default: 30 seconds
-  options: UseAutoSaveOptions = {}
+  options: UseAutoSaveOptions<T> = {}
 ) {
   const { enabled = true, onSave, onRestore } = options;
   const intervalRef = useRef<NodeJS.Timeout | null>(null);

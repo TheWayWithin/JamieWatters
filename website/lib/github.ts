@@ -341,6 +341,23 @@ export async function listDirectoryFromGitHub(
 }
 
 /**
+ * Narrow a caught value to a GitHubError.
+ *
+ * The fetch helpers above throw object literals of this shape, so callers that
+ * want `error.status` need a guard rather than an `any` annotation on `catch`.
+ */
+export function isGitHubError(error: unknown): error is GitHubError {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'status' in error &&
+    typeof error.status === 'number' &&
+    'message' in error &&
+    typeof error.message === 'string'
+  );
+}
+
+/**
  * Format GitHub error for user display
  *
  * @param error - GitHubError object

@@ -7,7 +7,7 @@
  * 3. Parse project-plan.md content
  */
 
-import { parseGitHubUrl, fetchFileFromGitHub, fetchProjectPlan, formatGitHubError } from '../lib/github';
+import { parseGitHubUrl, fetchFileFromGitHub, fetchProjectPlan, formatGitHubError, isGitHubError } from '../lib/github';
 import { parseProjectPlan, calculateCompletionPercentage } from '../lib/markdown-parser';
 import { calculateReadTime } from '../lib/read-time-calculator';
 
@@ -49,9 +49,22 @@ async function testFetchPublicRepo() {
     console.log(`First 100 chars: ${content.substring(0, 100)}...`);
     console.log('');
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('❌ Failed to fetch from public repo');
-    console.error(`Error: ${formatGitHubError(error)}`);
+    // Mirrors formatGitHubError's default branch for anything that is not a
+    // GitHubError. That matches the old unchecked call for every value
+    // lib/github.ts can actually throw, and the two differ only on values it
+    // cannot: a thrown undefined or null used to raise a TypeError out of this
+    // block and abort the whole suite, and now reports; a status-bearing value
+    // with no string message now gets the generic text rather than the
+    // status-specific one.
+    console.error(
+      `Error: ${
+        isGitHubError(error)
+          ? formatGitHubError(error)
+          : (error instanceof Error && error.message) || 'Failed to fetch from GitHub'
+      }`
+    );
   }
 }
 
@@ -70,8 +83,8 @@ async function testFileNotFound() {
 
     console.log('❌ Should have thrown an error');
 
-  } catch (error: any) {
-    if (error.status === 404) {
+  } catch (error) {
+    if (isGitHubError(error) && error.status === 404) {
       console.log('✅ Correctly caught 404 error');
       console.log(`Error message: ${formatGitHubError(error)}`);
     } else {

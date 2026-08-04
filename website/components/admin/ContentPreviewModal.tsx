@@ -3,22 +3,10 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+import type { ContentPreview } from '@/lib/content-preview';
 
 interface ContentPreviewModalProps {
-  preview: {
-    title: string;
-    content: string;
-    excerpt: string;
-    tags: string[];
-    readTime: number;
-    projects: Array<{
-      projectId: string;
-      projectName: string;
-      githubUrl: string;
-      completedTasks: string[];
-      error?: string;
-    }>;
-  };
+  preview: ContentPreview;
   onClose: () => void;
   onPublish: (data: { title: string; content: string; published: boolean }) => void;
 }
