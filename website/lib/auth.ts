@@ -240,11 +240,3 @@ export function generateSecureSecret(length: number = 64): string {
   
   return result;
 }
-
-/**
- * Security utility to create password hash for environment setup
- * This function helps generate the ADMIN_PASSWORD_HASH for .env.local
- */
-export async function createPasswordHashForEnv(plainPassword: string): Promise<string> {
-  return await hashPassword(plainPassword);
-}
