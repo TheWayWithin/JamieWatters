@@ -78,3 +78,31 @@ tmp/
 temp/
 # Local Netlify folder
 .netlify
+
+# ---------------------------------------------------------------------------
+# BOS-AI / agent-11 framework scaffolding (2026-08-05)
+# Library material installed into this repo by the framework, not site code.
+# This is the public website repo; the framework's own files belong in
+# ~/DevProjects/agent-11, not in this history, where every clone carries them.
+schemas/foundation-*.schema.yaml
+docs/UPGRADE.md
+
+# agent-11 run artefacts
+# Per-run output: backups, captured inbox, dated progress logs, archived
+# planning docs. Regenerated on demand and meaningless to anyone cloning.
+# Note: progress/ and sprints/ deliberately are NOT ignored wholesale, because
+# each already holds historical files that are tracked on purpose.
+.backups/
+0-inbox/
+progress/2026-03-19*
+progress-archive.md
+project-plan-archive.md
+website/progress-archive.md
+sprints/Sprint-6-Blog-Images-R2-Migration.md
+
+# Blog image sources already published to R2
+# jpub uploads these to the R2 bucket and writes the absolute URL into Neon,
+# so the live post serves from R2 and the repo copy would be a duplicate.
+# Kept on disk (jpub reads them when building social posts), just not committed.
+# See website/docs/blog-images.md.
+website/public/images/blog/kastrup-cosmic-mind-no-plan-*.png
