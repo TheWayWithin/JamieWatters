@@ -1,9 +1,14 @@
 # Mission Control v2: Agent Operating Procedure
 
-**For:** All agents (Marvin, Ace, Scribe, Merlin, Echo, Agent-11, and future agents)
+**For:** All agents (Ace, Scribe, Merlin, Echo, Agent-11, and future agents)
 **Effective:** 2026-03-19
 **Replaces:** Previous task-management.md SOP
-**System owner:** Merlin (Mini) | **Weekly reviews:** Marvin (EC2)
+**System owner:** Merlin (Mini) | **Weekly reviews:** Merlin (Mini)
+
+> **2026-08-05:** Marvin and the EC2 host are decommissioned. The fleet is
+> MacBook plus Mac Mini. Marvin's duties are reassigned to Merlin below, except
+> the two that genuinely needed a second host; those are listed as open gaps
+> rather than quietly marked as covered.
 
 ---
 
@@ -12,13 +17,12 @@
 ```
 Agents write (Mini) ──────────────────→ Mini parses → Neon (cloud)
 Jamie/Agent-11 write (MacBook) → Syncthing → Mini parses → Neon (cloud)
-Marvin writes (EC2) → Syncthing ─────→ Mini parses → Neon (cloud)
                                                            ↓
                                                jamiewatters.work/admin
                                                (phone, MacBook, anywhere)
 ```
 
-The Mac Mini is the hub. The sync script runs there. Files from MacBook and EC2 arrive via Syncthing. The dashboard reads from Neon.
+The Mac Mini is the hub. The sync script runs there. Files from the MacBook arrive via Syncthing. The dashboard reads from Neon.
 
 ## Six-layer hierarchy
 
@@ -27,7 +31,7 @@ All work fits within this hierarchy. Every agent should understand where their t
 | Layer | What | Example | Who owns it | Dashboard location |
 |-------|------|---------|-------------|-------------------|
 | **L1: Vision + BHAG** | North star, reviewed annually | $10M ARR by 2030, truth-first | Jamie | Command View (North Star card) |
-| **L2: Yearly Objectives** | 3-5 things true by Dec 31 | First $1 revenue, 4+ products above $1K MRR | Jamie sets, Marvin reviews | Command View + /admin/goals |
+| **L2: Yearly Objectives** | 3-5 things true by Dec 31 | First $1 revenue, 4+ products above $1K MRR | Jamie sets, Merlin reviews | Command View + /admin/goals |
 | **L3: Quarterly KRs** | Measurable outcomes per quarter | Launch AImpactMonitor, first paying customer | Jamie sets, all agents execute | Command View + /admin/goals |
 | **L4: Programs + Projects** | Programs = ongoing, Projects = time-bound | AI Search Mastery (program), Project Lighthouse (project) | Jamie approves, Merlin tracks | /admin/portfolio (grouped by program) |
 | **L5: Tasks** | Atomic units of work with T-ids | T-005: Update DNS records | Owner agent | /admin/execution |
@@ -53,18 +57,18 @@ Before doing ANY work:
 
 ## File locations
 
-All canonical files are in `~/shared/mission-control/`. Git-tracked. Synced via Syncthing across Mini, EC2, and MacBook.
+All canonical files are in `~/shared/mission-control/`. Git-tracked. Synced via Syncthing between the Mini and the MacBook.
 
 | File | Purpose | Who updates it |
 |------|---------|----------------|
-| 00-DIRECTION.md | Yearly objectives, quarterly key results (also managed via /admin/goals) | Marvin (weekly review) + Jamie (quarterly goal setting) |
-| 01-PORTFOLIO.md | Product health, stages, kill dates | Marvin (weekly review) |
+| 00-DIRECTION.md | Yearly objectives, quarterly key results (also managed via /admin/goals) | Merlin (weekly review) + Jamie (quarterly goal setting) |
+| 01-PORTFOLIO.md | Product health, stages, kill dates | Merlin (weekly review) |
 | 02-PROJECTS.md | Master project index | Any agent on status change |
 | 03-SPRINT.md | Current 2-week battle plan | Task owners on status change |
 | 04-BACKLOG.md | Prioritised future work queue | Any agent adds; Merlin grooms |
 | 05-PULSE.md | Real-time status (auto-generated) | Merlin's cron on Mini |
 | 06-HITL.md | Items waiting on Jamie | Any agent adds; Jamie resolves |
-| 07-METRICS.md | Weekly performance scorecard | Marvin (weekly review) |
+| 07-METRICS.md | Weekly performance scorecard | Merlin (weekly review) |
 | 08-LEARNING.md | Decisions, kill/park log, adaptation | Any agent; reviewed weekly |
 | 09-RECURRING.md | Recurring operations schedule | Merlin maintains |
 | 10-HEALTH.md | System/infrastructure health | Merlin's cron on Mini |
@@ -197,7 +201,7 @@ Examples:
 @Ace: T-005 in_progress — starting domain housekeeping
 @Ace: T-005 done — 3 DNS records updated, SSL verified
 @Merlin: Triaged 4 inbox items in backlog
-@Marvin: Weekly review 2026-03-23 complete
+@Merlin: Weekly review 2026-03-23 complete
 @Agent-11: T-002 waiting_on_jamie — homepage copy ready for review
 ```
 
@@ -219,36 +223,44 @@ Examples:
 
 ## Decision-rights matrix
 
-| Decision | Jamie | Merlin | Marvin | Execution agents |
-|----------|-------|--------|--------|------------------|
-| Strategic priorities | Decides | Recommends | -- | -- |
-| Create projects | Approves | Proposes | Proposes | Proposes |
-| Kill/park a product | Decides | Recommends | Flags | -- |
-| Move work into sprint | Approves | Proposes | Proposes | -- |
-| Task priority (P0) | Approves | -- | -- | -- |
-| Task priority (P1-P2) | -- | Decides | -- | Own tasks |
-| Triage inbox | -- | Decides | -- | -- |
-| Enforce WIP limits | -- | Enforces | -- | -- |
-| Approve agent outputs | Decides | -- | -- | -- |
-| System/infra changes | Approves | Executes (Mini) | Executes (EC2) | -- |
+| Decision | Jamie | Merlin | Execution agents |
+|----------|-------|--------|------------------|
+| Strategic priorities | Decides | Recommends | -- |
+| Create projects | Approves | Proposes | Proposes |
+| Kill/park a product | Decides | Recommends + flags | -- |
+| Move work into sprint | Approves | Proposes | -- |
+| Task priority (P0) | Approves | -- | -- |
+| Task priority (P1-P2) | -- | Decides | Own tasks |
+| Triage inbox | -- | Decides | -- |
+| Enforce WIP limits | -- | Enforces | -- |
+| Approve agent outputs | Decides | -- | -- |
+| System/infra changes | Approves | Executes (Mini) | -- |
 
 ---
 
 ## Agent-specific duties
 
-### Merlin (Mac Mini) — COO + System Builder + Auditor
+### Merlin (Mac Mini) — COO + System Builder + Auditor + Weekly Reviews
 - **Own the sync pipeline:** sync script, pulse generation, crons on Mini
 - **Daily triage:** assign owners/priorities to inbox backlog items
 - **Stale detection:** flag tasks in_progress >3 days with no update
 - **WIP enforcement:** max 7 Jamie, 5 per agent, 8 projects
 - **Strategic alignment:** every task should link to a project/KR
+- **Weekly review:** update 00-DIRECTION, 01-PORTFOLIO, 07-METRICS, 08-LEARNING _(from Marvin)_
+- **Kill date alerts:** notification 7 days before kill date _(from Marvin)_
+- **P0 HITL alerts:** notification when P0 items added _(from Marvin)_
 
-### Marvin (EC2) — Infrastructure + Weekly Reviews + Alerts
-- **Weekly review:** update 00-DIRECTION, 01-PORTFOLIO, 07-METRICS, 08-LEARNING
-- **Kill date alerts:** Telegram notification 7 days before kill date
-- **P0 HITL alerts:** Telegram notification when P0 items added
-- **Backup health:** monitor Mini sync is running (alert if >30 min stale)
-- **Product uptime:** HTTP checks on 5 sites
+### Open gaps left by decommissioning Marvin
+
+These two were Marvin's and are deliberately not reassigned to Merlin, because
+both were watching the Mini from outside it. A watcher running on the box it
+watches reports nothing when that box is the thing that failed.
+
+- **Sync health:** alert if the Mini's sync goes stale (was: >30 min). Currently
+  unowned. Needs an off-box checker, not a Mini cron.
+- **Product uptime:** HTTP checks on the five sites. Currently unowned, and this
+  is the same gap as JW-ISS-17 in the JamieWatters repo, which proposes a free
+  UptimeRobot check on the apex with phone alerts. Close it there, not here.
 
 ### Ace (Mac Mini) — Marketing + Growth
 - Own AI Search product tasks (LTM, AIS, AIM, ASA)
@@ -373,7 +385,7 @@ Every quarter has a review/setting cycle. This is Jamie's responsibility with Ag
 | Last week of quarter | Set incoming quarter's KRs, link to yearly objectives | Jamie + Agent-11 | /admin/goals → + Quarterly KR |
 | Last week of Q4 | Set next year's yearly objectives + review BHAG | Jamie + Agent-11 | /admin/goals → + Yearly Objective |
 
-**Marvin's role:** After Jamie sets goals, Marvin updates 00-DIRECTION.md to match and incorporates into weekly reviews. Marvin should flag if KRs don't connect to yearly objectives or if yearly objectives drift from the BHAG.
+**Merlin's role:** After Jamie sets goals, Merlin updates 00-DIRECTION.md to match and incorporates into weekly reviews. Merlin should flag if KRs don't connect to yearly objectives or if yearly objectives drift from the BHAG.
 
 **All agents:** At sprint planning, check that sprint tasks connect to the current quarter's KRs. If a task doesn't serve any KR, question its priority.
 
