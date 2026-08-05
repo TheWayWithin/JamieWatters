@@ -1,6 +1,6 @@
 # Mission Control v2: Agent Operating Procedure
 
-**For:** All agents (Marvin, Ace, Merlin, Echo, Agent-11, and future agents)
+**For:** All agents (Marvin, Ace, Scribe, Merlin, Echo, Agent-11, and future agents)
 **Effective:** 2026-03-19
 **Replaces:** Previous task-management.md SOP
 **System owner:** Merlin (Mini) | **Weekly reviews:** Marvin (EC2)
@@ -255,8 +255,21 @@ Examples:
 - Execute marketing and growth work
 - Update statuses with T-ids and event log entries
 
-### Echo (Mac Mini) — Social Media
-- Post approval requests to 06-HITL.md (type: quick_yes_no)
+### Scribe (Mac Mini) — Content Creation + AI Search Optimization
+- **Framework:** OpenClaw | **Agent ID:** `scribe`
+- **Properties:** aisearchmastery.com, aimpactscanner.com, aimpactmonitor.com, llmtxtmastery.com, aisearchareana.com
+- Create blog posts, product pages, help docs, email copy optimised for AI search citations
+- Generate LinkedIn and X/Twitter drafts for Jamie's review (HITL type: `review_and_edit`)
+- Write comment responses across platforms (receives forwarded comments from Echo)
+- Workspace: `~/shared/mission-control/` + `~/.openclaw/workspace-content`
+- **Companion agent:** Echo — Scribe creates content, Echo handles scheduling and posting
+- Update statuses with T-ids and event log entries
+
+### Echo (Mac Mini) — Social Media Scheduling + Posting
+- **Companion to Scribe** — receives approved content from Scribe for distribution
+- Schedule and post to LinkedIn, X/Twitter, and other platforms
+- Forward user comments to Scribe for response drafting
+- Post approval requests to 06-HITL.md (type: `quick_yes_no`)
 - Log engagement metrics in memory
 - Update pulse with social activity notes
 
