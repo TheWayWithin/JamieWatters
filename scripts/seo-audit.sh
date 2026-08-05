@@ -38,7 +38,8 @@ if [ "${2:-}" = "--page" ]; then
   echo "$PAGE" | grep -qiE '<title>[^<]+</title>' && pass "<title>" || fail "<title> MISSING"
   echo "$PAGE" | grep -qi 'rel="canonical"' && pass "canonical" || fail "canonical MISSING"
 
-  DESC=$(echo "$PAGE" | grep -o '<meta name="description" content="[^"]*"' | head -1 | sed 's/<meta name="description" content="//;s/"$//')
+  # Flatten first: meta tags are legally multi-line (seen on llmtxtmastery.com)
+  DESC=$(echo "$PAGE" | tr '\n' ' ' | grep -o '<meta[^>]*name="description"[^>]*>' | head -1 | sed 's/.*content="\([^"]*\)".*/\1/')
   if [ -z "$DESC" ]; then
     fail "meta description MISSING"
   else

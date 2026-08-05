@@ -4,6 +4,7 @@ slug: graphify-six-ais
 date: 2026-06-17
 excerpt: "A field note from researching Graphify: the real privacy model, the honest token numbers, and why I check the source before I publish."
 tags:
+  - Graphify
   - AI
   - cognitive sovereignty
   - build in public
