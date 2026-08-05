@@ -1,22 +1,30 @@
 # Mission Control v2: Agent Operating Procedure
 
-**For:** All agents (Ace, Scribe, Merlin, Echo, Agent-11, and future agents)
-**Effective:** 2026-03-19
+**For:** Every Claude Code session, vault or repo, and the Mini's scheduled scripts
+**Effective:** 2026-03-19 | **Roster rewritten:** 2026-08-05
 **Replaces:** Previous task-management.md SOP
-**System owner:** Merlin (Mini) | **Weekly reviews:** Merlin (Mini)
+**System owner:** Jamie | **Weekly reviews:** vault session with Jamie
 
-> **2026-08-05:** Marvin and the EC2 host are decommissioned. The fleet is
-> MacBook plus Mac Mini. Marvin's duties are reassigned to Merlin below, except
-> the two that genuinely needed a second host; those are listed as open gaps
-> rather than quietly marked as covered.
+> **2026-08-05 — the named agents are gone.** This SOP was written for a roster
+> of persistent named agents (Marvin, Ace, Merlin, Echo, Scribe, Bob, Scout).
+> None of them run. The OpenClaw stack on the Mini was killed on 2026-05-23
+> (`~/shared/reference/devices.md`), the EC2 host that ran Marvin was stopped on
+> the same date and removed as a Syncthing peer on 2026-05-30, `05-PULSE.md`'s
+> agent tables are empty, and `09-RECURRING.md` lists no owner but Jamie,
+> Claude and plain automation.
+>
+> The workflow in this document survived; only the roster was fiction. Duties
+> below are assigned to what actually exists: **Jamie**, **Claude Code sessions**
+> and the **Mini's cron scripts**. Every script this SOP references was checked
+> and still exists.
 
 ---
 
 ## System architecture
 
 ```
-Agents write (Mini) ──────────────────→ Mini parses → Neon (cloud)
-Jamie/Agent-11 write (MacBook) → Syncthing → Mini parses → Neon (cloud)
+Mini cron writes (Mini) ──────────────────→ Mini parses → Neon (cloud)
+Jamie + Claude sessions write (MacBook) → Syncthing → Mini parses → Neon (cloud)
                                                            ↓
                                                jamiewatters.work/admin
                                                (phone, MacBook, anywhere)
@@ -26,20 +34,20 @@ The Mac Mini is the hub. The sync script runs there. Files from the MacBook arri
 
 ## Six-layer hierarchy
 
-All work fits within this hierarchy. Every agent should understand where their tasks sit.
+All work fits within this hierarchy. Every session should understand where its tasks sit.
 
 | Layer | What | Example | Who owns it | Dashboard location |
 |-------|------|---------|-------------|-------------------|
 | **L1: Vision + BHAG** | North star, reviewed annually | $10M ARR by 2030, truth-first | Jamie | Command View (North Star card) |
-| **L2: Yearly Objectives** | 3-5 things true by Dec 31 | First $1 revenue, 4+ products above $1K MRR | Jamie sets, Merlin reviews | Command View + /admin/goals |
-| **L3: Quarterly KRs** | Measurable outcomes per quarter | Launch AImpactMonitor, first paying customer | Jamie sets, all agents execute | Command View + /admin/goals |
-| **L4: Programs + Projects** | Programs = ongoing, Projects = time-bound | AI Search Mastery (program), Project Lighthouse (project) | Jamie approves, Merlin tracks | /admin/portfolio (grouped by program) |
-| **L5: Tasks** | Atomic units of work with T-ids | T-005: Update DNS records | Owner agent | /admin/execution |
-| **L6: Audit Log** | Every status change timestamped | T-005 ready→in_progress by Ace | Auto-logged | /admin/audit |
+| **L2: Yearly Objectives** | 3-5 things true by Dec 31 | First $1 revenue, 4+ products above $1K MRR | Jamie sets, reviewed weekly with Jamie | Command View + /admin/goals |
+| **L3: Quarterly KRs** | Measurable outcomes per quarter | Launch AImpactMonitor, first paying customer | Jamie sets, sessions execute | Command View + /admin/goals |
+| **L4: Programs + Projects** | Programs = ongoing, Projects = time-bound | AI Search Mastery (program), Project Lighthouse (project) | Jamie approves, vault session tracks | /admin/portfolio (grouped by program) |
+| **L5: Tasks** | Atomic units of work with T-ids | T-005: Update DNS records | Owning session | /admin/execution |
+| **L6: Audit Log** | Every status change timestamped | T-005 ready→in_progress by the session that took it | Auto-logged | /admin/audit |
 
 **Every task (L5) links to a project (L4), which belongs to a program (L4), which serves a quarterly KR (L3), which advances a yearly objective (L2), which moves toward the BHAG (L1).**
 
-When creating tasks, agents should note which project/KR it serves. If a task doesn't connect to any KR, question whether it should exist.
+When creating tasks, note which project or KR it serves. If a task doesn't connect to any KR, question whether it should exist.
 
 ---
 
@@ -61,17 +69,17 @@ All canonical files are in `~/shared/mission-control/`. Git-tracked. Synced via 
 
 | File | Purpose | Who updates it |
 |------|---------|----------------|
-| 00-DIRECTION.md | Yearly objectives, quarterly key results (also managed via /admin/goals) | Merlin (weekly review) + Jamie (quarterly goal setting) |
-| 01-PORTFOLIO.md | Product health, stages, kill dates | Merlin (weekly review) |
-| 02-PROJECTS.md | Master project index | Any agent on status change |
+| 00-DIRECTION.md | Yearly objectives, quarterly key results (also managed via /admin/goals) | Weekly review + Jamie (quarterly goal setting) |
+| 01-PORTFOLIO.md | Product health, stages, kill dates | Weekly review |
+| 02-PROJECTS.md | Master project index | Any session on status change |
 | 03-SPRINT.md | Current 2-week battle plan | Task owners on status change |
-| 04-BACKLOG.md | Prioritised future work queue | Any agent adds; Merlin grooms |
-| 05-PULSE.md | Real-time status (auto-generated) | Merlin's cron on Mini |
-| 06-HITL.md | Items waiting on Jamie | Any agent adds; Jamie resolves |
-| 07-METRICS.md | Weekly performance scorecard | Merlin (weekly review) |
-| 08-LEARNING.md | Decisions, kill/park log, adaptation | Any agent; reviewed weekly |
-| 09-RECURRING.md | Recurring operations schedule | Merlin maintains |
-| 10-HEALTH.md | System/infrastructure health | Merlin's cron on Mini |
+| 04-BACKLOG.md | Prioritised future work queue | Any session adds; groomed in the weekly review |
+| 05-PULSE.md | Real-time status (auto-generated) | Mini cron |
+| 06-HITL.md | Items waiting on Jamie | Any session adds; Jamie resolves |
+| 07-METRICS.md | Weekly performance scorecard | Weekly review |
+| 08-LEARNING.md | Decisions, kill/park log, adaptation | Any session; reviewed weekly |
+| 09-RECURRING.md | Recurring operations schedule | Maintained in the weekly review |
+| 10-HEALTH.md | System/infrastructure health | Mini cron |
 
 ---
 
@@ -90,18 +98,18 @@ Returns e.g. `T-021` and increments the counter. Use this T-id everywhere: sprin
 | Status | Meaning | When to use it |
 |--------|---------|----------------|
 | `inbox` | New, untriaged | Creating a task that hasn't been assigned |
-| `ready` | Triaged, assigned, can start | After Merlin assigns owner/priority |
+| `ready` | Triaged, assigned, can start | After triage assigns owner/priority |
 | `in_progress` | Actively being worked on | When you start working |
 | `waiting_on_jamie` | Needs Jamie's input | When you need approval/decision/review |
-| `waiting_on_agent` | Depends on another agent | When blocked by another agent's task |
+| `waiting_on_agent` | Depends on work owned elsewhere | When blocked by another session's task |
 | `waiting_external` | Depends on outside service | Blocked by external API, vendor, etc. |
 | `blocked` | Cannot proceed, unclear how | Stuck with no clear path forward |
 | `done` | Completed with proof | Finished — must include concrete output |
-| `archived` | Sprint over, moved to archive | Set by Merlin at end of sprint |
+| `archived` | Sprint over, moved to archive | Set at end of sprint |
 
 **Rollout (Days 1-5):**
 - Day 1-2: Start using `waiting_on_jamie` immediately (highest value)
-- Day 3: Add `ready` and `inbox` (Merlin begins triaging)
+- Day 3: Add `ready` and `inbox` (triage begins)
 - Day 5: Full 9-status model active
 
 ---
@@ -116,10 +124,10 @@ Check `~/shared/mission-control/06-HITL.md` → anything resolved that unblocks 
 ### 2. Update status when you start work
 
 - Change status to `in_progress` in 03-SPRINT.md
-- Git commit: `@YourName: T-XXX in_progress`
+- Git commit: `@session: T-XXX in_progress`
 - Log event:
   ```bash
-  ~/shared/scripts/log-event.sh "YourName" "task" "T-XXX" "status_change" "ready" "in_progress" "Starting work" "P-X"
+  ~/shared/scripts/log-event.sh "session" "task" "T-XXX" "status_change" "ready" "in_progress" "Starting work" "P-X"
   ```
 
 ### 3. Handle blockers immediately
@@ -128,14 +136,14 @@ Check `~/shared/mission-control/06-HITL.md` → anything resolved that unblocks 
 - Change status to `waiting_on_jamie` in sprint
 - Add entry to 06-HITL.md:
 
-| Priority | T-ID | What's needed | Type | Requesting agent | Project | Waiting since | Blocks |
+| Priority | T-ID | What's needed | Type | Requesting session | Project | Waiting since | Blocks |
 |----------|------|---------------|------|------------------|---------|---------------|--------|
-| P1 | T-XXX | Specific ask | review_and_edit | YourName | P-X | today's date | T-YYY |
+| P1 | T-XXX | Specific ask | review_and_edit | session | P-X | today's date | T-YYY |
 
 - Types: `quick_yes_no` | `review_and_edit` | `decision` | `approve_with_conditions`
 - Git commit + event log
 
-**If blocked on another agent:**
+**If blocked on work another session owns:**
 - Change status to `waiting_on_agent`
 - Set `Blocked by` to the T-id of the blocking task
 - Git commit + event log
@@ -143,7 +151,7 @@ Check `~/shared/mission-control/06-HITL.md` → anything resolved that unblocks 
 ### 4. Log completion with proof
 
 - Change status to `done` in sprint
-- Git commit: `@YourName: T-XXX done — output: [concrete description]`
+- Git commit: `@session: T-XXX done — output: [concrete description]`
 - Event log with output
 - Memory log: `- Completed: (T-XXX) [concrete output with counts]`
 
@@ -154,7 +162,7 @@ Check `~/shared/mission-control/06-HITL.md` → anything resolved that unblocks 
 
 - Update all task statuses (commit + event log)
 - Write memory log with T-id references
-- Final commit: `@YourName: Session end — X tasks progressed, Y completed`
+- Final commit: `@session: Session end — X tasks progressed, Y completed`
 
 ---
 
@@ -168,7 +176,7 @@ Check `~/shared/mission-control/06-HITL.md` → anything resolved that unblocks 
 3. Git commit: `@YourName: T-XXX created — description`
 4. Event log: action=created
 
-If urgent: tell Merlin to assess for sprint inclusion.
+If urgent: raise it with Jamie for sprint inclusion.
 
 ---
 
@@ -198,11 +206,20 @@ T-id references are mandatory. Without them, metrics cannot count your output.
 
 Examples:
 ```
-@Ace: T-005 in_progress — starting domain housekeeping
-@Ace: T-005 done — 3 DNS records updated, SSL verified
-@Merlin: Triaged 4 inbox items in backlog
-@Merlin: Weekly review 2026-03-23 complete
-@Agent-11: T-002 waiting_on_jamie — homepage copy ready for review
+@vault: T-005 in_progress — starting domain housekeeping
+@vault: T-005 done — 3 DNS records updated, SSL verified
+@vault: Triaged 4 inbox items in backlog
+@vault: Weekly review 2026-03-23 complete
+@jamiewatters: T-002 waiting_on_jamie — homepage copy ready for review
+```
+
+Inside a repo, use that repo's own convention instead. The live repos use
+Conventional Commits with the T-id or issue ID in the body, not this `@name`
+form, and the machine-readable status lives in Mission Control via
+`repo-done.py`, not in the commit subject:
+
+```
+fix(website): replace the last 16 explicit `any` types (JW-ISS-21)
 ```
 
 ---
@@ -210,21 +227,21 @@ Examples:
 ## Event log
 
 ```bash
-~/shared/scripts/log-event.sh "AgentName" "entity" "id" "action" "from" "to" "reason" "project"
+~/shared/scripts/log-event.sh "SessionName" "entity" "id" "action" "from" "to" "reason" "project"
 ```
 
 Examples:
 ```bash
-~/shared/scripts/log-event.sh "Ace" "task" "T-005" "status_change" "ready" "in_progress" "Starting domain work" "P-2"
-~/shared/scripts/log-event.sh "Ace" "task" "T-005" "status_change" "in_progress" "done" "3 DNS records updated" "P-2"
+~/shared/scripts/log-event.sh "vault" "task" "T-005" "status_change" "ready" "in_progress" "Starting domain work" "P-2"
+~/shared/scripts/log-event.sh "vault" "task" "T-005" "status_change" "in_progress" "done" "3 DNS records updated" "P-2"
 ```
 
 ---
 
 ## Decision-rights matrix
 
-| Decision | Jamie | Merlin | Execution agents |
-|----------|-------|--------|------------------|
+| Decision | Jamie | Vault session | Repo session |
+|----------|-------|---------------|--------------|
 | Strategic priorities | Decides | Recommends | -- |
 | Create projects | Approves | Proposes | Proposes |
 | Kill/park a product | Decides | Recommends + flags | -- |
@@ -233,75 +250,75 @@ Examples:
 | Task priority (P1-P2) | -- | Decides | Own tasks |
 | Triage inbox | -- | Decides | -- |
 | Enforce WIP limits | -- | Enforces | -- |
-| Approve agent outputs | Decides | -- | -- |
-| System/infra changes | Approves | Executes (Mini) | -- |
+| Approve session output | Decides | -- | -- |
+| System/infra changes | Approves | Proposes | Executes in its own repo |
+| Edit a quality gate | Only Jamie | Blocked | Blocked |
 
 ---
 
-## Agent-specific duties
+## Who does what
 
-### Merlin (Mac Mini) — COO + System Builder + Auditor + Weekly Reviews
-- **Own the sync pipeline:** sync script, pulse generation, crons on Mini
-- **Daily triage:** assign owners/priorities to inbox backlog items
-- **Stale detection:** flag tasks in_progress >3 days with no update
-- **WIP enforcement:** max 7 Jamie, 5 per agent, 8 projects
-- **Strategic alignment:** every task should link to a project/KR
-- **Weekly review:** update 00-DIRECTION, 01-PORTFOLIO, 07-METRICS, 08-LEARNING _(from Marvin)_
-- **Kill date alerts:** notification 7 days before kill date _(from Marvin)_
-- **P0 HITL alerts:** notification when P0 items added _(from Marvin)_
+There are three actors, not a roster of named agents. Which one you are depends
+on where the session was started, not on an identity you carry between sessions.
 
-### Open gaps left by decommissioning Marvin
+### Vault session — Claude Code in `~/shared`
+The second brain and Mission Control itself.
+- **Triage:** assign owners and priorities to inbox backlog items
+- **Stale detection:** flag tasks `in_progress` more than 3 days with no update
+- **WIP enforcement:** max 7 for Jamie, 8 projects
+- **Strategic alignment:** every task should link to a project or KR
+- **Weekly review with Jamie:** update 00-DIRECTION, 01-PORTFOLIO, 07-METRICS, 08-LEARNING
+- **Kill date and P0 flags:** surface them in the daily plan, since nothing pushes notifications now
+- **Capture and reconcile:** `mc-task.py`, `mc-issue.py`, `mc-done.py`, `repo-reconcile.py`
+- Hands repo changes to a repo session rather than editing a live repo from here
 
-These two were Marvin's and are deliberately not reassigned to Merlin, because
+### Repo session — Claude Code inside a repo
+- Technical build work in that repo, and only that repo
+- Dashboard work for jamiewatters.work/admin
+- Content: blog posts, product pages, help docs, email copy, via the `jamie-voice`
+  and `jamie-content` skills; publish with `jpub`, which also posts to X and
+  LinkedIn, so there is no separate posting step or posting agent
+- **Capture at source:** `repo-issue.py` to raise, `repo-done.py` to close, never
+  a hand-written status cell
+- Raise anything cross-cutting to Mission Control rather than minting local IDs
+
+### Mini automation — cron on the Mac Mini
+No judgement, only scheduled scripts.
+- `new-day.sh` (06:00 ET) — pre-creates the day's skeleton with the deadline radar
+- `eod-nudge.sh` (20:00 ET) — pushes Jamie's phone if the reflection is still empty
+- `mc-shipped.py` — computes the real day rather than what anyone remembers
+- Sync script and pulse generation
+- `readwise-pull.py` (06:30 ET)
+
+### Jamie
+Decides, approves, and does anything that must be a deliberate human action,
+including editing quality gates, which agents are blocked from touching.
+
+### Open gaps
+
+These were Marvin's, and are deliberately not reassigned to the Mini, because
 both were watching the Mini from outside it. A watcher running on the box it
 watches reports nothing when that box is the thing that failed.
 
-- **Sync health:** alert if the Mini's sync goes stale (was: >30 min). Currently
-  unowned. Needs an off-box checker, not a Mini cron.
-- **Product uptime:** HTTP checks on the five sites. Currently unowned, and this
-  is the same gap as JW-ISS-17 in the JamieWatters repo, which proposes a free
-  UptimeRobot check on the apex with phone alerts. Close it there, not here.
-
-### Ace (Mac Mini) — Marketing + Growth
-- Own AI Search product tasks (LTM, AIS, AIM, ASA)
-- Execute marketing and growth work
-- Update statuses with T-ids and event log entries
-
-### Scribe (Mac Mini) — Content Creation + AI Search Optimization
-- **Framework:** OpenClaw | **Agent ID:** `scribe`
-- **Properties:** aisearchmastery.com, aimpactscanner.com, aimpactmonitor.com, llmtxtmastery.com, aisearchareana.com
-- Create blog posts, product pages, help docs, email copy optimised for AI search citations
-- Generate LinkedIn and X/Twitter drafts for Jamie's review (HITL type: `review_and_edit`)
-- Write comment responses across platforms (receives forwarded comments from Echo)
-- Workspace: `~/shared/mission-control/` + `~/.openclaw/workspace-content`
-- **Companion agent:** Echo — Scribe creates content, Echo handles scheduling and posting
-- Update statuses with T-ids and event log entries
-
-### Echo (Mac Mini) — Social Media Scheduling + Posting
-- **Companion to Scribe** — receives approved content from Scribe for distribution
-- Schedule and post to LinkedIn, X/Twitter, and other platforms
-- Forward user comments to Scribe for response drafting
-- Post approval requests to 06-HITL.md (type: `quick_yes_no`)
-- Log engagement metrics in memory
-- Update pulse with social activity notes
-
-### Agent-11 (MacBook) — Development + Dashboard + Goals
-- Technical build tasks across all dev repos (AImpactMonitor, LLMTxtMastery, IsoTracker, Evolve-7, AISearchArena, AISearchMastery, SoloMarket, FreeCalcHub, AImpactScanner, BOS-AI, etc.)
-- Dashboard development for jamiewatters.work/admin (Mission Control V2)
-- Goals management: support Jamie during quarterly goal setting/review via /admin/goals
-- Update statuses with T-ids
-- Deployed on Jamie's MacBook via Claude Code — one instance across all repos
+- **Sync health:** alert if the Mini's sync goes stale (was: >30 min). Unowned.
+  Needs an off-box checker, not a Mini cron. Raised as ISS-51.
+- **Product uptime:** HTTP checks on the five sites. Unowned. Same gap as
+  JW-ISS-17 in the JamieWatters repo, which proposes an external UptimeRobot
+  check with phone alerts. Close it there, not here.
+- **Push notifications generally:** kill-date and P0 alerts used to arrive by
+  Telegram from EC2. Nothing pushes them now except `eod-nudge.sh`, so they
+  depend on someone reading the daily plan.
 
 ---
 
-## Changes to agent files
+## Changes to session context files
 
 ### Add to SOUL.md or AGENTS.md
 
 ```markdown
 ## Mission Control integration
 
-I operate within Mission Control at ~/shared/mission-control/.
+This session operates within Mission Control at ~/shared/mission-control/.
 
 At session start:
 1. Check 03-SPRINT.md for my assigned tasks
@@ -362,13 +379,17 @@ WIP limits: 7 Jamie, 5 per agent, 8 active projects
 
 ---
 
-## Transition timeline
+## Transition timeline (historical, March 2026)
 
-**Day 1-2:** Merlin builds file structure on Mini. Old plan/ files work via symlinks. Start using T-ids in memory logs immediately.
+_Kept for the record. This rollout was carried out by the agent roster that has
+since been decommissioned. The file structure and the nine-status model it
+describes are still live._
 
-**Day 3:** Send this SOP to all agents. Start using 06-HITL.md for items waiting on Jamie. Start using `waiting_on_jamie` status. Overnight.md usage stops.
+**Day 1-2:** Build the file structure on the Mini. Old plan/ files work via symlinks. Start using T-ids in memory logs immediately.
 
-**Day 5:** Full 9-status model. Merlin begins daily triage. All agents following this SOP.
+**Day 3:** Circulate this SOP. Start using 06-HITL.md for items waiting on Jamie. Start using `waiting_on_jamie` status. Overnight.md usage stops.
+
+**Day 5:** Full 9-status model. Daily triage begins. Everything following this SOP.
 
 **Day 14:** Old plan/ symlinks retired. Overnight.md deleted. System fully operational.
 
@@ -376,18 +397,18 @@ WIP limits: 7 Jamie, 5 per agent, 8 active projects
 
 ## Quarterly goals cadence
 
-Every quarter has a review/setting cycle. This is Jamie's responsibility with Agent-11 support.
+Every quarter has a review/setting cycle. This is Jamie's responsibility, supported by a Claude session.
 
 | When | What | Who | Dashboard |
 |------|------|-----|-----------|
-| Last week of quarter | Review outgoing quarter's KRs | Jamie + Agent-11 | /admin/goals → Review |
-| Last week of quarter | Review yearly objectives, adjust if needed | Jamie + Agent-11 | /admin/goals → Review |
-| Last week of quarter | Set incoming quarter's KRs, link to yearly objectives | Jamie + Agent-11 | /admin/goals → + Quarterly KR |
-| Last week of Q4 | Set next year's yearly objectives + review BHAG | Jamie + Agent-11 | /admin/goals → + Yearly Objective |
+| Last week of quarter | Review outgoing quarter's KRs | Jamie + Claude session | /admin/goals → Review |
+| Last week of quarter | Review yearly objectives, adjust if needed | Jamie + Claude session | /admin/goals → Review |
+| Last week of quarter | Set incoming quarter's KRs, link to yearly objectives | Jamie + Claude session | /admin/goals → + Quarterly KR |
+| Last week of Q4 | Set next year's yearly objectives + review BHAG | Jamie + Claude session | /admin/goals → + Yearly Objective |
 
-**Merlin's role:** After Jamie sets goals, Merlin updates 00-DIRECTION.md to match and incorporates into weekly reviews. Merlin should flag if KRs don't connect to yearly objectives or if yearly objectives drift from the BHAG.
+**The vault session's role:** After Jamie sets goals, update 00-DIRECTION.md to match and carry them into the weekly review. Flag it if KRs don't connect to yearly objectives, or if yearly objectives drift from the BHAG.
 
-**All agents:** At sprint planning, check that sprint tasks connect to the current quarter's KRs. If a task doesn't serve any KR, question its priority.
+**Every session:** At sprint planning, check that sprint tasks connect to the current quarter's KRs. If a task doesn't serve any KR, question its priority.
 
 ---
 
