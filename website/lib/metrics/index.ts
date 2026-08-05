@@ -27,6 +27,8 @@ export type {
 
 export {
   getMetricsForProject,
+  getCustomMetricValues,
+  humaniseMetricKey,
   formatMetricValue,
   getTopMetrics,
   getTrendInfo,

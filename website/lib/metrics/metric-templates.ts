@@ -32,7 +32,14 @@ export interface MetricDefinition {
   key: string;
   label: string;
   format: MetricFormat;
-  icon: LucideIcon;
+  /**
+   * Optional because a project's `customMetrics` can carry a key that no
+   * template defines. That column stores plain numbers, so it cannot supply an
+   * icon component, and there is nothing to fall back to. Consumers render it
+   * conditionally, as `app/portfolio/[slug]/page.tsx` already does. Every
+   * template metric below does define one. (JW-ISS-22)
+   */
+  icon?: LucideIcon;
   description?: string;
 }
 
@@ -46,7 +53,14 @@ export interface MetricValue {
 export interface ProjectMetrics {
   projectType: ProjectType;
   metrics: MetricDefinition[];
-  customMetrics?: Record<string, MetricDefinition>;
+  /**
+   * Metric VALUES keyed by metric key, matching the `customMetrics Json?`
+   * column and `createProjectSchema`, which validates it as
+   * `Record<string, number>`. This previously said
+   * `Record<string, MetricDefinition>`, which described a shape nothing has
+   * ever written. (JW-ISS-23)
+   */
+  customMetrics?: Record<string, number>;
 }
 
 /**
