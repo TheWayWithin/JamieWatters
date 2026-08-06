@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { ProjectCard } from '@/components/portfolio/ProjectCard';
 import { PostCard } from '@/components/blog/PostCard';
+import { VideoCard } from '@/components/videos/VideoCard';
+import { getLatestVideos } from '@/lib/videos';
 import { Button } from '@/components/ui/Button';
 import { NewsletterSignup } from '@/components/newsletter/NewsletterSignup';
 import { getFeaturedProjects, getRecentPosts } from '@/lib/database';
@@ -57,6 +59,10 @@ export const metadata = {
 export default async function Home() {
   const featuredProjects = await getFeaturedProjects();
   const recentPosts = await getRecentPosts(3);
+  // The page revalidates every 60s (above), but this fetch carries its own
+  // 1-hour cache inside lib/videos.ts so a busy homepage does not hammer
+  // YouTube's feed. Uploads are nowhere near hourly.
+  const latestVideos = await getLatestVideos(3);
 
   const personSchema = getPersonSchema();
   // dateModified = the newest post's publish date: the honest "content last changed" signal
@@ -264,6 +270,40 @@ export default async function Home() {
             </div>
           </div>
         </section>
+
+        {/* On camera — the whole section is omitted when the channel is empty,
+            so an empty strip never sits on the homepage looking broken. */}
+        {latestVideos.length > 0 && (
+          <section className="py-16 lg:py-24 px-6 bg-bg-primary">
+            <div className="max-w-7xl mx-auto">
+              <div className="flex items-end justify-between mb-12">
+                <div>
+                  <h2 className="text-display-lg font-bold text-text-primary mb-4">
+                    On camera
+                  </h2>
+                  <p className="text-body-base text-text-secondary max-w-2xl">
+                    The same builds, shown rather than written up. Watch what actually happened.
+                  </p>
+                </div>
+                <Button asChild variant="ghost" className="hidden sm:inline-flex">
+                  <Link href="/videos">All videos →</Link>
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {latestVideos.map((video) => (
+                  <VideoCard key={video.videoId} video={video} />
+                ))}
+              </div>
+
+              <div className="text-center mt-8 sm:hidden">
+                <Button asChild variant="ghost">
+                  <Link href="/videos">All videos →</Link>
+                </Button>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Featured projects */}
         <section className="py-16 lg:py-24 px-6 bg-bg-primary">

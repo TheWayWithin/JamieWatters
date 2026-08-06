@@ -33,6 +33,7 @@ export default function Header() {
     { href: '/portfolio', label: 'Portfolio' },
     { href: '/dashboard', label: 'Proof' },
     { href: '/journey', label: 'The Journey' },
+    { href: '/videos', label: 'Videos' },
     { href: '/about', label: 'About' },
   ];
 

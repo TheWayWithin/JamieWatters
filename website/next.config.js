@@ -21,6 +21,16 @@ const nextConfig = {
         hostname: 'pub-4f2aa5e351b44f67ba6dd0bc32fe1bb2.r2.dev',
         pathname: '/**',
       },
+      {
+        // YouTube video thumbnails (T-395). Hotlinked from YouTube's own CDN and
+        // deliberately NOT mirrored to R2: YouTube regenerates a thumbnail when
+        // Jamie changes one, and a mirrored copy would silently go stale. The
+        // feed hands us i2.ytimg.com URLs; i.ytimg.com and the other numbered
+        // hosts serve the same objects, so the wildcard covers them all.
+        protocol: 'https',
+        hostname: '**.ytimg.com',
+        pathname: '/**',
+      },
     ],
   },
   async redirects() {
