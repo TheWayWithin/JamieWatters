@@ -34,17 +34,18 @@ import { readFileSync, existsSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
-const FEED_URL = 'https://jamiewatters.work/rss.xml';
+// The channel id, the Atom parser and the zero-is-suspicious guard are SHARED
+// with the website (T-395), which renders the same videos on /videos and the
+// homepage. One parser, one channel id, one definition of a broken feed —
+// keeping a second copy here is how the two would drift and break differently.
+import {
+  YT_FEED_URL,
+  parseAtomFeed,
+  assertParsed,
+  FeedParseError,
+} from '../../website/lib/youtube-feed.mjs';
 
-// YouTube's per-channel Atom feed. It needs the channel_id, not the @handle:
-// UCHSxwrlJi13UOUm_WKVlhCg was read on 2026-08-06 from the <link rel="canonical">
-// of https://www.youtube.com/@jamiewatterswork (the handle in FOOTER below), and
-// confirmed against the channel page's own rel="alternate" RSS link. Hardcoded
-// deliberately — resolving the handle at run time would add a scrape of a page
-// YouTube reshapes often, and the Data API would add a credential to rotate for
-// information that never changes.
-const YT_CHANNEL_ID = 'UCHSxwrlJi13UOUm_WKVlhCg';
-const YT_FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${YT_CHANNEL_ID}`;
+const FEED_URL = 'https://jamiewatters.work/rss.xml';
 
 const API_BASE = 'https://api.buttondown.com/v1';
 const WINDOW_DAYS = 7;
@@ -101,62 +102,6 @@ function parseFeed(xml) {
     });
   }
   return items;
-}
-
-/**
- * Parse the YouTube channel feed. This is a SEPARATE parser on purpose:
- * YouTube publishes Atom, not RSS. Different container (<entry>, not <item>),
- * different date tag (<published>, not <pubDate>), and the link is an
- * attribute on <link rel="alternate">, not element text. Point parseFeed()
- * above at this XML and it matches nothing and returns [] — which is
- * indistinguishable from "no videos this week" and would pass a green test
- * run while silently never sending a video again. Hence assertParsed() below:
- * a zero is only trusted when the raw XML genuinely has no entries.
- */
-function parseAtomFeed(xml) {
-  const videos = [];
-  // Attribute-tolerant on the container: this feed is YouTube's to reshape,
-  // not ours, and an <entry> that grows an xmlns must not silently match zero.
-  const entryRe = /<entry(?:\s[^>]*)?>([\s\S]*?)<\/entry>/g;
-  let m;
-  while ((m = entryRe.exec(xml)) !== null) {
-    const block = m[1];
-    const tag = (name) => {
-      const t = block.match(new RegExp(`<${name}>([\\s\\S]*?)</${name}>`));
-      return t ? unescapeXml(t[1].trim()) : '';
-    };
-    const linkM = block.match(/<link[^>]*rel="alternate"[^>]*href="([^"]+)"/);
-    const thumbM = block.match(/<media:thumbnail[^>]*url="([^"]+)"/);
-    const videoId = tag('yt:videoId');
-    videos.push({
-      videoId,
-      title: tag('title'),
-      link: linkM ? unescapeXml(linkM[1]) : `https://www.youtube.com/watch?v=${videoId}`,
-      pubDate: new Date(tag('published')),
-      // hqdefault is the 480x360 thumbnail YouTube always generates; the feed
-      // gives it to us directly, so no guessing at the filename.
-      thumbnail: thumbM ? unescapeXml(thumbM[1]) : '',
-    });
-  }
-  return videos;
-}
-
-/**
- * Guard against a parser that has quietly stopped matching. If the raw feed
- * contains the container element but we extracted nothing from it, that is a
- * broken parser, not a quiet week — and the two look identical downstream.
- * Fail loudly instead of sending an email that is missing half its content.
- */
-function assertParsed(kind, xml, parsed, container) {
-  const raw = (xml.match(new RegExp(`<${container}[\\s>]`, 'g')) || []).length;
-  if (raw > 0 && parsed.length === 0) {
-    console.error(
-      `${kind} parser matched 0 of ${raw} <${container}> elements in the feed. ` +
-        `That is a parser fault, not a quiet week — refusing to compose.`
-    );
-    process.exit(1);
-  }
-  return parsed;
 }
 
 /**
@@ -298,12 +243,22 @@ async function main() {
     console.error(`Blog feed fetch failed: ${e.message}`);
     process.exit(1);
   }
-  const allPosts = assertParsed('RSS', blogXml, parseFeed(blogXml), 'item');
+  let allPosts;
+  try {
+    allPosts = assertParsed('RSS', blogXml, parseFeed(blogXml), 'item');
+  } catch (e) {
+    console.error(e.message);
+    process.exit(1);
+  }
   const week = thisWeek(allPosts);
 
-  // A YouTube outage should not silence a week that has a blog post in it, so
-  // this failure is survivable where the blog feed's is not. It is still shouted
-  // about: a swallowed video fetch is exactly how this feature would rot.
+  // A YouTube OUTAGE should not silence a week that has a blog post in it, so
+  // that failure is survivable where the blog feed's is not. A PARSER FAULT is
+  // not survivable and must not be swallowed here: assertParsed throws now that
+  // it is shared with the website (it cannot call process.exit inside a web
+  // server), so without this re-raise the catch below would quietly downgrade
+  // "the parser is broken" to "no videos this week" — the exact silent-zero
+  // this guard exists to prevent.
   let videos = [];
   try {
     const ytXml = await loadFeed(YT_FEED_URL, process.env.FIELD_REPORT_YT_FEED);
@@ -311,6 +266,10 @@ async function main() {
     console.log(`YouTube entries: ${allVideos.length}`);
     videos = thisWeek(allVideos);
   } catch (e) {
+    if (e instanceof FeedParseError) {
+      console.error(e.message);
+      process.exit(1);
+    }
     console.error(`WARNING: YouTube feed unavailable (${e.message}) — composing without videos.`);
   }
 
