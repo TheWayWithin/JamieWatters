@@ -188,6 +188,27 @@ If you're generating a draft, test each sentence against these:
 4. Is there a more specific word than the one I've used? "Said" beats "articulated." "Fixed" beats "remediated." "Broke" beats "experienced a degradation in functionality."
 5. Am I showing or telling? "I had to physically sprint to my Mac Mini to stop it deleting my inbox" shows the problem. "There were significant usability issues" tells it badly.
 
+### Contractions: contract by default, expand for the hard beat
+
+Written 2026-08-06 after a full draft came back stiff.
+
+**Use contractions.** It's, that's, isn't, don't, can't, I've, I'm, wouldn't. This guide is written
+in them and so is Jamie's speech. Prose without contractions reads formal, distant and *written*,
+which is exactly the machine-made register the whole blacklist exists to avoid. Contractions don't
+soften the writing, they take the starch out of it.
+
+**Then break the pattern on purpose.** Keep the full form for the two or three sentences carrying
+the most weight, and they land harder because everything around them is contracted. "I cannot prove
+any of that" hits where "I can't" would not. Reserve it; used everywhere it stops working.
+
+**NEVER apply this with a blanket find-and-replace.** On 2026-08-06 a bulk pass turned "makes you
+read four times as much to find it is not obviously better than a duller one" into "to find it's
+not obviously better", which reversed the meaning of the sentence. The failure mode is specific:
+`it is` inside a clause like *to find it is not X* is not the contractible `it is` of *it is a tax*.
+Same two words, different grammar. Change contractions by reading the sentence, or read every
+changed line afterwards. A find-and-replace that produces valid English is not a find-and-replace
+that produced the sentence you meant.
+
 ---
 
 ## Part 5: Content-type variations
