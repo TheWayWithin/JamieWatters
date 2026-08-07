@@ -43,6 +43,8 @@ import {
   parseAtomFeed,
   assertParsed,
   FeedParseError,
+  isVideoPostLink,
+  videoIdFromSlug,
 } from '../../website/lib/youtube-feed.mjs';
 
 const FEED_URL = 'https://jamiewatters.work/rss.xml';
@@ -250,7 +252,7 @@ async function main() {
     console.error(e.message);
     process.exit(1);
   }
-  const week = thisWeek(allPosts);
+  const allWeekPosts = thisWeek(allPosts);
 
   // A YouTube OUTAGE should not silence a week that has a blog post in it, so
   // that failure is survivable where the blog feed's is not. A PARSER FAULT is
@@ -271,6 +273,37 @@ async function main() {
       process.exit(1);
     }
     console.error(`WARNING: YouTube feed unavailable (${e.message}) — composing without videos.`);
+  }
+
+  // DEDUPE (T-401), and this is the load-bearing bit of the whole task. Since
+  // videos became /journey entries they also appear in /rss.xml, and this
+  // script reads BOTH that and the YouTube feed, so without this filter every
+  // video would be announced twice in one email: once as a post card, once as
+  // a video card.
+  //
+  // The POST copy is dropped, never the video copy. The video card carries the
+  // thumbnail and links straight to YouTube, which is where subscriptions and
+  // watch time happen; dropping the video instead would have sent readers to a
+  // /journey page whose only job is to send them on to YouTube anyway.
+  //
+  // Crucially this drops a post ONLY when a video with the same id is actually
+  // in the block covering it. The obvious implementation — filter out anything
+  // whose slug looks like a video — silently loses the video altogether on the
+  // one week YouTube is unreachable, because `videos` is empty then and the
+  // post was the only remaining mention. Here an outage falls back to the post
+  // card, which is worse-looking but still tells the truth.
+  //
+  // Matching is on id via slug shape, never on titles: renaming a video on
+  // YouTube must not resurrect the double-count.
+  const coveredIds = new Set(videos.map((v) => v.videoId));
+  const week = allWeekPosts.filter((p) => {
+    if (!isVideoPostLink(p.link)) return true;
+    const id = videoIdFromSlug((p.link.replace(/\/$/, '').split('/').pop()) || '');
+    return !(id && coveredIds.has(id));
+  });
+  const dropped = allWeekPosts.length - week.length;
+  if (dropped > 0) {
+    console.log(`Deduped ${dropped} video post(s): the video block already covers them.`);
   }
 
   console.log(

@@ -63,17 +63,43 @@ export function normalizeTopics(values: readonly string[]): Topic[] {
   return [...seen];
 }
 
-/** The two editorial types. Exactly one per post. */
-export const EDITORIAL_TYPES = ['essay', 'build-log'] as const;
+/**
+ * The editorial types. Exactly one per post.
+ *
+ * 'video' joined the two written types on 2026-08-06 (T-401), when published
+ * YouTube videos became first-class entries in the feed. It is a real member of
+ * the vocabulary rather than a special case: FeedFilterBar renders a chip per
+ * entry here, so a "Video" filter appears on /journey for free, and PostCard
+ * reads the same list for its badge. A video is a different KIND of field
+ * report, not a different topic, which is why it belongs on this axis.
+ */
+export const EDITORIAL_TYPES = ['essay', 'build-log', 'video'] as const;
 export type EditorialType = (typeof EDITORIAL_TYPES)[number];
 
 export const EDITORIAL_TYPE_LABELS: Record<EditorialType, string> = {
   essay: 'Essay',
   'build-log': 'Build Log',
+  video: 'Video',
 };
 
 /** Default type for anything published without an explicit choice (jpub, backfill). */
 export const DEFAULT_EDITORIAL_TYPE: EditorialType = 'build-log';
+
+/**
+ * The types a human may choose in the admin form.
+ *
+ * 'video' is excluded because it is MACHINE-SET, by
+ * scripts/videos/publish-videos.mjs, and it is only coherent alongside a
+ * `video-<id>` slug. Offering it in a free dropdown let any written post be
+ * labelled Video, which produced a genuinely contradictory row: the card showed
+ * a Video badge (driven by editorialType) while still saying "Read More" and
+ * linking to /journey (driven by the slug, which had no video id in it), and
+ * the post then polluted the Video filter on /journey. Narrowing the choice
+ * fixes that at the source rather than papering over it in the components.
+ */
+export const AUTHORABLE_EDITORIAL_TYPES = EDITORIAL_TYPES.filter(
+  (t) => t !== 'video'
+) as readonly EditorialType[];
 
 const EDITORIAL_TYPE_SET = new Set<string>(EDITORIAL_TYPES);
 

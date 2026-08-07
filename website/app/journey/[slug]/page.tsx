@@ -10,6 +10,7 @@ import { ShareButtons } from '@/components/blog/ShareButtons';
 import { NewsletterSignup } from '@/components/newsletter/NewsletterSignup';
 import { getSEOMetadata, buildMetaDescription, SITE_URL } from '@/lib/seo';
 import { AuthorBio } from '@/components/AuthorBio';
+import { videoIdFromSlug, watchUrl } from '@/lib/youtube-feed.mjs';
 import {
   getBlogPostSchema,
   getBreadcrumbSchema,
@@ -129,6 +130,11 @@ For now, this shows that the database integration is working correctly for post 
   // Use post.content if available, otherwise fall back to placeholder
   const contentToRender = post.content || placeholderContent;
 
+  // A video entry (T-401). Both conditions are required: editorialType alone is
+  // hand-editable in the admin form, and a row mislabelled there must not make
+  // this page claim to be something it cannot link to.
+  const videoId = post.editorialType === 'video' ? videoIdFromSlug(post.slug) : null;
+
   // Render markdown content to HTML
   const contentHtml = await renderMarkdown(contentToRender);
 
@@ -158,11 +164,26 @@ For now, this shows that the database integration is working correctly for post 
           {post.title}
         </h1>
 
-        {/* Metadata */}
+        {/* Metadata. A video has no reading time and readTime is stored as 0,
+            so "0 min read" would be actively wrong here (T-401). This page is
+            the canonical URL an RSS subscriber lands on, and it is where the
+            newsletter falls back to linking on a week YouTube is unreachable,
+            so it gets the watch link rather than a reading time. */}
         <div className="flex flex-wrap items-center gap-3 text-caption text-text-tertiary mb-6">
           <span>Published: {formattedDate}</span>
           <span>•</span>
-          <span>{post.readTime} min read</span>
+          {videoId ? (
+            <a
+              href={watchUrl(videoId)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-brand-primary hover:text-brand-primary-hover font-semibold"
+            >
+              Watch on YouTube →<span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          ) : (
+            <span>{post.readTime} min read</span>
+          )}
         </div>
 
         {/* Tags */}

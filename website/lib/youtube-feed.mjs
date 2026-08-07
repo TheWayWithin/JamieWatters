@@ -115,6 +115,61 @@ export function assertParsed(kind, xml, parsed, container) {
 }
 
 /**
+ * The slug a video's /journey entry gets: `video-<videoId>` (T-401).
+ *
+ * Derived from the video ID rather than the title, on purpose. The title is
+ * Jamie's to change on YouTube whenever he likes, and a title-derived slug
+ * would either break the permanent URL or silently fork into a second entry on
+ * the next publish run. The ID never changes, so re-running the publisher after
+ * a rename updates the existing row instead of creating a duplicate.
+ *
+ * It also makes a video entry recognisable ANYWHERE the slug travels, including
+ * the RSS feed, which is what stops the newsletter double-counting: /rss.xml
+ * only carries title, link, pubDate and description, so the slug in the link is
+ * the one durable marker available to a consumer that never touches the
+ * database. Change this shape and isVideoPostLink below must change with it.
+ */
+export function videoSlug(videoId) {
+  return `video-${videoId}`;
+}
+
+/**
+ * A YouTube video id: exactly 11 characters of [A-Za-z0-9_-].
+ *
+ * Matching the real shape rather than "anything after video-" matters, because
+ * a written post could legitimately slugify to something with that prefix. A
+ * post titled "Video Games And Why They Teach Focus" becomes
+ * `video-games-and-why-they-teach-focus`, and a loose pattern would read that
+ * as a video with the id "games-and-why-they-teach-focus". Nothing downstream
+ * would have matched it against a real video, so it was inert, but the dedupe's
+ * correctness should not rest on a coincidence.
+ */
+const VIDEO_ID = /^[A-Za-z0-9_-]{11}$/;
+
+/** Recover the YouTube video ID from a slug this module produced, else null. */
+export function videoIdFromSlug(slug) {
+  const m = /^video-(.+)$/.exec(slug || '');
+  return m && VIDEO_ID.test(m[1]) ? m[1] : null;
+}
+
+/** The canonical watch URL for a video ID. */
+export function watchUrl(videoId) {
+  return `https://www.youtube.com/watch?v=${videoId}`;
+}
+
+/**
+ * True if an RSS <link> points at a video's /journey entry.
+ *
+ * This is the newsletter's dedupe predicate. It is intentionally structural
+ * (a slug shape) rather than heuristic (matching titles), because Jamie editing
+ * a YouTube title must not resurrect the double-count.
+ */
+export function isVideoPostLink(link) {
+  const m = /\/journey\/(video-[^/]+)\/?$/.exec(link || '');
+  return Boolean(m && videoIdFromSlug(m[1]));
+}
+
+/**
  * Fetch and parse the channel feed.
  * @param {{fetchOptions?: RequestInit, feedUrl?: string}} [opts]
  * @returns {Promise<Video[]>}

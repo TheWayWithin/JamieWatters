@@ -10,7 +10,7 @@ import { calculateReadTime } from '@/lib/read-time-calculator';
 import {
   TOPICS,
   TOPIC_LABELS,
-  EDITORIAL_TYPES,
+  AUTHORABLE_EDITORIAL_TYPES,
   EDITORIAL_TYPE_LABELS,
   DEFAULT_EDITORIAL_TYPE,
 } from '@/lib/taxonomy';
@@ -328,7 +328,7 @@ export function PostForm({ mode, postId, initialData, projects = [] }: PostFormP
           onChange={(e) => updateField('editorialType', e.target.value)}
           className="w-full bg-bg-primary border border-border-default rounded-md px-4 py-3 text-body text-text-primary"
         >
-          {EDITORIAL_TYPES.map((t) => (
+          {AUTHORABLE_EDITORIAL_TYPES.map((t) => (
             <option key={t} value={t}>
               {EDITORIAL_TYPE_LABELS[t]}
             </option>
