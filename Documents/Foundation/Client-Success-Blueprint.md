@@ -6,6 +6,16 @@
 **Source alignment:** Vision & Mission v4.2; Market & Client Research (19 June 2026); Positioning Statement v2.0
 **Purpose:** Understanding who we serve and how to genuinely help them succeed
 
+> ⚠️ **Aligned to V&M v4.2. Current V&M is v4.5 (8 Aug 2026). Flagged, not rewritten.** Two things
+> in here are stale. **One is factual:** "How to Demonstrate Value" reasons from *"a solo operator
+> with a full-time job"* sustaining cadence — there is no full-time job, the HSBC role ended
+> 24 July 2026. **One is structural:** v4.5 names two horizons, with the expertise as the income
+> engine and sharing as the learning and compounding engine, and this document is written entirely
+> about the second one. That does not make it wrong; it makes it partial.
+>
+> **The audience and success-definition work stands** and is the reason to keep reading it. A
+> re-alignment to v4.5 belongs with the September quarterly review.
+
 ---
 
 ## Core Philosophy

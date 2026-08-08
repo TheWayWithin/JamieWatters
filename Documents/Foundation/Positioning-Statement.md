@@ -5,6 +5,13 @@
 **Version:** 2.0 (rebuilt for Vision & Mission v4.2: trust-and-audience model. Replaces the SaaS-era positioning, which is archived.)
 **Source alignment:** Vision & Mission v4.2; Market & Client Research (19 June 2026)
 
+> ✅ **Checked against V&M v4.5 (8 Aug 2026) and left as it stands.** v4.5 changed which engine pays
+> the bills, not who the audience is or what the public promise is. The honest-practitioner
+> positioning here survives the revision intact. **One thing it does not cover, deliberately:** the
+> contracting and forward-deployed delivery work that v4.5 names as the income engine has its own
+> positioning, and it lives in the CV and LinkedIn (`shared/income-bridge/`), not here. That is a
+> buyer-facing pitch to a different market, not a change to this brand.
+
 ---
 
 > **What changed.** The previous positioning sold per-seat SaaS tools (SoloMarket) to corporate escapists. The business has pivoted. The product is now trust and judgement, earned in public by a practitioner who builds, tests, fails, and shares the truth. This statement positions Jamie as the honest practitioner voice for navigating AI change, monetised through a subscribed audience rather than software seats. Claims are aligned with what is verifiable on the public site (no GitHub top-1% claim, the bestseller qualified, the 38-year arc clarified).

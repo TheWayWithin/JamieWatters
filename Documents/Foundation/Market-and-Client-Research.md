@@ -5,6 +5,20 @@
 **Researcher:** BOS-AI Market Intelligence
 **Review Date:** September 2026 (Quarterly)
 
+> ⚠️ **PARTIALLY SUPERSEDED — flagged 2026-08-08, not rewritten.** This research was done on 19 June
+> 2026 and one of its framing premises has since stopped being true. It repeatedly reasons from
+> *"a solo operator with a full-time job"* — the scarce resource being time against a day job, and
+> burnout from doing both. **There is no full-time job.** The HSBC role ended on 24 July 2026;
+> garden leave runs to 30 September. Capacity went from roughly 16 hours a week to roughly 50, and
+> money replaced time as the binding constraint.
+>
+> **What that changes:** any conclusion resting on limited hours, slow cadence, or burnout risk from
+> holding down a job alongside the build. **What it does not change:** the market, the audience, the
+> competitor read and the positioning work, which stand on their own.
+>
+> Read alongside **V&M v4.5** (`Vision-and-Mission.md`), which names the two horizons this document
+> predates. A proper re-run belongs to the quarterly review in September.
+
 ---
 
 > **Note on this version.** This document replaces the October 2025 research, which was built on a now-abandoned model (a per-seat SaaS portfolio, "SoloMarket", sold to corporate escapists). The business has pivoted. The product is no longer software. It is trust and judgement, earned in public by a practitioner who builds, tests, fails, and shares the truth. This research is rebuilt around that model: an attention-and-trust market, monetised through a diversified, audience-led model, not per-seat subscriptions. All figures are grounded in 2025-2026 sources cited inline and listed in full at the end. Estimates are marked (est).
