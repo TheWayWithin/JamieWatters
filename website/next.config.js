@@ -42,6 +42,15 @@ const nextConfig = {
       { source: '/blog/:slug', destination: '/journey/:slug', permanent: true },
       // T-191: RSS moved from robots-blocked /api/rss to the standard /rss.xml.
       { source: '/api/rss', destination: '/rss.xml', permanent: true },
+      // 2026-08-14: "Has this control ever fired?" was published on 14 Aug and
+      // retired the same day. It retold the 13 Aug control audit, which is the
+      // stronger piece and has since absorbed its best material. The post is
+      // unpublished in the CMS; this forwards the live URL rather than 404ing it.
+      {
+        source: '/journey/has-this-control-ever-fired',
+        destination: '/journey/audited-26-risk-controls',
+        permanent: true,
+      },
     ];
   },
   async headers() {
